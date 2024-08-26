@@ -1,0 +1,14 @@
+*
+
+!.gitignore
+
+!vcs.xml
+!encodings.xml
+!codeStyleSettings.xml
+!misc.xml
+
+!runConfigurations
+!runConfigurations/*
+
+!modules
+!modules/*
