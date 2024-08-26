@@ -5,5 +5,5 @@ package gg.voided.api.command;
  * @version CommandAPI
  * @since 27/08/2024
  */
-public class SpigotCommandHandler {
+public class BukkitCommandHandler {
 }

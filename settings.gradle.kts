@@ -1,2 +1,2 @@
 rootProject.name = "CommandAPI"
-include("core", "spigot", "velocity", "bungee")
+include("core", "bukkit", "velocity", "bungee")
