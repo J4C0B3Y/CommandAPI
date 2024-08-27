@@ -6,4 +6,5 @@ package gg.voided.api.command;
  * @since 26/08/2024
  */
 public class CommandHandler {
+    
 }
