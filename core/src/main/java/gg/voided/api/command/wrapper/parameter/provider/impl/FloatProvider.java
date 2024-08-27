@@ -8,21 +8,21 @@ import gg.voided.api.command.wrapper.parameter.provider.ArgumentProvider;
 /**
  * @author J4C0B3Y
  * @version CommandAPI
- * @since 27/08/24
+ * @since 27/08/2024
  */
-public class LongProvider extends ArgumentProvider<Long> {
+public class FloatProvider extends ArgumentProvider<Float> {
 
     @Override
-    public Long flagDefault(CommandExecution execution) {
-        return 0L;
+    public Float flagDefault(CommandExecution execution) {
+        return 0f;
     }
 
     @Override
-    public Long provide(CommandExecution execution, CommandArgument argument) {
+    public Float provide(CommandExecution execution, CommandArgument argument) {
         try {
-            return Long.parseLong(argument.getValue());
+            return Float.parseFloat(argument.getValue());
         } catch (NumberFormatException exception) {
-            throw new ExitMessage("Long expected, '" + argument.getValue() + "' found.");
+            throw new ExitMessage("Float expected, '" + argument.getValue() + "' found.");
         }
     }
 }

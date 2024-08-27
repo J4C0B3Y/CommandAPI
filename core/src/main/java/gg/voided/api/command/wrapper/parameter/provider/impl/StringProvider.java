@@ -7,7 +7,7 @@ import gg.voided.api.command.wrapper.parameter.provider.ArgumentProvider;
 /**
  * @author J4C0B3Y
  * @version CommandAPI
- * @since 8/27/24
+ * @since 27/08/24
  */
 public class StringProvider extends ArgumentProvider<String> {
 

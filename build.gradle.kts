@@ -2,7 +2,7 @@ import kotlin.io.path.Path
 
 plugins {
     id("java")
-    id ("maven-publish")
+    id("maven-publish")
     id("io.freefair.lombok") version "8.10"
     id("com.gradleup.shadow") version "8.3.0"
 }

@@ -7,13 +7,10 @@ import gg.voided.api.command.execution.argument.CommandArgument;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
-import java.util.Collections;
-import java.util.List;
-
 /**
  * @author J4C0B3Y
  * @version CommandAPI
- * @since 8/27/24
+ * @since 27/08/2024
  */
 @Getter
 @RequiredArgsConstructor
@@ -22,8 +19,4 @@ public abstract class Provider<T> {
     private final boolean consumer;
 
     public abstract T provide(CommandExecution execution, CommandArgument argument) throws ExitMessage;
-
-    public List<String> suggest(String prefix) {
-        return Collections.emptyList();
-    }
 }

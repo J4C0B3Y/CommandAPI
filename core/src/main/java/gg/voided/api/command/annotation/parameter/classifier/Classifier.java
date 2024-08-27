@@ -1,4 +1,4 @@
-package gg.voided.api.command.annotation.provider;
+package gg.voided.api.command.annotation.parameter.classifier;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -12,5 +12,5 @@ import java.lang.annotation.Target;
  */
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
-public @interface Async {
+public @interface Classifier {
 }
