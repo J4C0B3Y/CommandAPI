@@ -3,6 +3,7 @@ package gg.voided.api.command.utils;
 import lombok.experimental.UtilityClass;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.function.Function;
@@ -10,7 +11,7 @@ import java.util.function.Function;
 /**
  * @author J4C0B3Y
  * @version CommandAPI
- * @since 8/28/24
+ * @since 28/08/2024
  */
 @UtilityClass
 public class ListUtils {
@@ -22,6 +23,10 @@ public class ListUtils {
         }
 
         return mapped;
+    }
+
+    public <T, R> List<R> map(T[] array, Function<T, R> mapper) {
+        return map(Arrays.asList(array), mapper);
     }
 
     public <T> List<T> reversed(List<T> list) {

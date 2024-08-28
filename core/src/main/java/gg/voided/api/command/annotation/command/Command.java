@@ -14,7 +14,7 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Command {
     String name();
-    String description();
+    String description() default "";
     String[] aliases() default {};
 
     boolean hidden() default false;

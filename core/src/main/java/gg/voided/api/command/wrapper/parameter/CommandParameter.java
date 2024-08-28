@@ -33,7 +33,7 @@ public class CommandParameter {
 
     private final String name;
     private final String defaultValue;
-    private final String flagName;
+    private final List<String> flagNames;
 
     private final Provider<?> provider;
 
@@ -49,7 +49,7 @@ public class CommandParameter {
 
         this.name = AnnotationUtils.getValue(parameter, Named.class, Named::value, parameter.getName());
         this.defaultValue = AnnotationUtils.getValue(parameter, Default.class, Default::value, null);
-        this.flagName = AnnotationUtils.getValue(parameter, Flag.class, Flag::value, null);
+        this.flagNames = AnnotationUtils.getValue(parameter, Flag.class, flag -> Arrays.asList(flag.value()), null);
 
         this.provider = handle.getWrapper().getHandler().getBindingHandler().assign(this);
 
@@ -70,6 +70,6 @@ public class CommandParameter {
     }
 
     public boolean isFlag() {
-        return flagName != null;
+        return flagNames != null;
     }
 }

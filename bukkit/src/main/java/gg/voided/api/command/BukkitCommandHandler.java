@@ -6,4 +6,5 @@ package gg.voided.api.command;
  * @since 27/08/2024
  */
 public class BukkitCommandHandler {
+
 }

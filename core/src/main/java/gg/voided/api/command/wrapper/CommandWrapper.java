@@ -2,11 +2,12 @@ package gg.voided.api.command.wrapper;
 
 import gg.voided.api.command.CommandHandler;
 import gg.voided.api.command.annotation.command.Requires;
-import gg.voided.api.command.annotation.registration.Description;
+import gg.voided.api.command.annotation.registration.Disabled;
+import gg.voided.api.command.annotation.registration.Register;
+import gg.voided.api.command.exception.registration.InvalidWrapperException;
 import gg.voided.api.command.utils.AnnotationUtils;
 import gg.voided.api.command.utils.ListUtils;
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
 
 import java.lang.reflect.Method;
 import java.util.HashMap;
@@ -19,7 +20,7 @@ import java.util.Map;
  * @since 27/08/2024
  */
 @Getter
-public class CommandWrapper {
+public abstract class CommandWrapper {
     private final String name;
     private final List<String> aliases;
     private final Object instance;
@@ -38,13 +39,27 @@ public class CommandWrapper {
 
         Class<?> clazz = instance.getClass();
 
-        this.description = AnnotationUtils.getValue(clazz, Description.class, Description::value, "");
+        if (clazz.isAnnotationPresent(Disabled.class)) {
+            throw new InvalidWrapperException("Wrapper '" + clazz.getSimpleName() + "' is marked @Disabled");
+        }
+
+        this.description = AnnotationUtils.getValue(clazz, Register.class, Register::description, "");
         this.permission = AnnotationUtils.getValue(clazz, Requires.class, Requires::value, "");
 
         for (Method method : clazz.getDeclaredMethods()) {
             CommandHandle handle = new CommandHandle(this, method);
 
+            if (handles.containsKey(handle.getName())) {
+                throw new InvalidWrapperException("Duplicate handle name '" + handle.getName() + "'.");
+            }
+
+            handles.put(handle.getName(), handle);
         }
     }
 
+    public abstract void register();
+
+    public void dispatch() {
+
+    }
 }

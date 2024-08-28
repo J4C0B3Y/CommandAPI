@@ -11,7 +11,7 @@ import java.util.function.Function;
 /**
  * @author J4C0B3Y
  * @version CommandAPI
- * @since 8/28/24
+ * @since 28/08/2024
  */
 @UtilityClass
 public class AnnotationUtils {

@@ -1,4 +1,4 @@
-package gg.voided.api.command.annotation;
+package gg.voided.api.command.annotation.registration;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -8,9 +8,12 @@ import java.lang.annotation.Target;
 /**
  * @author J4C0B3Y
  * @version CommandAPI
- * @since 8/28/24
+ * @since 28/08/2024
  */
-@Target({ElementType.TYPE, ElementType.METHOD})
+@Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
-public @interface Async {
+public @interface Register {
+    String name() default "";
+    String[] aliases() default {};
+    String description() default "";
 }
