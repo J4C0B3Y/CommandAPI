@@ -8,15 +8,10 @@ import java.lang.annotation.Target;
 /**
  * @author J4C0B3Y
  * @version CommandAPI
- * @since 27/08/2024
+ * @since 8/28/24
  */
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)
-public @interface Command {
-    String name();
-    String description();
-    String[] aliases() default {};
-
-    boolean hidden() default false;
-    boolean async() default false;
+public @interface Usage {
+    String value();
 }

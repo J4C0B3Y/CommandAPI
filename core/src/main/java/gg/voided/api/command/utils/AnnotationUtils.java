@@ -1,4 +1,4 @@
-package gg.voided.api.command.annotation;
+package gg.voided.api.command.utils;
 
 import lombok.experimental.UtilityClass;
 
@@ -11,11 +11,10 @@ import java.util.function.Function;
 /**
  * @author J4C0B3Y
  * @version CommandAPI
- * @since 28/08/2024
+ * @since 8/28/24
  */
 @UtilityClass
-public class AnnotationHandler {
-
+public class AnnotationUtils {
     public <T extends Annotation, R> R getValue(AnnotatedElement element, Class<T> type, Function<T, R> mapper, R fallback) {
         T annotation = element.getAnnotation(type);
 

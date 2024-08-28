@@ -1,6 +1,5 @@
 package gg.voided.api.command.wrapper.parameter;
 
-import gg.voided.api.command.annotation.AnnotationHandler;
 import gg.voided.api.command.annotation.parameter.Default;
 import gg.voided.api.command.annotation.parameter.Flag;
 import gg.voided.api.command.annotation.parameter.Last;
@@ -9,6 +8,7 @@ import gg.voided.api.command.annotation.parameter.classifier.Classifier;
 import gg.voided.api.command.annotation.parameter.classifier.Text;
 import gg.voided.api.command.annotation.parameter.modifier.Modifier;
 import gg.voided.api.command.exception.registration.MissingProviderException;
+import gg.voided.api.command.utils.AnnotationUtils;
 import gg.voided.api.command.wrapper.CommandHandle;
 import gg.voided.api.command.wrapper.parameter.provider.Provider;
 import lombok.Getter;
@@ -44,12 +44,12 @@ public class CommandParameter {
         this.type = parameter.getType();
 
         this.annotations = Arrays.asList(parameter.getAnnotations());
-        this.classifiers = AnnotationHandler.getSpecial(annotations, Classifier.class);
-        this.modifiers = AnnotationHandler.getSpecial(annotations, Modifier.class);
+        this.classifiers = AnnotationUtils.getSpecial(annotations, Classifier.class);
+        this.modifiers = AnnotationUtils.getSpecial(annotations, Modifier.class);
 
-        this.name = AnnotationHandler.getValue(parameter, Named.class, Named::value, parameter.getName());
-        this.defaultValue = AnnotationHandler.getValue(parameter, Default.class, Default::value, null);
-        this.flagName = AnnotationHandler.getValue(parameter, Flag.class, Flag::value, null);
+        this.name = AnnotationUtils.getValue(parameter, Named.class, Named::value, parameter.getName());
+        this.defaultValue = AnnotationUtils.getValue(parameter, Default.class, Default::value, null);
+        this.flagName = AnnotationUtils.getValue(parameter, Flag.class, Flag::value, null);
 
         this.provider = handle.getWrapper().getHandler().getBindingHandler().assign(this);
 
@@ -57,7 +57,7 @@ public class CommandParameter {
             throw new MissingProviderException("Parameter '" + parameter.getName() + "' has no valid providers bound for '" + type.getSimpleName() + "'.");
         }
 
-        this.last = AnnotationHandler.getSpecial(annotations, Last.class) != null;
+        this.last = AnnotationUtils.getSpecial(annotations, Last.class) != null;
         this.text = parameter.isAnnotationPresent(Text.class);
     }
 

@@ -1,5 +1,6 @@
 package gg.voided.api.command.wrapper.parameter.binding;
 
+import gg.voided.api.command.utils.ListUtils;
 import gg.voided.api.command.wrapper.parameter.CommandParameter;
 import gg.voided.api.command.wrapper.parameter.provider.Provider;
 
@@ -24,18 +25,12 @@ public class BindingHandler {
             return null;
         }
 
-        for (ParameterBinding<?> binding : reversed(bindings)) {
+        for (ParameterBinding<?> binding : ListUtils.reversed(bindings)) {
             if (binding.provides(parameter)) {
                 return binding.getProvider();
             }
         }
 
         return null;
-    }
-
-    private <T> List<T> reversed(List<T> list) {
-        List<T> reversed = new ArrayList<>(list);
-        Collections.reverse(reversed);
-        return reversed;
     }
 }

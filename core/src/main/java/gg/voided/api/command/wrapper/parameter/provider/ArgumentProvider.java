@@ -12,8 +12,12 @@ import java.util.List;
  */
 public abstract class ArgumentProvider<T> extends Provider<T> {
 
+    public ArgumentProvider(boolean async) {
+        super(true, async);
+    }
+
     public ArgumentProvider() {
-        super(true);
+        this(false);
     }
 
     public T flagDefault(CommandExecution execution) {

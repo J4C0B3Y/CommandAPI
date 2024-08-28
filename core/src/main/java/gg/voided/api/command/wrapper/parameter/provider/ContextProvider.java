@@ -7,7 +7,11 @@ package gg.voided.api.command.wrapper.parameter.provider;
  */
 public abstract class ContextProvider<T> extends Provider<T> {
 
+    public ContextProvider(boolean async) {
+        super(false, async);
+    }
+
     public ContextProvider() {
-        super(false);
+        this(false);
     }
 }

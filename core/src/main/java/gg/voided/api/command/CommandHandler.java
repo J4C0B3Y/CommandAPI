@@ -1,5 +1,6 @@
 package gg.voided.api.command;
 
+import gg.voided.api.command.annotation.command.Command;
 import gg.voided.api.command.wrapper.parameter.binding.BindingBuilder;
 import gg.voided.api.command.wrapper.parameter.binding.BindingHandler;
 import gg.voided.api.command.wrapper.parameter.modifier.ModifierHandler;
@@ -19,6 +20,7 @@ public class CommandHandler {
         return new BindingBuilder<>(type, this);
     }
 
+    @Command(name = "cock", description = "Noonga", aliases = {"test", "test"})
     private void bindDefaults() {
         // TODO: Bind Defaults
     }

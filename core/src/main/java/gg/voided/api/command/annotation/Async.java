@@ -1,4 +1,4 @@
-package gg.voided.api.command.annotation.provider;
+package gg.voided.api.command.annotation;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -8,9 +8,9 @@ import java.lang.annotation.Target;
 /**
  * @author J4C0B3Y
  * @version CommandAPI
- * @since 27/08/2024
+ * @since 8/28/24
  */
-@Target(ElementType.TYPE)
+@Target({ElementType.TYPE, ElementType.METHOD})
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Async {
 }
