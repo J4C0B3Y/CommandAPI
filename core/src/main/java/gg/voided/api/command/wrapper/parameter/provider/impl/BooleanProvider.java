@@ -3,7 +3,8 @@ package gg.voided.api.command.wrapper.parameter.provider.impl;
 import gg.voided.api.command.exception.execution.ExitMessage;
 import gg.voided.api.command.execution.CommandExecution;
 import gg.voided.api.command.execution.argument.CommandArgument;
-import gg.voided.api.command.wrapper.parameter.provider.ArgumentProvider;
+import gg.voided.api.command.wrapper.parameter.provider.Provider;
+import gg.voided.api.command.wrapper.parameter.provider.ProviderType;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -14,7 +15,11 @@ import java.util.List;
  * @version CommandAPI
  * @since 27/08/2024
  */
-public class BooleanProvider extends ArgumentProvider<Boolean> {
+public class BooleanProvider extends Provider<Boolean> {
+
+    public BooleanProvider() {
+        super(ProviderType.ARGUMENT);
+    }
 
     @Override
     public Boolean flagDefault(CommandExecution execution) {
@@ -32,20 +37,6 @@ public class BooleanProvider extends ArgumentProvider<Boolean> {
 
     @Override
     public List<String> suggest(String prefix) {
-        prefix = prefix.toLowerCase();
-
-        if (prefix.isEmpty()) {
-            return Arrays.asList("true", "false");
-        }
-
-        if ("true".startsWith(prefix)) {
-            return Collections.singletonList("true");
-        }
-
-        if ("false".startsWith(prefix)) {
-            return Collections.singletonList("false");
-        }
-
-        return Collections.emptyList();
+        return Arrays.asList("true", "false");
     }
 }

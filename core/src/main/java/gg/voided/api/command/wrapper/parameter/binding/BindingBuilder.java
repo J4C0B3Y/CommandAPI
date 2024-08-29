@@ -10,8 +10,10 @@ import gg.voided.api.command.wrapper.parameter.provider.impl.InstanceProvider;
 import lombok.RequiredArgsConstructor;
 
 import java.lang.annotation.Annotation;
+import java.lang.invoke.MethodType;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Consumer;
 
 /**
  * @author J4C0B3Y
@@ -68,7 +70,7 @@ public class BindingBuilder<T> {
             throw new InvalidBindingException("@Modifier cannot be bound to a provider.");
         }
 
-        handler.getBindingHandler().put(type, new ParameterBinding<>(type, provider, classifiers));
+        to(type -> handler.getBindingHandler().put(type, new ParameterBinding<>(type, provider, classifiers)));
     }
 
     public void to(T instance) {
@@ -80,6 +82,16 @@ public class BindingBuilder<T> {
             throw new InvalidBindingException("No @Modifier was provided.");
         }
 
-        handler.getModifierHandler().put(type, this.modifier, modifier);
+        to(type -> handler.getModifierHandler().put(type, this.modifier, modifier));
+    }
+
+    @SuppressWarnings("unchecked")
+    private void to(Consumer<Class<T>> binder) {
+        // If the type is a primitive, bind its wrapper class.
+        if (type.isPrimitive()) {
+            binder.accept((Class<T>) MethodType.methodType(type).wrap().returnType());
+        }
+
+        binder.accept(type);
     }
 }

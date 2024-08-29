@@ -39,9 +39,39 @@ public class CommandExecution {
     }
 
     public void execute() {
-        List<String> arguments = extractFlags(new ArrayList<>(this.arguments));
+        List<String> arguments = new ArrayList<>(this.arguments);
+        int flags = 0;
 
+        for (int index = 0; index < providedParameters.size(); index++) {
+            ProvidedParameter providedParameter = providedParameters.get(index);
+            CommandParameter parameter = providedParameter.getParameter();
 
+            // If the parameter is @Text, combine the remaining arguments into one string.
+            if (parameter.isText()) {
+                arguments = combineRemaining(arguments, index);
+            }
+
+            if (parameter.isFlag()) {
+                if (providedParameter.getArgument() == null) {
+                    providedParameter.provide(parameter.getProvider());
+                }
+
+                flags++;
+                continue;
+            }
+
+        }
+    }
+
+    private List<String> combineRemaining(List<String> arguments, int startIndex) {
+        List<String> previous = new ArrayList<>(arguments.subList(0, startIndex));
+        String combined = String.join(" ", arguments.subList(startIndex, arguments.size()));
+
+        if (!combined.isEmpty()) {
+            previous.add(combined);
+        }
+
+        return previous;
     }
 
     private List<String> extractFlags(List<String> arguments) {
@@ -85,6 +115,7 @@ public class CommandExecution {
             }
 
             if (parameter.getParameter().isBoolean()) {
+                parameter.setArgument("true");
                 parameter.provide(true);
                 continue;
             }

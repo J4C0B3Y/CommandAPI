@@ -1,14 +1,12 @@
 package gg.voided.api.command.wrapper.parameter;
 
-import gg.voided.api.command.annotation.parameter.Default;
-import gg.voided.api.command.annotation.parameter.Flag;
-import gg.voided.api.command.annotation.parameter.Last;
-import gg.voided.api.command.annotation.parameter.Named;
+import gg.voided.api.command.annotation.parameter.*;
 import gg.voided.api.command.annotation.parameter.classifier.Classifier;
 import gg.voided.api.command.annotation.parameter.classifier.Text;
 import gg.voided.api.command.annotation.parameter.modifier.Modifier;
 import gg.voided.api.command.exception.registration.MissingProviderException;
 import gg.voided.api.command.utils.AnnotationUtils;
+import gg.voided.api.command.utils.ListUtils;
 import gg.voided.api.command.wrapper.CommandHandle;
 import gg.voided.api.command.wrapper.parameter.provider.Provider;
 import lombok.Getter;
@@ -16,6 +14,7 @@ import lombok.Getter;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Parameter;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -33,6 +32,7 @@ public class CommandParameter {
 
     private final String name;
     private final String defaultValue;
+    private final List<String> options;
     private final List<String> flagNames;
 
     private final Provider<?> provider;
@@ -49,7 +49,13 @@ public class CommandParameter {
 
         this.name = AnnotationUtils.getValue(parameter, Named.class, Named::value, parameter.getName());
         this.defaultValue = AnnotationUtils.getValue(parameter, Default.class, Default::value, null);
+        this.options = AnnotationUtils.getValue(parameter, Option.class, option -> ListUtils.map(option.value(), String::toLowerCase), Collections.emptyList());
         this.flagNames = AnnotationUtils.getValue(parameter, Flag.class, flag -> Arrays.asList(flag.value()), null);
+
+        // Use the parameter name if no flag names are specified.
+        if (isFlag() && flagNames.isEmpty()) {
+            flagNames.add(name);
+        }
 
         this.provider = handle.getWrapper().getHandler().getBindingHandler().assign(this);
 
@@ -71,5 +77,24 @@ public class CommandParameter {
 
     public boolean isFlag() {
         return flagNames != null;
+    }
+
+    public boolean hasOption(String option) {
+        return options.contains(option.toLowerCase());
+    }
+
+    @SuppressWarnings("unchecked")
+    public <T extends Annotation> T getAnnotation(Class<T> type) {
+        for (Annotation annotation : annotations) {
+            if (annotation.getClass().equals(type)) {
+                return (T) annotation;
+            }
+        }
+
+        return null;
+    }
+
+    public boolean hasAnnotation(Class<? extends Annotation> type) {
+        return getAnnotation(type) != null;
     }
 }

@@ -8,10 +8,10 @@ import java.lang.annotation.Target;
 /**
  * @author J4C0B3Y
  * @version CommandAPI
- * @since 28/08/2024
+ * @since 30/08/2024
  */
 @Target(ElementType.PARAMETER)
 @Retention(RetentionPolicy.RUNTIME)
-public @interface Flag {
-    String[] value() default {};
+public @interface Option {
+    String[] value();
 }

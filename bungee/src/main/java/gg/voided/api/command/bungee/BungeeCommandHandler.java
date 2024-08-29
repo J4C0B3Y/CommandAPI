@@ -1,4 +1,4 @@
-package gg.voided.api.command;
+package gg.voided.api.command.bungee;
 
 /**
  * @author J4C0B3Y
