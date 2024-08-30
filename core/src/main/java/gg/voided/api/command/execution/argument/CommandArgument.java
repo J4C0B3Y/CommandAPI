@@ -1,8 +1,7 @@
 package gg.voided.api.command.execution.argument;
 
-import gg.voided.api.command.exception.execution.ExitMessage;
 import gg.voided.api.command.exception.execution.InvalidArgumentException;
-import gg.voided.api.command.execution.CommandExecution;
+import gg.voided.api.command.utils.StringUtils;
 import gg.voided.api.command.wrapper.parameter.CommandParameter;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -45,5 +44,9 @@ public class CommandArgument {
 
     public static String getFlagName(String argument) {
         return argument.replaceAll("^-+", "");
+    }
+
+    public static String getFlagArgument(String flagName) {
+        return StringUtils.repeat("-", Math.max(flagName.length(), 2)) + flagName;
     }
 }

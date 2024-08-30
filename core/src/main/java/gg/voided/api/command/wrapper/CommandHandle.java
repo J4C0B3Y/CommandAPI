@@ -1,11 +1,13 @@
 package gg.voided.api.command.wrapper;
 
 
+import gg.voided.api.command.actor.Actor;
 import gg.voided.api.command.annotation.command.Command;
 import gg.voided.api.command.annotation.command.Requires;
 import gg.voided.api.command.annotation.command.Usage;
 import gg.voided.api.command.exception.registration.InvalidHandleException;
 import gg.voided.api.command.exception.registration.ParameterStructureException;
+import gg.voided.api.command.execution.argument.CommandArgument;
 import gg.voided.api.command.utils.AnnotationUtils;
 import gg.voided.api.command.utils.ListUtils;
 import gg.voided.api.command.wrapper.parameter.CommandParameter;
@@ -80,9 +82,17 @@ public class CommandHandle {
 
     public String generateUsage() {
         List<String> arguments = new ArrayList<>();
+        List<String> flags = new ArrayList<>();
 
         for (CommandParameter parameter : parameters) {
-            if (!parameter.getProvider().isConsumer()) continue;
+            if (parameter.isFlag()) {
+                flags.add(parameter.getFlagNames().get(0));
+                continue;
+            }
+
+            if (!parameter.getProvider().isConsumer()) {
+                continue;
+            }
 
             String left = parameter.isOptional() ? "[" : "<";
             String right = parameter.isOptional() ? "]" : ">";
@@ -90,6 +100,14 @@ public class CommandHandle {
             arguments.add(left + parameter.getName() + right);
         }
 
+        for (String flag : flags) {
+            arguments.add(CommandArgument.getFlagArgument(flag));
+        }
+
         return String.join(" ", arguments);
+    }
+
+    public boolean hasPermission(Actor actor) {
+        return wrapper.hasPermission(actor) && actor.hasPermission(permission);
     }
 }

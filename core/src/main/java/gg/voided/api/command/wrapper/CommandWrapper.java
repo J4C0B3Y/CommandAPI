@@ -1,6 +1,8 @@
 package gg.voided.api.command.wrapper;
 
 import gg.voided.api.command.CommandHandler;
+import gg.voided.api.command.actor.Actor;
+import gg.voided.api.command.annotation.command.Help;
 import gg.voided.api.command.annotation.command.Requires;
 import gg.voided.api.command.annotation.registration.Disabled;
 import gg.voided.api.command.annotation.registration.Register;
@@ -28,6 +30,7 @@ public abstract class CommandWrapper {
 
     private final String description;
     private final String permission;
+    private final boolean helpEnabled;
 
     private final Map<String, CommandHandle> handles = new HashMap<>();
 
@@ -45,6 +48,7 @@ public abstract class CommandWrapper {
 
         this.description = AnnotationUtils.getValue(clazz, Register.class, Register::description, "");
         this.permission = AnnotationUtils.getValue(clazz, Requires.class, Requires::value, "");
+        this.helpEnabled = clazz.isAnnotationPresent(Help.class);
 
         for (Method method : clazz.getDeclaredMethods()) {
             CommandHandle handle = new CommandHandle(this, method);
@@ -59,7 +63,43 @@ public abstract class CommandWrapper {
 
     public abstract void register();
 
-    public void dispatch() {
+    public CommandHandle getHandle(String label) {
+        label = label.toLowerCase();
 
+        if (handles.containsKey(label)) {
+            return handles.get(label);
+        }
+
+        for (CommandHandle handle : handles.values()) {{
+            if (handle.getAliases().contains(label)) {
+                return handle;
+            }
+        }}
+
+        return null;
+    }
+
+    public CommandHandle getHandle(List<String> arguments) {
+        for (int i = arguments.size(); i >= 0; i--) {
+            CommandHandle handle = getHandle(String.join(" ", arguments.subList(0, i + 1)));
+
+            if (handle != null) {
+                return handle;
+            }
+        }
+
+        return null;
+    }
+
+    public boolean hasPermission(Actor actor) {
+        return actor.hasPermission(permission);
+    }
+
+    public void dispatch(Actor actor, String label, List<String> arguments) {
+        CommandHandle handle = getHandle(arguments);
+
+        if (handle == null) {
+
+        }
     }
 }

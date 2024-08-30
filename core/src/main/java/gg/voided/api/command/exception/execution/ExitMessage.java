@@ -9,11 +9,11 @@ import lombok.Getter;
  */
 @Getter
 public class ExitMessage extends RuntimeException {
-    private final boolean sendUsage;
+    private final boolean showUsage;
 
-    public ExitMessage(String message, boolean sendUsage) {
+    public ExitMessage(String message, boolean showUsage) {
         super(message);
-        this.sendUsage = sendUsage;
+        this.showUsage = showUsage;
     }
 
     public ExitMessage(String message) {

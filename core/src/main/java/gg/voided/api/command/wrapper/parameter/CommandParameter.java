@@ -76,7 +76,7 @@ public class CommandParameter {
     }
 
     public boolean isFlag() {
-        return flagNames != null;
+        return flagNames != null && !flagNames.isEmpty();
     }
 
     public boolean hasOption(String option) {

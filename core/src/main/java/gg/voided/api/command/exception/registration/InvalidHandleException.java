@@ -6,7 +6,6 @@ package gg.voided.api.command.exception.registration;
  * @since 28/08/2024
  */
 public class InvalidHandleException extends RuntimeException {
-
     public InvalidHandleException(String message) {
         super(message);
     }

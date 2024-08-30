@@ -6,6 +6,5 @@ package gg.voided.api.command.actor;
  * @since 28/08/2024
  */
 public abstract class Actor implements PlayerActor, ConsoleActor, ProxyActor {
-
     public abstract boolean hasPermission(String permission);
 }
