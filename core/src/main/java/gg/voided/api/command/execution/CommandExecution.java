@@ -22,15 +22,17 @@ import java.util.*;
 public class CommandExecution {
     private final Actor actor;
     private final CommandHandle handle;
+    private final String label;
     private final List<String> arguments;
     private final CommandHandler handler;
     // TODO: Add command label back.
 
     private final List<ProvidedParameter> providedParameters = new ArrayList<>();
 
-    public CommandExecution(Actor actor, CommandHandle handle, List<String> arguments) {
+    public CommandExecution(Actor actor, CommandHandle handle, String label, List<String> arguments) {
         this.actor = actor;
         this.handle = handle;
+        this.label = label;
         this.arguments = arguments;
         this.handler = handle.getWrapper().getHandler();
 
@@ -61,7 +63,7 @@ public class CommandExecution {
             arguments.add(parameter.getValue());
         }
 
-        handle.invoke(actor, arguments);
+        handle.invoke(actor, label, arguments);
     }
 
 

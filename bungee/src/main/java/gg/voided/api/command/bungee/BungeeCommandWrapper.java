@@ -39,7 +39,7 @@ public class BungeeCommandWrapper extends CommandWrapper {
 
         @Override
         public void execute(CommandSender sender, String[] arguments) {
-            wrapper.dispatch(new BungeeActor(sender), Arrays.asList(arguments));
+            wrapper.dispatch(new BungeeActor(sender), getName(), Arrays.asList(arguments));
         }
 
         @Override

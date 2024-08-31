@@ -106,8 +106,8 @@ public class CommandHandle {
         return String.join(" ", arguments);
     }
 
-    public void invoke(Actor actor, List<Object> arguments) {
-        wrapper.getHandler().runTask(() -> wrapper.handleExceptions(actor, this, () ->
+    public void invoke(Actor actor, String label, List<Object> arguments) {
+        wrapper.getHandler().runTask(() -> wrapper.handleExceptions(actor, this, label, () ->
             method.invoke(wrapper.getObject(), arguments.toArray())
         ), async);
     }

@@ -5,6 +5,8 @@ import gg.voided.api.command.annotation.registration.Register;
 import gg.voided.api.command.exception.registration.RegistrationException;
 import gg.voided.api.command.execution.argument.UnknownFlagAction;
 import gg.voided.api.command.execution.help.HelpHandler;
+import gg.voided.api.command.execution.help.impl.SimpleHelpHandler;
+import gg.voided.api.command.execution.locale.CommandLocale;
 import gg.voided.api.command.wrapper.CommandWrapper;
 import gg.voided.api.command.wrapper.parameter.binding.BindingBuilder;
 import gg.voided.api.command.wrapper.parameter.binding.BindingHandler;
@@ -28,7 +30,9 @@ public abstract class CommandHandler {
     private final ModifierHandler modifierHandler = new ModifierHandler();
 
     private UnknownFlagAction unknownFlagAction = UnknownFlagAction.ERROR;
-    private HelpHandler helpHandler;
+    private HelpHandler helpHandler = new SimpleHelpHandler();
+    private CommandLocale locale = new CommandLocale();
+    private boolean debug;
 
     public abstract CommandWrapper wrap(Object wrapper, String name, List<String> aliases);
     public abstract Logger getLogger();

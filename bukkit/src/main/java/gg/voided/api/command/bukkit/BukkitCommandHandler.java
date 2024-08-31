@@ -28,7 +28,10 @@ public class BukkitCommandHandler extends CommandHandler {
 
         ClassUtils.ifPresent("com.destroystokyo.paper.event.server.AsyncTabCompleteEvent", () -> {
             plugin.getServer().getPluginManager().registerEvents(new AsyncTabListener(), plugin);
-            plugin.getLogger().info("Enabled async tab completion support!");
+
+            if (isDebug()) {
+                plugin.getLogger().info("Enabled async tab completion support.");
+            }
         });
     }
 

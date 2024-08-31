@@ -36,7 +36,7 @@ public class BukkitCommandWrapper extends CommandWrapper implements CommandExecu
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] arguments) {
-        dispatch(new BukkitActor(sender), Arrays.asList(arguments));
+        dispatch(new BukkitActor(sender), label, Arrays.asList(arguments));
         return true;
     }
 

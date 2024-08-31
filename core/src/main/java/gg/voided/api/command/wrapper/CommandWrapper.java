@@ -96,17 +96,17 @@ public abstract class CommandWrapper {
         return null;
     }
 
-    public void dispatch(Actor actor, List<String> arguments) {
+    public void dispatch(Actor actor, String label, List<String> arguments) {
         CommandHandle handle = getHandle(arguments);
 
-        handleExceptions(actor, handle, () ->
-            dispatch(actor, handle, arguments)
+        handleExceptions(actor, handle, label, () ->
+            dispatch(actor, handle, label, arguments)
         );
     }
 
-    private void dispatch(Actor actor, CommandHandle handle, List<String> arguments) {
+    private void dispatch(Actor actor, CommandHandle handle, String label, List<String> arguments) {
         if (handle == null) {
-            if (isHelp() && handler.getHelpHandler().send(actor, arguments)) {
+            if (isHelp() && handler.getHelpHandler().sendHelp(actor, this, arguments)) {
                 return;
             }
 
@@ -123,10 +123,10 @@ public abstract class CommandWrapper {
         int nameLength = handle.getName().split(" ").length;
         arguments = arguments.subList(nameLength, arguments.size());
 
-        new CommandExecution(actor, handle, arguments).execute();
+        new CommandExecution(actor, handle, label, arguments).execute();
     }
 
-    public void handleExceptions(Actor actor, CommandHandle handle, CheckedRunnable task) {
+    public void handleExceptions(Actor actor, CommandHandle handle, String label, CheckedRunnable task) {
         try {
             task.run();
         } catch (Exception exception) {
@@ -140,7 +140,7 @@ public abstract class CommandWrapper {
                 actor.sendMessage(throwable.getMessage());
 
                 if (((ExitMessage) throwable).isShowUsage()) {
-                    actor.sendMessage(handle.getUsage());
+                    handler.getHelpHandler().sendUsage(actor, handle, label);
                 }
 
                 return;

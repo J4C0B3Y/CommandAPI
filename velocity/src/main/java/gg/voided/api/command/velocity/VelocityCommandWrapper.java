@@ -27,7 +27,7 @@ public class VelocityCommandWrapper extends CommandWrapper implements SimpleComm
 
     @Override
     public void execute(Invocation invocation) {
-        dispatch(new VelocityActor(invocation.source()), Arrays.asList(invocation.arguments()));
+        dispatch(new VelocityActor(invocation.source()), invocation.alias(), Arrays.asList(invocation.arguments()));
     }
 
     //TODO: Velocity completions
