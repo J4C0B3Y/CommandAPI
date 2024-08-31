@@ -32,6 +32,8 @@ public class CommandParameter {
 
     private final String name;
     private final String defaultValue;
+    private final boolean optional;
+
     private final List<String> options;
     private final List<String> flagNames;
 
@@ -49,11 +51,13 @@ public class CommandParameter {
 
         this.name = AnnotationUtils.getValue(parameter, Named.class, Named::value, parameter.getName());
         this.defaultValue = AnnotationUtils.getValue(parameter, Default.class, Default::value, null);
+        this.optional = defaultValue != null || parameter.isAnnotationPresent(Optional.class);
+
         this.options = AnnotationUtils.getValue(parameter, Option.class, option -> ListUtils.map(option.value(), String::toLowerCase), Collections.emptyList());
-        this.flagNames = AnnotationUtils.getValue(parameter, Flag.class, flag -> Arrays.asList(flag.value()), null);
+        this.flagNames = AnnotationUtils.getValue(parameter, Flag.class, flag -> ListUtils.asList(flag.value()), null);
 
         // Use the parameter name if no flag names are specified.
-        if (isFlag() && flagNames.isEmpty()) {
+        if (flagNames != null && flagNames.isEmpty()) {
             flagNames.add(name);
         }
 
@@ -63,12 +67,8 @@ public class CommandParameter {
             throw new MissingProviderException("Parameter '" + parameter.getName() + "' has no valid providers bound for '" + type.getSimpleName() + "'.");
         }
 
-        this.last = AnnotationUtils.getSpecial(annotations, Last.class) != null;
+        this.last = !AnnotationUtils.getSpecial(annotations, Last.class).isEmpty();
         this.text = parameter.isAnnotationPresent(Text.class);
-    }
-
-    public boolean isOptional() {
-        return defaultValue != null;
     }
 
     public boolean isBoolean() {

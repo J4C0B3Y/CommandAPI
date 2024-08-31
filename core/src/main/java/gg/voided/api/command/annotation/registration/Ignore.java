@@ -1,4 +1,4 @@
-package gg.voided.api.command.annotation.parameter;
+package gg.voided.api.command.annotation.registration;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -10,8 +10,7 @@ import java.lang.annotation.Target;
  * @version CommandAPI
  * @since 28/08/2024
  */
-@Target(ElementType.PARAMETER)
+@Target({ElementType.TYPE, ElementType.METHOD})
 @Retention(RetentionPolicy.RUNTIME)
-public @interface Default {
-    String value() default "";
+public @interface Ignore {
 }

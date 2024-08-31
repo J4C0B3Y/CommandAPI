@@ -26,7 +26,7 @@ public class ParameterBinding<T> {
         }
 
         for (Annotation classifier : parameter.getClassifiers()) {
-            if (classifiers.contains(classifier.annotationType())) {
+            if (!classifiers.contains(classifier.annotationType())) {
                 return false;
             }
         }

@@ -3,6 +3,7 @@ package gg.voided.api.command.bukkit;
 import gg.voided.api.command.actor.Actor;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
@@ -20,6 +21,11 @@ public class BukkitActor extends Actor {
     @Override
     public boolean hasPermission(String permission) {
         return sender.hasPermission(permission);
+    }
+
+    @Override
+    public void sendMessage(String message) {
+        sender.sendMessage(ChatColor.translateAlternateColorCodes('&', message));
     }
 
     @Override

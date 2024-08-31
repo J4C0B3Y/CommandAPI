@@ -4,17 +4,22 @@ import gg.voided.api.command.CommandHandler;
 import gg.voided.api.command.actor.Actor;
 import gg.voided.api.command.annotation.command.Help;
 import gg.voided.api.command.annotation.command.Requires;
-import gg.voided.api.command.annotation.registration.Disabled;
+import gg.voided.api.command.annotation.registration.Ignore;
 import gg.voided.api.command.annotation.registration.Register;
+import gg.voided.api.command.exception.execution.ExitMessage;
 import gg.voided.api.command.exception.registration.InvalidWrapperException;
+import gg.voided.api.command.execution.CommandExecution;
 import gg.voided.api.command.utils.AnnotationUtils;
+import gg.voided.api.command.utils.CheckedRunnable;
 import gg.voided.api.command.utils.ListUtils;
 import lombok.Getter;
 
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
 
 /**
  * @author J4C0B3Y
@@ -25,30 +30,30 @@ import java.util.Map;
 public abstract class CommandWrapper {
     private final String name;
     private final List<String> aliases;
-    private final Object instance;
+    private final Object object;
     private final CommandHandler handler;
 
     private final String description;
     private final String permission;
-    private final boolean helpEnabled;
+    private final boolean help;
 
     private final Map<String, CommandHandle> handles = new HashMap<>();
 
-    public CommandWrapper(String name, List<String> aliases, Object instance, CommandHandler handler) {
+    public CommandWrapper(Object object, String name, List<String> aliases, CommandHandler handler) {
         this.name = name.toLowerCase();
         this.aliases = ListUtils.map(aliases, String::toLowerCase);
-        this.instance = instance;
+        this.object = object;
         this.handler = handler;
 
-        Class<?> clazz = instance.getClass();
+        Class<?> clazz = object.getClass();
 
-        if (clazz.isAnnotationPresent(Disabled.class)) {
+        if (clazz.isAnnotationPresent(Ignore.class)) {
             throw new InvalidWrapperException("Wrapper '" + clazz.getSimpleName() + "' is marked @Disabled");
         }
 
         this.description = AnnotationUtils.getValue(clazz, Register.class, Register::description, "");
         this.permission = AnnotationUtils.getValue(clazz, Requires.class, Requires::value, "");
-        this.helpEnabled = clazz.isAnnotationPresent(Help.class);
+        this.help = clazz.isAnnotationPresent(Help.class);
 
         for (Method method : clazz.getDeclaredMethods()) {
             CommandHandle handle = new CommandHandle(this, method);
@@ -81,7 +86,7 @@ public abstract class CommandWrapper {
 
     public CommandHandle getHandle(List<String> arguments) {
         for (int i = arguments.size(); i >= 0; i--) {
-            CommandHandle handle = getHandle(String.join(" ", arguments.subList(0, i + 1)));
+            CommandHandle handle = getHandle(String.join(" ", arguments.subList(0, i)));
 
             if (handle != null) {
                 return handle;
@@ -91,15 +96,58 @@ public abstract class CommandWrapper {
         return null;
     }
 
-    public boolean hasPermission(Actor actor) {
-        return actor.hasPermission(permission);
-    }
-
-    public void dispatch(Actor actor, String label, List<String> arguments) {
+    public void dispatch(Actor actor, List<String> arguments) {
         CommandHandle handle = getHandle(arguments);
 
-        if (handle == null) {
+        handleExceptions(actor, handle, () ->
+            dispatch(actor, handle, arguments)
+        );
+    }
 
+    private void dispatch(Actor actor, CommandHandle handle, List<String> arguments) {
+        if (handle == null) {
+            if (isHelp() && handler.getHelpHandler().send(actor, arguments)) {
+                return;
+            }
+
+            actor.sendMessage("no matching subcommand found.");
+            return;
+        }
+
+        if (!actor.hasPermission(handle.getPermission())) {
+            actor.sendMessage("No permission!");
+            return;
+        }
+
+        // Remove the handle name from the arguments
+        int nameLength = handle.getName().split(" ").length;
+        arguments = arguments.subList(nameLength, arguments.size());
+
+        new CommandExecution(actor, handle, arguments).execute();
+    }
+
+    public void handleExceptions(Actor actor, CommandHandle handle, CheckedRunnable task) {
+        try {
+            task.run();
+        } catch (Exception exception) {
+            Throwable throwable = exception;
+
+            while (throwable instanceof InvocationTargetException) {
+                throwable = throwable.getCause();
+            }
+
+            if (throwable instanceof ExitMessage) {
+                actor.sendMessage(throwable.getMessage());
+
+                if (((ExitMessage) throwable).isShowUsage()) {
+                    actor.sendMessage(handle.getUsage());
+                }
+
+                return;
+            }
+
+            actor.sendMessage("oops );");
+            handler.getLogger().log(Level.SEVERE, "error idk", exception);
         }
     }
 }

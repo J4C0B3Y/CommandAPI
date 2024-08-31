@@ -79,7 +79,6 @@ public class CommandHandle {
         this.usage = AnnotationUtils.getValue(method, Usage.class, Usage::value, generateUsage());
     }
 
-
     public String generateUsage() {
         List<String> arguments = new ArrayList<>();
         List<String> flags = new ArrayList<>();
@@ -107,7 +106,9 @@ public class CommandHandle {
         return String.join(" ", arguments);
     }
 
-    public boolean hasPermission(Actor actor) {
-        return wrapper.hasPermission(actor) && actor.hasPermission(permission);
+    public void invoke(Actor actor, List<Object> arguments) {
+        wrapper.getHandler().runTask(() -> wrapper.handleExceptions(actor, this, () ->
+            method.invoke(wrapper.getObject(), arguments.toArray())
+        ), async);
     }
 }

@@ -1,3 +1,4 @@
+import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
 import kotlin.io.path.Path
 
 plugins {
@@ -24,10 +25,12 @@ subprojects {
     apply(plugin = "java")
     apply(plugin = "io.freefair.lombok")
     apply(plugin = "com.gradleup.shadow")
+    apply(plugin = "maven-publish")
 
     java {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
+        withSourcesJar()
     }
 
     dependencies {
@@ -41,6 +44,22 @@ subprojects {
             from(named("shadowJar"))
             rename("(.*)-all.jar", "${Project.NAME}-${this@subprojects.name}-${Project.VERSION}.jar")
             into(Path(rootDir.path, "jars"))
+        }
+    }
+
+    publishing {
+        publications {
+            create<MavenPublication>("release") {
+                artifactId = this@subprojects.name
+                groupId = "${Project.GROUP}.${Project.NAME}"
+                version = Project.VERSION
+
+                artifact(tasks.named<ShadowJar>("shadowJar").get().archiveFile)
+
+                artifact(tasks.named<Jar>("sourcesJar").get().archiveFile) {
+                    classifier = "sources"
+                }
+            }
         }
     }
 }
@@ -65,17 +84,9 @@ tasks {
     named("clean") {
         depend(this)
     }
-}
 
-publishing {
-    publications {
-        create<MavenPublication>("release") {
-            artifactId = Project.NAME
-            groupId = Project.GROUP
-            version = Project.VERSION
-
-            from(components["java"])
-        }
+    register("install") {
+        depend(this, "publishReleasePublicationToMavenLocal")
     }
 }
 

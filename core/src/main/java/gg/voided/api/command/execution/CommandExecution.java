@@ -2,11 +2,13 @@ package gg.voided.api.command.execution;
 
 import gg.voided.api.command.CommandHandler;
 import gg.voided.api.command.actor.Actor;
+import gg.voided.api.command.exception.execution.ExitMessage;
 import gg.voided.api.command.exception.execution.InvalidArgumentException;
 import gg.voided.api.command.execution.argument.CommandArgument;
 import gg.voided.api.command.execution.argument.UnknownFlagAction;
 import gg.voided.api.command.wrapper.CommandHandle;
 import gg.voided.api.command.wrapper.parameter.CommandParameter;
+import gg.voided.api.command.wrapper.parameter.provider.Provider;
 import lombok.Getter;
 
 import java.util.*;
@@ -20,16 +22,15 @@ import java.util.*;
 public class CommandExecution {
     private final Actor actor;
     private final CommandHandle handle;
-    private final String label;
     private final List<String> arguments;
     private final CommandHandler handler;
+    // TODO: Add command label back.
 
     private final List<ProvidedParameter> providedParameters = new ArrayList<>();
 
-    public CommandExecution(Actor actor, CommandHandle handle, String label, List<String> arguments) {
+    public CommandExecution(Actor actor, CommandHandle handle, List<String> arguments) {
         this.actor = actor;
         this.handle = handle;
-        this.label = label;
         this.arguments = arguments;
         this.handler = handle.getWrapper().getHandler();
 
@@ -39,12 +40,42 @@ public class CommandExecution {
     }
 
     public void execute() {
+        for (ProvidedParameter parameter : providedParameters) {
+            parameter.setArgument("bing bong");
+            parameter.provide(parameter.getParameter().getProvider().provide(this, new CommandArgument(parameter.getArgument(), parameter.getParameter())));
+        }
+
+        complete();
+    }
+
+    private void complete() {
+        for (ProvidedParameter parameter : providedParameters) {
+            if (!parameter.isProvided()) {
+                return;
+            }
+        }
+
+        List<Object> arguments = new ArrayList<>();
+
+        for (ProvidedParameter parameter : providedParameters) {
+            arguments.add(parameter.getValue());
+        }
+
+        handle.invoke(actor, arguments);
+    }
+
+
+
+    public void executeOld() {
         List<String> arguments = new ArrayList<>(this.arguments);
+
         int flags = 0;
+        int contexts = 0;
 
         for (int index = 0; index < providedParameters.size(); index++) {
-            ProvidedParameter providedParameter = providedParameters.get(index);
-            CommandParameter parameter = providedParameter.getParameter();
+            ProvidedParameter provided = providedParameters.get(index);
+            CommandParameter parameter = provided.getParameter();
+            Provider<?> provider = parameter.getProvider();
 
             // If the parameter is @Text, combine the remaining arguments into one string.
             if (parameter.isText()) {
@@ -52,14 +83,44 @@ public class CommandExecution {
             }
 
             if (parameter.isFlag()) {
-                if (providedParameter.getArgument() == null) {
-                    providedParameter.provide(parameter.getProvider());
+                // If no argument for a flag was given, provide its default value.
+                if (provided.getArgument() == null) {
+                    provideFlagDefault(provided);
                 }
 
                 flags++;
                 continue;
             }
 
+            if (!provider.isConsumer()) {
+                contexts++;
+                continue;
+            }
+
+            int argumentIndex = index - flags - contexts;
+
+            // If
+            if (argumentIndex >= arguments.size()) {
+                if (!provider.isConsumer()) {
+                    continue;
+                }
+
+                if (parameter.isOptional()) {
+                    provided.setArgument(parameter.getDefaultValue());
+                    continue;
+                }
+
+                throw new ExitMessage("Missing argument for '" + parameter.getName() + "'", true);
+            }
+        }
+    }
+
+    private void provideFlagDefault(ProvidedParameter provided) {
+        CommandParameter parameter = provided.getParameter();
+        provided.setArgument(parameter.getDefaultValue());
+
+        if (provided.getArgument() == null) {
+            provided.provide(parameter.getProvider().flagDefault(this));
         }
     }
 

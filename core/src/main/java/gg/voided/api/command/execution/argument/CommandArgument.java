@@ -47,6 +47,6 @@ public class CommandArgument {
     }
 
     public static String getFlagArgument(String flagName) {
-        return StringUtils.repeat("-", Math.max(flagName.length(), 2)) + flagName;
+        return StringUtils.repeat("-", Math.min(flagName.length(), 2)) + flagName;
     }
 }

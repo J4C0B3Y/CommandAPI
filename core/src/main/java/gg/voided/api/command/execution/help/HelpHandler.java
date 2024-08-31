@@ -7,8 +7,8 @@ import java.util.List;
 /**
  * @author J4C0B3Y
  * @version CommandAPI
- * @since 8/30/24
+ * @since 30/08/24
  */
 public interface HelpHandler {
-    void send(Actor actor, List<String> arguments);
+    boolean send(Actor actor, List<String> arguments);
 }

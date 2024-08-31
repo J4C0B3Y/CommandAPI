@@ -34,4 +34,8 @@ public class ListUtils {
         Collections.reverse(reversed);
         return reversed;
     }
+
+    public <T> List<T> asList(T[] array) {
+        return new ArrayList<>(Arrays.asList(array));
+    }
 }

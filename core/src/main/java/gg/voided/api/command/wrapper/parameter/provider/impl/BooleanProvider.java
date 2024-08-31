@@ -7,7 +7,6 @@ import gg.voided.api.command.wrapper.parameter.provider.Provider;
 import gg.voided.api.command.wrapper.parameter.provider.ProviderType;
 
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 /**
