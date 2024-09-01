@@ -22,7 +22,7 @@ public class ConsoleCommandSenderProvider extends Provider<ConsoleCommandSender>
     }
 
     @Override
-    public ConsoleCommandSender provide(CommandExecution execution, CommandArgument argument) throws ExitMessage {
+    public ConsoleCommandSender provide(CommandExecution execution, CommandArgument argument) {
         BukkitActor bukkitActor = bukkitActorProvider.provide(execution, null);
 
         if (!bukkitActor.isConsole()) {

@@ -1,16 +1,30 @@
 package gg.voided.api.command;
 
+import gg.voided.api.command.actor.Actor;
+import gg.voided.api.command.actor.ConsoleActor;
+import gg.voided.api.command.actor.PlayerActor;
+import gg.voided.api.command.actor.ProxyActor;
+import gg.voided.api.command.annotation.parameter.classifier.Label;
+import gg.voided.api.command.annotation.parameter.classifier.Sender;
+import gg.voided.api.command.annotation.parameter.modifier.Length;
+import gg.voided.api.command.annotation.parameter.modifier.Range;
 import gg.voided.api.command.annotation.registration.Ignore;
 import gg.voided.api.command.annotation.registration.Register;
 import gg.voided.api.command.exception.registration.RegistrationException;
+import gg.voided.api.command.execution.CommandExecution;
 import gg.voided.api.command.execution.argument.UnknownFlagAction;
-import gg.voided.api.command.execution.help.HelpHandler;
-import gg.voided.api.command.execution.help.impl.SimpleHelpHandler;
+import gg.voided.api.command.execution.argument.flag.InvalidFlagAction;
+import gg.voided.api.command.execution.usage.UsageHandler;
+import gg.voided.api.command.execution.usage.impl.SimpleUsageHandler;
 import gg.voided.api.command.execution.locale.CommandLocale;
+import gg.voided.api.command.wrapper.CommandHandle;
 import gg.voided.api.command.wrapper.CommandWrapper;
 import gg.voided.api.command.wrapper.parameter.binding.BindingBuilder;
 import gg.voided.api.command.wrapper.parameter.binding.BindingHandler;
 import gg.voided.api.command.wrapper.parameter.modifier.ModifierHandler;
+import gg.voided.api.command.wrapper.parameter.modifier.impl.LengthModifier;
+import gg.voided.api.command.wrapper.parameter.modifier.impl.RangeModifier;
+import gg.voided.api.command.wrapper.parameter.provider.impl.*;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -29,10 +43,14 @@ public abstract class CommandHandler {
     private final BindingHandler bindingHandler = new BindingHandler();
     private final ModifierHandler modifierHandler = new ModifierHandler();
 
-    private UnknownFlagAction unknownFlagAction = UnknownFlagAction.ERROR;
-    private HelpHandler helpHandler = new SimpleHelpHandler();
+    private InvalidFlagAction invalidFlagAction = InvalidFlagAction.ERROR;
+    private UsageHandler usageHandler = new SimpleUsageHandler();
     private CommandLocale locale = new CommandLocale();
     private boolean debug;
+
+    public CommandHandler() {
+        initialize();
+    }
 
     public abstract CommandWrapper wrap(Object wrapper, String name, List<String> aliases);
     public abstract Logger getLogger();
@@ -69,5 +87,33 @@ public abstract class CommandHandler {
         }
 
         CompletableFuture.runAsync(task);
+    }
+
+    public void initialize() {
+        bind(String.class).to(new StringProvider());
+        bind(char.class).to(new CharacterProvider());
+        bind(int.class).to(new IntegerProvider());
+        bind(double.class).to(new DoubleProvider());
+        bind(float.class).to(new FloatProvider());
+        bind(long.class).to(new LongProvider());
+        bind(boolean.class).to(new BooleanProvider());
+
+        bind(String.class).annotated(Length.class).to(new LengthModifier());
+        bind(int.class).annotated(Range.class).to(new RangeModifier<>());
+        bind(double.class).annotated(Range.class).to(new RangeModifier<>());
+        bind(float.class).annotated(Range.class).to(new RangeModifier<>());
+        bind(long.class).annotated(Range.class).to(new LongProvider());
+
+        bind(String.class).annotated(Label.class).to(new LabelProvider());
+        bind(Actor.class).annotated(Sender.class).to(new ActorProvider());
+        bind(ProxyActor.class).annotated(Sender.class).to(new ProxyActorProvider());
+        bind(PlayerActor.class).annotated(Sender.class).to(new PlayerActorProvider());
+        bind(ConsoleActor.class).annotated(Sender.class).to(new ConsoleActorProvider());
+
+        bind(CommandExecution.class).to(new CommandExecutionProvider());
+        bind(CommandHandle.class).to(new CommandHandleProvider());
+        bind(CommandWrapper.class).to(new CommandWrapperProvider());
+
+        bind(CommandHandler.class).to(this);
     }
 }

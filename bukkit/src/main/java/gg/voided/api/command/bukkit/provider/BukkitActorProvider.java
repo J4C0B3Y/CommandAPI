@@ -19,7 +19,7 @@ public class BukkitActorProvider extends Provider<BukkitActor> {
     }
 
     @Override
-    public BukkitActor provide(CommandExecution execution, CommandArgument argument) throws ExitMessage {
+    public BukkitActor provide(CommandExecution execution, CommandArgument argument) {
         if (!(execution.getActor() instanceof BukkitActor)) {
             throw new ExitMessage("This command can only be run on a bukkit server");
         }

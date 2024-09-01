@@ -106,7 +106,7 @@ public abstract class CommandWrapper {
 
     private void dispatch(Actor actor, CommandHandle handle, String label, List<String> arguments) {
         if (handle == null) {
-            if (isHelp() && handler.getHelpHandler().sendHelp(actor, this, arguments)) {
+            if (isHelp() && handler.getUsageHandler().sendHelp(actor, this, arguments)) {
                 return;
             }
 
@@ -140,7 +140,7 @@ public abstract class CommandWrapper {
                 actor.sendMessage(throwable.getMessage());
 
                 if (((ExitMessage) throwable).isShowUsage()) {
-                    handler.getHelpHandler().sendUsage(actor, handle, label);
+                    handler.getUsageHandler().sendUsage(actor, handle, label);
                 }
 
                 return;

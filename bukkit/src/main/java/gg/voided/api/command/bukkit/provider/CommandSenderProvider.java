@@ -21,7 +21,7 @@ public class CommandSenderProvider extends Provider<CommandSender> {
     }
 
     @Override
-    public CommandSender provide(CommandExecution execution, CommandArgument argument) throws ExitMessage {
+    public CommandSender provide(CommandExecution execution, CommandArgument argument) {
         return bukkitActorProvider.provide(execution, null).getSender();
     }
 }

@@ -5,8 +5,8 @@ package gg.voided.api.command.exception.execution;
  * @version CommandAPI
  * @since 30/08/2024
  */
-public class ParameterProviderException extends RuntimeException {
-    public ParameterProviderException(String message) {
+public class ProviderException extends RuntimeException {
+    public ProviderException(String message) {
         super(message);
     }
 }

@@ -22,7 +22,7 @@ public class PlayerSenderProvider extends Provider<Player> {
     }
 
     @Override
-    public Player provide(CommandExecution execution, CommandArgument argument) throws ExitMessage {
+    public Player provide(CommandExecution execution, CommandArgument argument) {
         BukkitActor bukkitActor = bukkitActorProvider.provide(execution, null);
 
         if (!bukkitActor.isPlayer()) {

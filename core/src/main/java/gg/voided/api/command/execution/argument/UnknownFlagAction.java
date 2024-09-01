@@ -6,7 +6,7 @@ package gg.voided.api.command.execution.argument;
  * @since 29/08/2024
  */
 public enum UnknownFlagAction {
+    REMOVE,
     ARGUMENT,
-    IGNORE,
     ERROR
 }

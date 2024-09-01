@@ -1,4 +1,4 @@
-package gg.voided.api.command.execution.help;
+package gg.voided.api.command.execution.usage;
 
 import gg.voided.api.command.actor.Actor;
 import gg.voided.api.command.wrapper.CommandHandle;
@@ -11,7 +11,7 @@ import java.util.List;
  * @version CommandAPI
  * @since 30/08/24
  */
-public interface HelpHandler {
-    boolean sendHelp(Actor actor, CommandWrapper wrapper, List<String> arguments);
+public interface UsageHandler {
     void sendUsage(Actor actor, CommandHandle handle, String label);
+    boolean sendHelp(Actor actor, CommandWrapper wrapper, List<String> arguments);
 }

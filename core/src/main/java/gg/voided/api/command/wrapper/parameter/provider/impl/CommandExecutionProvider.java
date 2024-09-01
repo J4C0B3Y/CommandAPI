@@ -10,9 +10,9 @@ import gg.voided.api.command.wrapper.parameter.provider.ProviderType;
  * @version CommandAPI
  * @since 27/08/2024
  */
-public class ExecutionProvider extends Provider<CommandExecution> {
+public class CommandExecutionProvider extends Provider<CommandExecution> {
 
-    public ExecutionProvider() {
+    public CommandExecutionProvider() {
         super(ProviderType.CONTEXT);
     }
 

@@ -1,6 +1,6 @@
 package gg.voided.api.command.execution.argument;
 
-import gg.voided.api.command.exception.execution.InvalidArgumentException;
+import gg.voided.api.command.exception.execution.ExitMessage;
 import gg.voided.api.command.utils.StringUtils;
 import gg.voided.api.command.wrapper.parameter.CommandParameter;
 import lombok.Getter;
@@ -26,18 +26,18 @@ public class CommandArgument {
             case 1: {
                 if (argument.length() == 2) return true;
                 if (!throwError) return false;
-                throw new InvalidArgumentException("Flag '" + argument + "' must have a single '-'.");
+                throw new ExitMessage("Flag '" + argument + "' must have a single '-'.", true);
             }
 
             case 2: {
                 if (argument.length() > 3) return true;
                 if (!throwError) return false;
-                throw new InvalidArgumentException("Flag '" + argument + "' must be more then one character.");
+                throw new ExitMessage("Flag '" + argument + "' must be more then one character.", true);
             }
 
             default: {
                 if (!throwError) return false;
-                throw new InvalidArgumentException("Flag '" + argument + "' cannot start with '-'.");
+                throw new ExitMessage("Flag '" + argument + "' cannot start with '-'.", true);
             }
         }
     }

@@ -25,7 +25,7 @@ public class PlayerProvider extends Provider<Player> {
     }
 
     @Override
-    public Player provide(CommandExecution execution, CommandArgument argument) throws ExitMessage {
+    public Player provide(CommandExecution execution, CommandArgument argument) {
         Player player = Bukkit.getPlayer(argument.getValue());
 
         if (player == null || canSee(execution.getActor(), player)) {

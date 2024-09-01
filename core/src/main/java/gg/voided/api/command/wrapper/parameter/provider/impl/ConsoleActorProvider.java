@@ -20,7 +20,10 @@ public class ConsoleActorProvider extends Provider<ConsoleActor> {
 
     @Override
     public ConsoleActor provide(CommandExecution execution, CommandArgument argument) {
+        if (!execution.getActor().isConsole()) {
+            throw new ExitMessage("This command can only be run from console");
+        }
 
-        return null;
+        return execution.getActor();
     }
 }
