@@ -1,5 +1,6 @@
 package gg.voided.api.command.wrapper.parameter.provider;
 
+import gg.voided.api.command.actor.Actor;
 import gg.voided.api.command.annotation.provider.Async;
 import gg.voided.api.command.exception.execution.ExitMessage;
 import gg.voided.api.command.execution.CommandExecution;
@@ -29,7 +30,7 @@ public abstract class Provider<T> {
         return null;
     }
 
-    public List<String> suggest(String prefix) {
+    public List<String> suggest(Actor actor, String prefix) {
         return Collections.emptyList();
     }
 }

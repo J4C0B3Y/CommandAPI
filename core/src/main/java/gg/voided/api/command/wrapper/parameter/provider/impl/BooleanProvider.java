@@ -1,5 +1,6 @@
 package gg.voided.api.command.wrapper.parameter.provider.impl;
 
+import gg.voided.api.command.actor.Actor;
 import gg.voided.api.command.exception.execution.ExitMessage;
 import gg.voided.api.command.execution.CommandExecution;
 import gg.voided.api.command.execution.argument.CommandArgument;
@@ -35,7 +36,7 @@ public class BooleanProvider extends Provider<Boolean> {
     }
 
     @Override
-    public List<String> suggest(String prefix) {
+    public List<String> suggest(Actor actor, String prefix) {
         return Arrays.asList("true", "false");
     }
 }
