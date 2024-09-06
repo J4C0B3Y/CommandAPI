@@ -12,8 +12,7 @@ import gg.voided.api.command.annotation.registration.Ignore;
 import gg.voided.api.command.annotation.registration.Register;
 import gg.voided.api.command.exception.registration.RegistrationException;
 import gg.voided.api.command.execution.CommandExecution;
-import gg.voided.api.command.execution.argument.UnknownFlagAction;
-import gg.voided.api.command.execution.argument.flag.InvalidFlagAction;
+import gg.voided.api.command.execution.argument.flag.FlagAction;
 import gg.voided.api.command.execution.usage.UsageHandler;
 import gg.voided.api.command.execution.usage.impl.SimpleUsageHandler;
 import gg.voided.api.command.execution.locale.CommandLocale;
@@ -43,9 +42,11 @@ public abstract class CommandHandler {
     private final BindingHandler bindingHandler = new BindingHandler();
     private final ModifierHandler modifierHandler = new ModifierHandler();
 
-    private InvalidFlagAction invalidFlagAction = InvalidFlagAction.ERROR;
     private UsageHandler usageHandler = new SimpleUsageHandler();
     private CommandLocale locale = new CommandLocale();
+
+    private FlagAction unknownFlagAction = FlagAction.ARGUMENT;
+
     private boolean debug;
 
     public CommandHandler() {
@@ -102,7 +103,7 @@ public abstract class CommandHandler {
         bind(int.class).annotated(Range.class).to(new RangeModifier<>());
         bind(double.class).annotated(Range.class).to(new RangeModifier<>());
         bind(float.class).annotated(Range.class).to(new RangeModifier<>());
-        bind(long.class).annotated(Range.class).to(new LongProvider());
+        bind(long.class).annotated(Range.class).to(new RangeModifier<>());
 
         bind(String.class).annotated(Label.class).to(new LabelProvider());
         bind(Actor.class).annotated(Sender.class).to(new ActorProvider());

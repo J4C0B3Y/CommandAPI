@@ -2,7 +2,9 @@ package gg.voided.api.command.execution;
 
 import gg.voided.api.command.CommandHandler;
 import gg.voided.api.command.actor.Actor;
-import gg.voided.api.command.execution.argument.CommandArgument;
+import gg.voided.api.command.exception.execution.ExitMessage;
+import gg.voided.api.command.exception.execution.UnknownFlagException;
+import gg.voided.api.command.execution.argument.flag.CommandFlag;
 import gg.voided.api.command.wrapper.CommandHandle;
 import gg.voided.api.command.wrapper.parameter.CommandParameter;
 import lombok.Getter;
@@ -37,8 +39,11 @@ public class CommandExecution {
     }
 
     public void execute() {
-        List<String> arguments = extractFlags();
+        List<String> arguments = new ArrayList<>(this.arguments);
 
+        extractFlags(arguments);
+
+        actor.sendMessage(String.join(", ", arguments));
 
         complete();
     }
@@ -59,15 +64,17 @@ public class CommandExecution {
         handle.invoke(actor, label, arguments);
     }
 
-    private List<String> extractFlags() {
-        List<String> arguments = new ArrayList<>(this.arguments);
+    private void extractFlags(List<String> arguments) {
         Map<String, ProvidedParameter> flags = new HashMap<>();
 
         for (ProvidedParameter provided : providedParameters) {
             CommandParameter parameter = provided.getParameter();
-            if (!parameter.isFlag()) continue;
 
-            for (String flag : provided.getParameter().getFlagNames()) {
+            if (!parameter.isFlag()) {
+                continue;
+            }
+
+            for (String flag : parameter.getFlagNames()) {
                 flags.put(flag, provided);
             }
         }
@@ -76,8 +83,49 @@ public class CommandExecution {
 
         while (iterator.hasNext()) {
             String argument = iterator.next();
-        }
 
-        return arguments;
+            try {
+                argument = CommandFlag.validate(argument);
+
+                if (argument == null) {
+                    continue;
+                }
+
+                ProvidedParameter parameter = flags.get(argument);
+
+                if (parameter == null) {
+                    throw new UnknownFlagException("Unknown flag '" + argument + "'", true);
+                }
+
+                if (parameter.getArgument() != null || parameter.isProvided()) {
+                    throw new ExitMessage("Flag '" + argument + "' already specified");
+                }
+
+                if (parameter.getParameter().isBoolean()) {
+                    parameter.provide(true);
+                    iterator.remove();
+                    continue;
+                }
+
+                if (!iterator.hasNext()) {
+                    throw new ExitMessage("Flag '" + argument + "' requires a value", true);
+                }
+
+                iterator.remove();
+                String value = iterator.next();
+
+                if (CommandFlag.validate(value) != null) {
+                    throw new ExitMessage("Flag '" + argument + "' requires a value", true);
+                }
+
+                parameter.setArgument(value);
+                iterator.remove();
+            } catch (UnknownFlagException exception) {
+                switch (handler.getUnknownFlagAction()) {
+                    case ERROR: throw exception;
+                    case STRIP: iterator.remove();
+                }
+            }
+        }
     }
 }

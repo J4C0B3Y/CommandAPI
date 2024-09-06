@@ -8,6 +8,7 @@ import gg.voided.api.command.annotation.command.Usage;
 import gg.voided.api.command.exception.registration.InvalidHandleException;
 import gg.voided.api.command.exception.registration.ParameterStructureException;
 import gg.voided.api.command.execution.argument.CommandArgument;
+import gg.voided.api.command.execution.argument.flag.CommandFlag;
 import gg.voided.api.command.utils.AnnotationUtils;
 import gg.voided.api.command.utils.ListUtils;
 import gg.voided.api.command.wrapper.parameter.CommandParameter;
@@ -100,15 +101,18 @@ public class CommandHandle {
         }
 
         for (String flag : flags) {
-            arguments.add(CommandArgument.getFlagArgument(flag));
+            arguments.add(CommandFlag.getFlag(flag));
         }
 
         return String.join(" ", arguments);
     }
 
     public void invoke(Actor actor, String label, List<Object> arguments) {
-        wrapper.getHandler().runTask(() -> wrapper.handleExceptions(actor, this, label, () ->
-            method.invoke(wrapper.getObject(), arguments.toArray())
-        ), async);
+        wrapper.getHandler().runTask(() ->
+            wrapper.handleExceptions(actor, this, label, () ->
+                method.invoke(wrapper.getObject(), arguments.toArray())
+            ),
+            async
+        );
     }
 }

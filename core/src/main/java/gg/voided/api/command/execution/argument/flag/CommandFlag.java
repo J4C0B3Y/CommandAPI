@@ -1,7 +1,6 @@
 package gg.voided.api.command.execution.argument.flag;
 
-import gg.voided.api.command.CommandHandler;
-import gg.voided.api.command.exception.execution.ExitMessage;
+import gg.voided.api.command.exception.execution.UnknownFlagException;
 import gg.voided.api.command.utils.StringUtils;
 import lombok.experimental.UtilityClass;
 
@@ -20,33 +19,24 @@ public class CommandFlag {
         return StringUtils.repeat("-", Math.min(name.length(), 2)) + name;
     }
 
-    // TODO: insert hyphens in commandparameter constructor
-    // TODO: compare
-    public boolean isFlag(String argument, CommandHandler handler) {
-        boolean error = handler.getInvalidFlagAction().equals(InvalidFlagAction.ERROR);
-
+    public String validate(String argument) {
         int length = argument.length();
         int hyphens = length - getName(argument).length();
 
+        // TODO: Messages
+
         if (hyphens == 1 && length != 2) {
-            if (!error) return false;
-            throw new ExitMessage("must have single hyphen");
+            throw new UnknownFlagException("must have double hyphen");
         }
 
         if (hyphens == 2 && length < 4) {
-            if (!error) return false;
-            throw new ExitMessage("must be more then 1 char");
+            throw new UnknownFlagException("must be more then 1 char");
         }
 
         if (hyphens >= 3) {
-            if (!error) return false;
-            throw new ExitMessage("flag name cannot start with hyphen");
+            throw new UnknownFlagException("flag name cannot start with hyphen");
         }
 
-        return hyphens != 0;
-    }
-
-    public static void main(String[] args) {
-
+        return hyphens != 0 ? argument.substring(hyphens) : null;
     }
 }

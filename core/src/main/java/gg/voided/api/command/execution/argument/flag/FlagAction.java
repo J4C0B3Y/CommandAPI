@@ -5,7 +5,7 @@ package gg.voided.api.command.execution.argument.flag;
  * @version CommandAPI
  * @since 1/09/2024
  */
-public enum InvalidFlagAction {
+public enum FlagAction {
     STRIP,
     ARGUMENT,
     ERROR
