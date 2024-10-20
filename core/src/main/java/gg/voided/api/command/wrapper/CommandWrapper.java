@@ -57,7 +57,7 @@ public abstract class CommandWrapper {
             CommandHandle handle = new CommandHandle(this, method);
 
             if (handles.containsKey(handle.getName())) {
-                throw new InvalidWrapperException("Duplicate handle name '" + handle.getName() + "'.");
+                throw new InvalidWrapperException("Duplicate handle '" + handle.getName() + "'.");
             }
 
             handles.put(handle.getName(), handle);
@@ -73,11 +73,11 @@ public abstract class CommandWrapper {
             return handles.get(label);
         }
 
-        for (CommandHandle handle : handles.values()) {{
+        for (CommandHandle handle : handles.values()) {
             if (handle.getAliases().contains(label)) {
                 return handle;
             }
-        }}
+        }
 
         return null;
     }
