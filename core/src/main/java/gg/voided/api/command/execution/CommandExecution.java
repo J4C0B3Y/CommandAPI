@@ -98,7 +98,7 @@ public class CommandExecution {
             String argument = iterator.next();
 
             try {
-                argument = CommandFlag.validate(argument);
+                argument = CommandFlag.validate(argument, handler);
 
                 if (argument == null) {
                     continue;
@@ -107,11 +107,11 @@ public class CommandExecution {
                 ProvidedParameter parameter = flags.get(argument);
 
                 if (parameter == null) {
-                    throw new UnknownFlagException("Unknown flag '" + argument + "'", true);
+                    throw new UnknownFlagException(handler.getLocale().getUnknownFlag(argument), true);
                 }
 
                 if (parameter.getArgument() != null || parameter.isProvided()) {
-                    throw new ExitMessage("Flag '" + argument + "' already specified");
+                    throw new ExitMessage(handler.getLocale().getFlagSpecified(argument));
                 }
 
                 if (parameter.getParameter().isBoolean()) {
@@ -121,14 +121,14 @@ public class CommandExecution {
                 }
 
                 if (!iterator.hasNext()) {
-                    throw new ExitMessage("Flag '" + argument + "' requires a value", true);
+                    throw new ExitMessage(handler.getLocale().getFlagValueRequired(argument), true);
                 }
 
                 iterator.remove();
                 String value = iterator.next();
 
-                if (CommandFlag.validate(value) != null) {
-                    throw new ExitMessage("Flag '" + argument + "' requires a value", true);
+                if (CommandFlag.validate(value, handler) != null) {
+                    throw new ExitMessage(handler.getLocale().getFlagValueRequired(argument), true);
                 }
 
                 parameter.setArgument(value);

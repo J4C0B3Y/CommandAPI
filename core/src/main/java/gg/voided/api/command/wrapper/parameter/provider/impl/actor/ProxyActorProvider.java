@@ -1,6 +1,6 @@
-package gg.voided.api.command.wrapper.parameter.provider.impl;
+package gg.voided.api.command.wrapper.parameter.provider.impl.actor;
 
-import gg.voided.api.command.actor.ConsoleActor;
+import gg.voided.api.command.actor.ProxyActor;
 import gg.voided.api.command.exception.execution.ExitMessage;
 import gg.voided.api.command.execution.CommandExecution;
 import gg.voided.api.command.execution.argument.CommandArgument;
@@ -12,16 +12,16 @@ import gg.voided.api.command.wrapper.parameter.provider.ProviderType;
  * @version CommandAPI
  * @since 9/1/24
  */
-public class ConsoleActorProvider extends Provider<ConsoleActor> {
+public class ProxyActorProvider extends Provider<ProxyActor> {
 
-    public ConsoleActorProvider() {
+    public ProxyActorProvider() {
         super(ProviderType.CONTEXT);
     }
 
     @Override
-    public ConsoleActor provide(CommandExecution execution, CommandArgument argument) {
-        if (!execution.getActor().isConsole()) {
-            throw new ExitMessage("This command can only be run from console");
+    public ProxyActor provide(CommandExecution execution, CommandArgument argument) {
+        if (!execution.getActor().isProxy()) {
+            throw new ExitMessage(execution.getHandler().getLocale().getProxyOnly());
         }
 
         return execution.getActor();

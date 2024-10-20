@@ -22,7 +22,9 @@ public class CharacterProvider extends Provider<Character> {
         String value = argument.getValue();
 
         if (value.length() > 1) {
-            throw new ExitMessage("Character expected, '" + value + "' found.");
+            throw new ExitMessage(execution.getHandler().getLocale()
+                .getInvalidType("character", argument.getValue())
+            );
         }
 
         return value.charAt(0);

@@ -15,14 +15,18 @@ public class RangeModifier<T extends Number> implements ArgumentModifier<T> {
 
     @Override
     public T modify(T value, CommandExecution execution, CommandParameter parameter) {
-        Range range = parameter.getType().getAnnotation(Range.class);
+        Range range = parameter.getAnnotation(Range.class);
 
         if (value.doubleValue() < range.min()) {
-            throw new ExitMessage("Minimum '" + range.min() + "', found '" + value.doubleValue() + "'.");
+            throw new ExitMessage(execution.getHandler().getLocale().getBelowMinimum(
+                String.valueOf(range.min()), value.toString()
+            ));
         }
 
         if (value.doubleValue() > range.max()) {
-            throw new ExitMessage("Maximum '" + range.max() + "', found '" + value.doubleValue() + "'.");
+            throw new ExitMessage(execution.getHandler().getLocale().getAboveMaximum(
+                String.valueOf(range.max()), value.toString()
+            ));
         }
 
         return value;

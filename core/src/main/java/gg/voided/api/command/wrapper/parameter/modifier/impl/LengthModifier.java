@@ -15,14 +15,18 @@ public class LengthModifier implements ArgumentModifier<String> {
 
     @Override
     public String modify(String value, CommandExecution execution, CommandParameter parameter) {
-        Length length = parameter.getType().getAnnotation(Length.class);
+        Length length = parameter.getAnnotation(Length.class);
 
         if (value.length() < length.min()) {
-            throw new ExitMessage("Minimum '" + length.min() + "', found '" + value.length() + "'.");
+            throw new ExitMessage(execution.getHandler().getLocale().getBelowMinimum(
+                String.valueOf(length.min()), value
+            ));
         }
 
         if (value.length() > length.max()) {
-            throw new ExitMessage("Maximum '" + length.max() + "', found '" + value.length() + "'.");
+            throw new ExitMessage(execution.getHandler().getLocale().getAboveMaximum(
+                String.valueOf(length.max()), value
+            ));
         }
 
         return value;

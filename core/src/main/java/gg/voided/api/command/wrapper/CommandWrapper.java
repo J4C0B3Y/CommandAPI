@@ -110,12 +110,12 @@ public abstract class CommandWrapper {
                 return;
             }
 
-            actor.sendMessage("no matching subcommand found.");
+            handler.getLocale().getInvalidSubcommand(label, isHelp()).forEach(actor::sendMessage);
             return;
         }
 
         if (!actor.hasPermission(handle.getPermission())) {
-            actor.sendMessage("No permission!");
+            handler.getLocale().getNoPermission().forEach(actor::sendMessage);
             return;
         }
 
@@ -172,8 +172,13 @@ public abstract class CommandWrapper {
                 return;
             }
 
-            actor.sendMessage("oops );");
-            handler.getLogger().log(Level.SEVERE, "error idk", exception);
+            handler.getLocale().getExceptionOccurred().forEach(actor::sendMessage);
+
+            handler.getLogger().log(Level.SEVERE,
+                "Failed to execute command '/" +
+                label + " " + handle.getName() + "'.",
+                throwable
+            );
         }
     }
 }

@@ -1,5 +1,6 @@
 package gg.voided.api.command.execution.argument.flag;
 
+import gg.voided.api.command.CommandHandler;
 import gg.voided.api.command.exception.execution.UnknownFlagException;
 import gg.voided.api.command.utils.StringUtils;
 import lombok.experimental.UtilityClass;
@@ -19,22 +20,20 @@ public class CommandFlag {
         return StringUtils.repeat("-", Math.min(name.length(), 2)) + name;
     }
 
-    public String validate(String argument) {
+    public String validate(String argument, CommandHandler handler) throws UnknownFlagException {
         int length = argument.length();
         int hyphens = length - getName(argument).length();
 
-        // TODO: Messages
-
         if (hyphens == 1 && length != 2) {
-            throw new UnknownFlagException("must have double hyphen");
+            throw new UnknownFlagException(handler.getLocale().getFlagDoubleHyphen(argument));
         }
 
         if (hyphens == 2 && length < 4) {
-            throw new UnknownFlagException("must be more then 1 char");
+            throw new UnknownFlagException(handler.getLocale().getFlagNameTooShort(argument));
         }
 
         if (hyphens >= 3) {
-            throw new UnknownFlagException("flag name cannot start with hyphen");
+            throw new UnknownFlagException(handler.getLocale().getFlagNameHyphen(argument));
         }
 
         return hyphens != 0 ? argument.substring(hyphens) : null;
