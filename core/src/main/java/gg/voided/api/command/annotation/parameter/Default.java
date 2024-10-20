@@ -13,5 +13,5 @@ import java.lang.annotation.Target;
 @Target(ElementType.PARAMETER)
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Default {
-    String value() default "";
+    String value();
 }
