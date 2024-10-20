@@ -60,14 +60,22 @@ public class CommandHandle {
             parameters.add(new CommandParameter(this, parameter));
         }
 
-        boolean optionalArguments = false;
+        List<CommandParameter> nonFlagParameters = new ArrayList<>();
 
         for (CommandParameter parameter : parameters) {
+            if (!parameter.isFlag()) {
+                nonFlagParameters.add(parameter);
+            }
+        }
+
+        boolean optionalArguments = false;
+
+        for (CommandParameter parameter : nonFlagParameters) {
             if (!parameter.isOptional() && optionalArguments) {
                 throw new ParameterStructureException("Required parameter '" + parameter.getName() + "' cannot be after @Default.");
             }
 
-            if (parameter.isLast() && parameters.indexOf(parameter) != parameters.size() - 1) {
+            if (parameter.isLast() && nonFlagParameters.indexOf(parameter) != nonFlagParameters.size() - 1) {
                 throw new ParameterStructureException("Parameter '" + parameter.getName() + "' must be the last parameter.");
             }
 
