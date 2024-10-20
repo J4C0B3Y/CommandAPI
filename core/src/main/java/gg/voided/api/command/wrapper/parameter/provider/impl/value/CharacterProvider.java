@@ -1,4 +1,4 @@
-package gg.voided.api.command.wrapper.parameter.provider.impl;
+package gg.voided.api.command.wrapper.parameter.provider.impl.value;
 
 import gg.voided.api.command.exception.execution.ExitMessage;
 import gg.voided.api.command.execution.CommandExecution;

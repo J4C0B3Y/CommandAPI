@@ -1,4 +1,4 @@
-package gg.voided.api.command.wrapper.parameter.provider.impl;
+package gg.voided.api.command.wrapper.parameter.provider.impl.actor;
 
 import gg.voided.api.command.actor.Actor;
 import gg.voided.api.command.execution.CommandExecution;

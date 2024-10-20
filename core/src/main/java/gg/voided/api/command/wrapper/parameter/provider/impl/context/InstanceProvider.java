@@ -1,4 +1,4 @@
-package gg.voided.api.command.wrapper.parameter.provider.impl;
+package gg.voided.api.command.wrapper.parameter.provider.impl.context;
 
 import gg.voided.api.command.execution.CommandExecution;
 import gg.voided.api.command.execution.argument.CommandArgument;
@@ -10,14 +10,16 @@ import gg.voided.api.command.wrapper.parameter.provider.ProviderType;
  * @version CommandAPI
  * @since 27/08/2024
  */
-public class CommandExecutionProvider extends Provider<CommandExecution> {
+public class InstanceProvider<T> extends Provider<T> {
+    private final T instance;
 
-    public CommandExecutionProvider() {
+    public InstanceProvider(T instance) {
         super(ProviderType.CONTEXT);
+        this.instance = instance;
     }
 
     @Override
-    public CommandExecution provide(CommandExecution execution, CommandArgument argument) {
-        return execution;
+    public T provide(CommandExecution execution, CommandArgument argument) {
+        return instance;
     }
 }
