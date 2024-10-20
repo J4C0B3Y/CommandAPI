@@ -54,7 +54,7 @@ subprojects {
     publishing {
         repositories {
             maven {
-                name = "j4c0b3y-public"
+                name = "j4c0b3yPublic"
                 url = uri("https://repo.j4c0b3y.net/public")
                 credentials(PasswordCredentials::class)
                 authentication {
