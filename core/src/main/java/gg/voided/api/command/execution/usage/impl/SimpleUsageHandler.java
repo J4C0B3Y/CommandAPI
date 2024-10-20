@@ -16,7 +16,8 @@ public class SimpleUsageHandler implements UsageHandler {
 
     @Override
     public void sendUsage(Actor actor, CommandHandle handle, String label) {
-        actor.sendMessage("&cUsage: /" + handle.getWrapper().getName() + " " + handle.getName() + " " + handle.getUsage());
+        String space = !handle.getName().isEmpty() ? " " : "";
+        actor.sendMessage("&7Usage: /" + label + space + handle.getName() + " " + handle.getUsage());
     }
 
     @Override
