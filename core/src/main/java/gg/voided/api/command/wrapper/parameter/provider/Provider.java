@@ -1,7 +1,6 @@
 package gg.voided.api.command.wrapper.parameter.provider;
 
 import gg.voided.api.command.actor.Actor;
-import gg.voided.api.command.annotation.provider.Async;
 import gg.voided.api.command.exception.execution.ExitMessage;
 import gg.voided.api.command.execution.CommandExecution;
 import gg.voided.api.command.execution.argument.CommandArgument;
@@ -17,20 +16,23 @@ import java.util.List;
  */
 @Getter
 public abstract class Provider<T> {
-    private final boolean async = getClass().isAnnotationPresent(Async.class);
     private final boolean consumer;
 
     public Provider(ProviderType type) {
         this.consumer = type.isConsumer();
     }
 
-    public abstract T provide(CommandExecution execution, CommandArgument argument) throws ExitMessage;
-
     public T flagDefault(CommandExecution execution) {
         return null;
     }
 
-    public List<String> suggest(Actor actor, String prefix) {
+    public boolean isAsync() {
+        return false;
+    }
+
+    public abstract T provide(CommandExecution execution, CommandArgument argument);
+
+    public List<String> suggest(Actor actor) {
         return Collections.emptyList();
     }
 }
