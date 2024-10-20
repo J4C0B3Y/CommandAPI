@@ -10,7 +10,7 @@ plugins {
 
 object Project {
     const val NAME = "CommandAPI"
-    const val GROUP = "gg.voided"
+    const val GROUP = "net.j4c0b3y"
     const val AUTHOR = "J4C0B3Y"
     const val VERSION = "1.0.0"
 }
