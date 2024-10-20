@@ -45,6 +45,10 @@ subprojects {
             rename("(.*)-all.jar", "${Project.NAME}-${this@subprojects.name}-${Project.VERSION}.jar")
             into(Path(rootDir.path, "jars"))
         }
+
+        named<JavaCompile>("compileJava") {
+            options.encoding = "UTF-8"
+        }
     }
 
     publishing {
