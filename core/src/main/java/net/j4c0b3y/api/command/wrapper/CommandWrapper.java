@@ -1,5 +1,6 @@
 package net.j4c0b3y.api.command.wrapper;
 
+import lombok.AccessLevel;
 import lombok.Getter;
 import net.j4c0b3y.api.command.CommandHandler;
 import net.j4c0b3y.api.command.actor.Actor;
@@ -36,7 +37,9 @@ public abstract class CommandWrapper {
 
     private final String description;
     private final String permission;
-    private final boolean help;
+
+    @Getter(AccessLevel.NONE)
+    private final Help help;
 
     private final Map<String, CommandHandle> handles = new HashMap<>();
 
@@ -54,7 +57,7 @@ public abstract class CommandWrapper {
 
         this.description = AnnotationUtils.getValue(clazz, Register.class, Register::description, "");
         this.permission = AnnotationUtils.getValue(clazz, Requires.class, Requires::value, "");
-        this.help = clazz.isAnnotationPresent(Help.class);
+        this.help = clazz.getAnnotation(Help.class);
 
         for (Method method : clazz.getDeclaredMethods()) {
             CommandHandle handle = new CommandHandle(this, method);
@@ -68,6 +71,10 @@ public abstract class CommandWrapper {
     }
 
     public abstract void register();
+
+    public boolean isHelp() {
+        return help != null;
+    }
 
     public CommandHandle getHandle(String label) {
         label = label.toLowerCase();
@@ -106,8 +113,10 @@ public abstract class CommandWrapper {
     }
 
     private void dispatch(Actor actor, CommandHandle handle, String label, List<String> arguments) {
-        if (handle == null) {
-            if (isHelp() && handler.getUsageHandler().sendHelp(actor, this, arguments)) {
+        boolean help = !arguments.isEmpty() && arguments.get(0).equalsIgnoreCase("help");
+
+        if (handle == null || (help && isHelp() && !this.help.ignore())) {
+            if (isHelp() && handler.getUsageHandler().sendHelp(actor, this, label, arguments)) {
                 return;
             }
 

@@ -13,5 +13,5 @@ import java.util.List;
  */
 public interface UsageHandler {
     void sendUsage(Actor actor, CommandHandle handle, String label);
-    boolean sendHelp(Actor actor, CommandWrapper wrapper, List<String> arguments);
+    boolean sendHelp(Actor actor, CommandWrapper wrapper, String label, List<String> arguments);
 }

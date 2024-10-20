@@ -5,6 +5,7 @@ import net.j4c0b3y.api.command.execution.usage.UsageHandler;
 import net.j4c0b3y.api.command.wrapper.CommandHandle;
 import net.j4c0b3y.api.command.wrapper.CommandWrapper;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -16,12 +17,36 @@ public class SimpleUsageHandler implements UsageHandler {
 
     @Override
     public void sendUsage(Actor actor, CommandHandle handle, String label) {
-        String space = !handle.getName().isEmpty() ? " " : "";
-        actor.sendMessage("&7Usage: /" + label + space + handle.getName() + " " + handle.getUsage());
+        actor.sendMessage("&7Usage: " + getFullUsage(handle, label));
     }
 
     @Override
-    public boolean sendHelp(Actor actor, CommandWrapper wrapper, List<String> arguments) {
-        return false;
+    public boolean sendHelp(Actor actor, CommandWrapper wrapper, String label, List<String> arguments) {
+        if (arguments.isEmpty() || !arguments.get(0).equals("help")) {
+            return false;
+        }
+
+        List<String> lines = new ArrayList<>();
+
+        lines.add("");
+        lines.add("&7&m---&7 Showing help for &f/" + label + "&7. &m---");
+        lines.add("");
+
+        for (CommandHandle handle : wrapper.getHandles().values()) {
+            if (handle.isHidden() || !actor.hasPermission(handle.getPermission())) continue;
+
+            String description = handle.hasDescription() ? " (" + handle.getDescription() + ")" : "";
+            lines.add("&7 » &f" + getFullUsage(handle, label) + "&7" + description);
+        }
+
+        lines.add("");
+
+        lines.forEach(actor::sendMessage);
+        return true;
+    }
+
+    private String getFullUsage(CommandHandle handle, String label) {
+        String space = !handle.getName().isEmpty() ? " " : "";
+        return "/" + label + space + handle.getName() + " " + handle.getUsage();
     }
 }
