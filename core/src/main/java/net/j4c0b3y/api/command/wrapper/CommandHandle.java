@@ -91,6 +91,10 @@ public class CommandHandle {
         this.usage = AnnotationUtils.getValue(method, Usage.class, Usage::value, generateUsage());
     }
 
+    public boolean hasDescription() {
+        return !description.isEmpty();
+    }
+
     public String generateUsage() {
         List<String> arguments = new ArrayList<>();
         List<CommandParameter> flags = new ArrayList<>();
