@@ -1,4 +1,4 @@
-package gg.voided.api.command.velocity;
+package gg.voided.api.command.velocity.actor;
 
 import com.velocitypowered.api.command.CommandSource;
 import com.velocitypowered.api.proxy.ConsoleCommandSource;
@@ -21,7 +21,7 @@ public class VelocityActor extends Actor {
 
     @Override
     public boolean hasPermission(String permission) {
-        return source.hasPermission(permission);
+        return permission.isEmpty() || source.hasPermission(permission);
     }
 
     @Override

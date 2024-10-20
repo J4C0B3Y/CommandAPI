@@ -1,5 +1,6 @@
 package gg.voided.api.command.bukkit;
 
+import gg.voided.api.command.bukkit.actor.BukkitActor;
 import gg.voided.api.command.wrapper.CommandWrapper;
 import lombok.Getter;
 import org.bukkit.command.*;
@@ -42,6 +43,6 @@ public class BukkitCommandWrapper extends CommandWrapper implements CommandExecu
 
     @Override
     public List<String> onTabComplete(CommandSender sender, Command command, String label, String[] arguments) {
-        return null;
+        return suggest(new BukkitActor(sender), Arrays.asList(arguments));
     }
 }

@@ -2,13 +2,17 @@ package gg.voided.api.command.bukkit;
 
 import gg.voided.api.command.CommandHandler;
 import gg.voided.api.command.annotation.parameter.classifier.Sender;
+import gg.voided.api.command.bukkit.actor.BukkitActor;
 import gg.voided.api.command.bukkit.listener.AsyncTabListener;
+import gg.voided.api.command.bukkit.locale.BukkitCommandLocale;
 import gg.voided.api.command.bukkit.provider.*;
 import gg.voided.api.command.bukkit.utils.ClassUtils;
 import gg.voided.api.command.wrapper.CommandWrapper;
 import lombok.Getter;
+import lombok.Setter;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
+import org.bukkit.World;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
@@ -23,17 +27,21 @@ import java.util.logging.Logger;
  * @version CommandAPI
  * @since 27/08/2024
  */
-@Getter
+@Getter @Setter
 public class BukkitCommandHandler extends CommandHandler {
     private final JavaPlugin plugin;
     private final BukkitCommandRegistry registry;
 
+    private BukkitCommandLocale bukkitLocale = new BukkitCommandLocale();
+
     public BukkitCommandHandler(JavaPlugin plugin) {
         this.plugin = plugin;
-        this.registry = new BukkitCommandRegistry(plugin);
+        this.registry = new BukkitCommandRegistry(this);
+
+        setDebug(true);
 
         ClassUtils.ifPresent("com.destroystokyo.paper.event.server.AsyncTabCompleteEvent", () -> {
-            plugin.getServer().getPluginManager().registerEvents(new AsyncTabListener(), plugin);
+            plugin.getServer().getPluginManager().registerEvents(new AsyncTabListener(this), plugin);
 
             if (isDebug()) {
                 plugin.getLogger().info("Enabled async tab completion support.");
@@ -70,10 +78,12 @@ public class BukkitCommandHandler extends CommandHandler {
     public void initialize() {
         super.initialize();
 
-        bind(Player.class).to(new PlayerProvider());
+        bind(World.class).to(new WorldProvider(this));
+
+        bind(Player.class).to(new PlayerProvider(this));
         bind(OfflinePlayer.class).to(new OfflinePlayerProvider());
 
-        BukkitActorProvider bukkitActorProvider = new BukkitActorProvider();
+        BukkitActorProvider bukkitActorProvider = new BukkitActorProvider(this);
 
         bind(BukkitActor.class).annotated(Sender.class).to(bukkitActorProvider);
         bind(Player.class).annotated(Sender.class).to(new PlayerSenderProvider(bukkitActorProvider));

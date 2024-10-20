@@ -1,4 +1,4 @@
-package gg.voided.api.command.bungee;
+package gg.voided.api.command.bungee.actor;
 
 import gg.voided.api.command.actor.Actor;
 import lombok.Getter;
@@ -20,7 +20,7 @@ public class BungeeActor extends Actor {
 
     @Override
     public boolean hasPermission(String permission) {
-        return sender.hasPermission(permission);
+        return permission.isEmpty() || sender.hasPermission(permission);
     }
 
     @Override

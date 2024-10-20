@@ -1,6 +1,6 @@
 package gg.voided.api.command.bukkit.provider;
 
-import gg.voided.api.command.bukkit.BukkitActor;
+import gg.voided.api.command.bukkit.actor.BukkitActor;
 import gg.voided.api.command.exception.execution.ExitMessage;
 import gg.voided.api.command.execution.CommandExecution;
 import gg.voided.api.command.execution.argument.CommandArgument;
@@ -26,7 +26,7 @@ public class ConsoleCommandSenderProvider extends Provider<ConsoleCommandSender>
         BukkitActor bukkitActor = bukkitActorProvider.provide(execution, null);
 
         if (!bukkitActor.isConsole()) {
-            throw new ExitMessage("This command can only be run in console.");
+            throw new ExitMessage(execution.getHandler().getLocale().getConsoleOnly());
         }
 
         return (ConsoleCommandSender) bukkitActor.getSender();

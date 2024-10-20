@@ -1,6 +1,7 @@
 package gg.voided.api.command.bukkit.provider;
 
-import gg.voided.api.command.bukkit.BukkitActor;
+import gg.voided.api.command.bukkit.BukkitCommandHandler;
+import gg.voided.api.command.bukkit.actor.BukkitActor;
 import gg.voided.api.command.exception.execution.ExitMessage;
 import gg.voided.api.command.execution.CommandExecution;
 import gg.voided.api.command.execution.argument.CommandArgument;
@@ -13,15 +14,17 @@ import gg.voided.api.command.wrapper.parameter.provider.ProviderType;
  * @since 9/1/24
  */
 public class BukkitActorProvider extends Provider<BukkitActor> {
+    private final BukkitCommandHandler handler;
 
-    public BukkitActorProvider() {
+    public BukkitActorProvider(BukkitCommandHandler handler) {
         super(ProviderType.CONTEXT);
+        this.handler = handler;
     }
 
     @Override
     public BukkitActor provide(CommandExecution execution, CommandArgument argument) {
         if (!(execution.getActor() instanceof BukkitActor)) {
-            throw new ExitMessage("This command can only be run on a bukkit server");
+            throw new ExitMessage(handler.getBukkitLocale().getBukkitOnly());
         }
 
         return (BukkitActor) execution.getActor();

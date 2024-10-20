@@ -1,6 +1,5 @@
 package gg.voided.api.command.bukkit.provider;
 
-import gg.voided.api.command.exception.execution.ExitMessage;
 import gg.voided.api.command.execution.CommandExecution;
 import gg.voided.api.command.execution.argument.CommandArgument;
 import gg.voided.api.command.wrapper.parameter.provider.Provider;

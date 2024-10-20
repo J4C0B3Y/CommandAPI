@@ -27,6 +27,12 @@ public class ClassUtils {
         return field.get(object);
     }
 
+    public void setField(Object object, String name, Object value) throws ReflectiveOperationException {
+        Field field = object.getClass().getDeclaredField(name);
+        field.setAccessible(true);
+        field.set(object, value);
+    }
+
     public <T> Constructor<T> getConstructor(Class<T> clazz, Class<?> ...parameters) throws ReflectiveOperationException {
         Constructor<T> constructor = clazz.getDeclaredConstructor(parameters);
         constructor.setAccessible(true);

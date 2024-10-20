@@ -1,8 +1,10 @@
 package gg.voided.api.command.bungee;
 
 import gg.voided.api.command.CommandHandler;
+import gg.voided.api.command.bungee.locale.BungeeCommandLocale;
 import gg.voided.api.command.wrapper.CommandWrapper;
 import lombok.Getter;
+import lombok.Setter;
 import net.md_5.bungee.api.plugin.Plugin;
 
 import java.util.List;
@@ -13,9 +15,11 @@ import java.util.logging.Logger;
  * @version CommandAPI
  * @since 27/08/2024
  */
-@Getter
+@Getter @Setter
 public class BungeeCommandHandler extends CommandHandler {
     private final Plugin plugin;
+
+    private BungeeCommandLocale bungeeLocale = new BungeeCommandLocale();
 
     public BungeeCommandHandler(Plugin plugin) {
         this.plugin = plugin;

@@ -1,7 +1,8 @@
 package gg.voided.api.command.bukkit.provider;
 
 import gg.voided.api.command.actor.Actor;
-import gg.voided.api.command.bukkit.BukkitActor;
+import gg.voided.api.command.bukkit.BukkitCommandHandler;
+import gg.voided.api.command.bukkit.actor.BukkitActor;
 import gg.voided.api.command.exception.execution.ExitMessage;
 import gg.voided.api.command.execution.CommandExecution;
 import gg.voided.api.command.execution.argument.CommandArgument;
@@ -19,24 +20,26 @@ import java.util.List;
  * @since 1/09/24
  */
 public class PlayerProvider extends Provider<Player> {
+    private final BukkitCommandHandler handler;
 
-    public PlayerProvider() {
+    public PlayerProvider(BukkitCommandHandler handler) {
         super(ProviderType.ARGUMENT);
+        this.handler = handler;
     }
 
     @Override
     public Player provide(CommandExecution execution, CommandArgument argument) {
         Player player = Bukkit.getPlayer(argument.getValue());
 
-        if (player == null || canSee(execution.getActor(), player)) {
-            throw new ExitMessage("A player with that name is not online.");
+        if (player == null || !canSee(execution.getActor(), player)) {
+            throw new ExitMessage(handler.getBukkitLocale().getPlayerOffline(argument.getValue()));
         }
 
         return player;
     }
 
     @Override
-    public List<String> suggest(Actor actor, String prefix) {
+    public List<String> suggest(Actor actor) {
         List<String> suggestions = new ArrayList<>();
 
         for (Player player : Bukkit.getOnlinePlayers()) {

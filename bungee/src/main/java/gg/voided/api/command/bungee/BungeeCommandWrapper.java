@@ -1,5 +1,6 @@
 package gg.voided.api.command.bungee;
 
+import gg.voided.api.command.bungee.actor.BungeeActor;
 import gg.voided.api.command.wrapper.CommandWrapper;
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.ProxyServer;
@@ -43,9 +44,8 @@ public class BungeeCommandWrapper extends CommandWrapper {
         }
 
         @Override
-        public Iterable<String> onTabComplete(CommandSender commandSender, String[] strings) {
-            // TODO: Bungee completions
-            return null;
+        public Iterable<String> onTabComplete(CommandSender sender, String[] arguments) {
+            return wrapper.suggest(new BungeeActor(sender), Arrays.asList(arguments));
         }
 
         @Override

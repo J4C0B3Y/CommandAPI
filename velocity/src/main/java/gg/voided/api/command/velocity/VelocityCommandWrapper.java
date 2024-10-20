@@ -1,6 +1,10 @@
 package gg.voided.api.command.velocity;
 
+import com.velocitypowered.api.command.CommandManager;
+import com.velocitypowered.api.command.CommandMeta;
 import com.velocitypowered.api.command.SimpleCommand;
+import gg.voided.api.command.utils.ListUtils;
+import gg.voided.api.command.velocity.actor.VelocityActor;
 import gg.voided.api.command.wrapper.CommandWrapper;
 
 import java.util.Arrays;
@@ -22,7 +26,13 @@ public class VelocityCommandWrapper extends CommandWrapper implements SimpleComm
 
     @Override
     public void register() {
-        velocityHandler.getProxy().getCommandManager().register(getName(), this, getAliases().toArray(new String[0]));
+        CommandManager manager = velocityHandler.getProxy().getCommandManager();
+
+        CommandMeta meta = manager.metaBuilder(getName())
+            .aliases(getAliases().toArray(new String[0]))
+            .build();
+
+        manager.register(meta, this);
     }
 
     @Override
@@ -30,16 +40,20 @@ public class VelocityCommandWrapper extends CommandWrapper implements SimpleComm
         dispatch(new VelocityActor(invocation.source()), invocation.alias(), Arrays.asList(invocation.arguments()));
     }
 
-    //TODO: Velocity completions
-
     @Override
     public List<String> suggest(Invocation invocation) {
-        return null;
+        List<String> arguments = ListUtils.asList(invocation.arguments());
+
+        if (arguments.isEmpty()) {
+            arguments.add("");
+        }
+
+        return suggest(new VelocityActor(invocation.source()), arguments);
     }
 
     @Override
     public CompletableFuture<List<String>> suggestAsync(Invocation invocation) {
-        return null;
+        return CompletableFuture.supplyAsync(() -> suggest(invocation));
     }
 
     @Override
