@@ -93,11 +93,13 @@ public abstract class CommandHandler {
     public void initialize() {
         bind(String.class).to(new StringProvider());
         bind(char.class).to(new CharacterProvider());
-        bind(int.class).to(new IntegerProvider());
-        bind(double.class).to(new DoubleProvider());
-        bind(float.class).to(new FloatProvider());
-        bind(long.class).to(new LongProvider());
         bind(boolean.class).to(new BooleanProvider());
+
+        bind(int.class).to(new NumberProvider<>(Integer::parseInt, "integer", 0));
+        bind(double.class).to(new NumberProvider<>(Double::parseDouble, "double", 0D));
+        bind(float.class).to(new NumberProvider<>(Float::parseFloat, "float", 0f));
+        bind(long.class).to(new NumberProvider<>(Long::parseLong, "long", 0L));
+        bind(short.class).to(new NumberProvider<>(Short::parseShort, "short", (short) 0));
 
         bind(String.class).annotated(Length.class).to(new LengthModifier());
         bind(int.class).annotated(Range.class).to(new RangeModifier<>());
