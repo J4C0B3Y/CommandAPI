@@ -90,11 +90,11 @@ public class CommandHandle {
 
     public String generateUsage() {
         List<String> arguments = new ArrayList<>();
-        List<String> flags = new ArrayList<>();
+        List<CommandParameter> flags = new ArrayList<>();
 
         for (CommandParameter parameter : parameters) {
             if (parameter.isFlag()) {
-                flags.add(parameter.getFlagNames().get(0));
+                flags.add(parameter);
                 continue;
             }
 
@@ -108,8 +108,12 @@ public class CommandHandle {
             arguments.add(left + parameter.getName() + right);
         }
 
-        for (String flag : flags) {
-            arguments.add(CommandFlag.getFlag(flag));
+        for (CommandParameter parameter : flags) {
+            arguments.add(CommandFlag.getFlag(parameter.getFlagNames().get(0)));
+
+            if (!parameter.isBoolean()) {
+                arguments.add("<" + parameter.getName() + ">");
+            }
         }
 
         return String.join(" ", arguments);
