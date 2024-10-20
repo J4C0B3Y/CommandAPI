@@ -4,13 +4,13 @@ import gg.voided.api.command.CommandHandler;
 import gg.voided.api.command.annotation.parameter.classifier.Classifier;
 import gg.voided.api.command.annotation.parameter.modifier.Modifier;
 import gg.voided.api.command.exception.binding.InvalidBindingException;
+import gg.voided.api.command.utils.ClassUtils;
 import gg.voided.api.command.wrapper.parameter.modifier.ArgumentModifier;
 import gg.voided.api.command.wrapper.parameter.provider.Provider;
-import gg.voided.api.command.wrapper.parameter.provider.impl.InstanceProvider;
+import gg.voided.api.command.wrapper.parameter.provider.impl.context.InstanceProvider;
 import lombok.RequiredArgsConstructor;
 
 import java.lang.annotation.Annotation;
-import java.lang.invoke.MethodType;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
@@ -85,11 +85,10 @@ public class BindingBuilder<T> {
         to(type -> handler.getModifierHandler().put(type, this.modifier, modifier));
     }
 
-    @SuppressWarnings("unchecked")
     private void to(Consumer<Class<T>> binder) {
         // If the type is a primitive, bind its wrapper class.
         if (type.isPrimitive()) {
-            binder.accept((Class<T>) MethodType.methodType(type).wrap().returnType());
+            binder.accept(ClassUtils.wrap(type));
         }
 
         binder.accept(type);
