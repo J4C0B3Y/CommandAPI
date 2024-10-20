@@ -41,6 +41,10 @@ public class CommandExecution {
     }
 
     public void execute() {
+        if (providedParameters.isEmpty()) {
+            complete();
+        }
+
         List<String> arguments = new ArrayList<>(this.arguments);
 
         extractFlags(arguments);
