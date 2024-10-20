@@ -75,8 +75,8 @@ public class BukkitCommandHandler extends CommandHandler {
     }
 
     @Override
-    public void initialize() {
-        super.initialize();
+    public void bindDefaults() {
+        super.bindDefaults();
 
         bind(World.class).to(new WorldProvider(this));
 

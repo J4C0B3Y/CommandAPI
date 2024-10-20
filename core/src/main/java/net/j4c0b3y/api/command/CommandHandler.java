@@ -61,7 +61,7 @@ public abstract class CommandHandler {
     private boolean debug;
 
     public CommandHandler() {
-        initialize();
+        bindDefaults();
     }
 
     public abstract CommandWrapper wrap(Object wrapper, String name, List<String> aliases);
@@ -101,7 +101,7 @@ public abstract class CommandHandler {
         CompletableFuture.runAsync(task);
     }
 
-    public void initialize() {
+    public void bindDefaults() {
         bind(String.class).to(new StringProvider());
         bind(char.class).to(new CharacterProvider());
         bind(boolean.class).to(new BooleanProvider());

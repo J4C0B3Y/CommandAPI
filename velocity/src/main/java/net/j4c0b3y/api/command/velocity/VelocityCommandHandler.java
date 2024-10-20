@@ -44,8 +44,8 @@ public class VelocityCommandHandler extends CommandHandler {
     }
 
     @Override
-    public void initialize() {
-        super.initialize();
+    public void bindDefaults() {
+        super.bindDefaults();
 
         bind(RegisteredServer.class).to(new RegisteredServerProvider(this));
 
