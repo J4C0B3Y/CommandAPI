@@ -52,8 +52,19 @@ subprojects {
     }
 
     publishing {
+        repositories {
+            maven {
+                name = "j4c0b3y-public"
+                url = uri("https://repo.j4c0b3y.net/public")
+                credentials(PasswordCredentials::class)
+                authentication {
+                    create<BasicAuthentication>("basic")
+                }
+            }
+        }
+
         publications {
-            create<MavenPublication>("release") {
+            create<MavenPublication>("maven") {
                 artifactId = this@subprojects.name
                 groupId = "${Project.GROUP}.${Project.NAME}"
                 version = Project.VERSION
