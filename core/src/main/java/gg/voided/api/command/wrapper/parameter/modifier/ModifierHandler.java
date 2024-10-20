@@ -24,7 +24,7 @@ public class ModifierHandler {
     @SuppressWarnings("unchecked")
     public <T> T modify(T value, CommandExecution execution, CommandParameter parameter) {
         for (Annotation annotation : parameter.getModifiers()) {
-            Map<Class<?>, List<ArgumentModifier<?>>> map = this.modifiers.get(annotation.getClass());
+            Map<Class<?>, List<ArgumentModifier<?>>> map = this.modifiers.get(annotation.annotationType());
             if (map == null) continue;
 
             List<ArgumentModifier<?>> modifiers = map.get(value.getClass());

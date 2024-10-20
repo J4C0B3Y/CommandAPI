@@ -86,7 +86,7 @@ public class CommandParameter {
     @SuppressWarnings("unchecked")
     public <T extends Annotation> T getAnnotation(Class<T> type) {
         for (Annotation annotation : annotations) {
-            if (annotation.getClass().equals(type)) {
+            if (annotation.annotationType().equals(type)) {
                 return (T) annotation;
             }
         }
