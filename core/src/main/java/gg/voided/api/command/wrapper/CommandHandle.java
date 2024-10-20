@@ -115,4 +115,153 @@ public class CommandHandle {
             async
         );
     }
+
+    public List<String> matches(Function<String, Boolean> matcher) {
+        List<String> matches = new ArrayList<>();
+
+        if (matcher.apply(name)) {
+            matches.add(name);
+        }
+
+        for (String alias : aliases) {
+            if (matcher.apply(alias)) {
+                matches.add(alias);
+            }
+        }
+
+        return matches;
+    }
+
+    public String getLabel(List<String> arguments) {
+        for (int i = arguments.size(); i >= 0; i--) {
+            String label = String.join(" ", arguments.subList(0, i)).toLowerCase();
+
+            if (label.equals(name)) {
+                return name;
+            }
+
+            for (String alias : aliases) {
+                if (label.equals(alias)) {
+                    return alias;
+                }
+            }
+        }
+
+        return null;
+    }
+
+    public List<String> stripLabel(List<String> arguments) {
+        String label = getLabel(arguments);
+
+        if (label.isEmpty()) {
+            return arguments;
+        }
+
+        int length = label.split(" ").length;
+        return arguments.subList(length, arguments.size());
+    }
+
+    public CommandParameter getFlag(String name) {
+        for (CommandParameter parameter : parameters) {
+            if (parameter.isFlag() && parameter.getFlagNames().contains(name)) {
+                return parameter;
+            }
+        }
+
+        return null;
+    }
+
+    public List<String> suggest(Actor actor, List<String> arguments) {
+        if (arguments.isEmpty()) {
+            return Collections.emptyList();
+        }
+
+        String prefix = arguments.get(arguments.size() - 1);
+        List<String> suggestions = new ArrayList<>();
+
+        // Flag value suggestions
+
+        if (arguments.size() >= 2) {
+            try {
+                String flag = CommandFlag.validate(arguments.get(arguments.size() - 2), wrapper.getHandler());
+
+                if (flag != null) {
+                    CommandParameter parameter = getFlag(flag);
+
+                    if (parameter != null && !parameter.isBoolean()) {
+                        suggestions.addAll(parameter.getProvider().suggest(actor));
+                        return suggestions;
+                    }
+                }
+            } catch (UnknownFlagException ignored) {
+            }
+        }
+
+        // Flag name suggestions
+        if (prefix.startsWith("-")) {
+            for (CommandParameter parameter : this.parameters) {
+                if (!parameter.isFlag()) continue;
+
+                for (String name : parameter.getFlagNames()) {
+                    String flag = CommandFlag.getFlag(name);
+
+                    if (flag.startsWith(prefix)) {
+                        suggestions.add(flag);
+                    }
+                }
+            }
+        }
+
+        // Calculate flag offset
+
+        int offset = 0;
+        boolean ignore = wrapper.getHandler().getUnknownFlagAction() == FlagAction.ARGUMENT;
+
+        for (int i = 0; i < arguments.size() - 1; i++) {
+            try {
+                String flag = CommandFlag.validate(arguments.get(i), wrapper.getHandler());
+                if (flag == null) continue;
+                if (!ignore) offset++;
+
+                CommandParameter parameter = getFlag(flag);
+                if (parameter == null) continue;
+                if (ignore) offset++;
+
+                if (parameter.isBoolean() || i + 1 >= arguments.size() - 1) {
+                    continue;
+                }
+
+                String next = CommandFlag.validate(arguments.get(i + 1), wrapper.getHandler());
+
+                if (next == null || getFlag(next) == null) {
+                    offset++;
+                }
+            } catch (UnknownFlagException exception) {
+                if (wrapper.getHandler().getUnknownFlagAction() != FlagAction.ARGUMENT) {
+                    offset++;
+                }
+            }
+        }
+
+        // Argument suggestions
+
+        List<CommandParameter> parameters = new ArrayList<>();
+
+        for (CommandParameter parameter : this.parameters) {
+            if (parameter.getProvider().isConsumer() && !parameter.isFlag()) {
+                parameters.add(parameter);
+            }
+        }
+
+        int parameterIndex = arguments.size() - offset - 1;
+
+        if (parameterIndex >= parameters.size()) {
+            return suggestions;
+        }
+
+        suggestions.addAll(parameters.get(parameterIndex).getProvider().suggest(actor));
+        suggestions.removeIf(suggestion -> !StringUtils.startsWithIgnoreCase(suggestion, prefix));
+
+        return suggestions;
+    }
 }

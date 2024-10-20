@@ -14,4 +14,8 @@ public class StringUtils {
     public String repeat(String content, int amount) {
         return String.join("", Collections.nCopies(amount, content));
     }
+
+    public boolean startsWithIgnoreCase(String content, String prefix) {
+        return content.toLowerCase().startsWith(prefix.toLowerCase());
+    }
 }

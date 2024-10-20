@@ -119,11 +119,37 @@ public abstract class CommandWrapper {
             return;
         }
 
-        // Remove the handle name from the arguments
-        int nameLength = handle.getName().split(" ").length;
-        arguments = arguments.subList(nameLength, arguments.size());
+        new CommandExecution(actor, handle, label, handle.stripLabel(arguments)).execute();
+    }
 
-        new CommandExecution(actor, handle, label, arguments).execute();
+    public List<String> suggest(Actor actor, List<String> arguments) {
+        CommandHandle handle = getHandle(arguments);
+
+        if (handle == null || !actor.hasPermission(handle.getPermission())) {
+            return suggestHandles(actor, arguments);
+        }
+
+        return handle.suggest(actor, handle.stripLabel(arguments));
+    }
+
+    private List<String> suggestHandles(Actor actor, List<String> arguments) {
+        List<String> suggestions = new ArrayList<>();
+
+        for (CommandHandle handle : handles.values()) {
+            List<String> matches = handle.matches(label -> label.startsWith(
+                String.join(" ", arguments).toLowerCase()
+            ));
+
+            if (matches.isEmpty() || !actor.hasPermission(handle.getPermission())) {
+                continue;
+            }
+
+            for (String match : matches) {
+                suggestions.add(match.split(" ")[arguments.size() - 1]);
+            }
+        }
+
+        return suggestions;
     }
 
     public void handleExceptions(Actor actor, CommandHandle handle, String label, CheckedRunnable task) {
