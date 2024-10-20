@@ -4,9 +4,11 @@ import gg.voided.api.command.CommandHandler;
 import gg.voided.api.command.actor.Actor;
 import gg.voided.api.command.exception.execution.ExitMessage;
 import gg.voided.api.command.exception.execution.UnknownFlagException;
+import gg.voided.api.command.execution.argument.CommandArgument;
 import gg.voided.api.command.execution.argument.flag.CommandFlag;
 import gg.voided.api.command.wrapper.CommandHandle;
 import gg.voided.api.command.wrapper.parameter.CommandParameter;
+import gg.voided.api.command.wrapper.parameter.provider.Provider;
 import lombok.Getter;
 
 import java.util.*;
@@ -42,26 +44,33 @@ public class CommandExecution {
         List<String> arguments = new ArrayList<>(this.arguments);
 
         extractFlags(arguments);
+        parseArguments(arguments);
 
-        actor.sendMessage(String.join(", ", arguments));
-
-        complete();
-    }
-
-    private void complete() {
-        for (ProvidedParameter parameter : providedParameters) {
-            if (!parameter.isProvided()) {
-                return;
+        for (ProvidedParameter provided : providedParameters) {
+            if (provided.isProvided()) {
+                continue;
             }
+
+            CommandParameter parameter = provided.getParameter();
+            Provider<?> provider = parameter.getProvider();
+
+            handler.runTask(() ->
+                handle.getWrapper().handleExceptions(actor, handle, label, () -> {
+                    provided.provide(provider.provide(this,
+                        new CommandArgument(provided.getArgument(), parameter)
+                    ));
+
+                    if (provided.isProvided()) {
+                        provided.provide(handler.getModifierHandler().modify(
+                            provided.getValue(), this, parameter
+                        ));
+                    }
+
+                    complete();
+                }),
+                provider.isAsync()
+            );
         }
-
-        List<Object> arguments = new ArrayList<>();
-
-        for (ProvidedParameter parameter : providedParameters) {
-            arguments.add(parameter.getValue());
-        }
-
-        handle.invoke(actor, label, arguments);
     }
 
     private void extractFlags(List<String> arguments) {
@@ -127,5 +136,80 @@ public class CommandExecution {
                 }
             }
         }
+    }
+
+    private void parseArguments(List<String> arguments) {
+        int offset = 0;
+
+        for (int i = 0; i < providedParameters.size(); i++) {
+            ProvidedParameter provided = providedParameters.get(i);
+            CommandParameter parameter = provided.getParameter();
+
+            if (parameter.isFlag()) {
+                if (!provided.isProvided()) {
+                    // If no argument for a flag was given, provide its default value.
+                    if (provided.getArgument() == null) {
+                        provided.setArgument(parameter.getDefaultValue());
+                    }
+
+                    // If the @Default is null, use the provider's flag default.
+                    if (provided.getArgument() == null) {
+                        provided.provide(parameter.getProvider().flagDefault(this));
+                    }
+                }
+
+                offset++;
+                continue;
+            }
+
+            if (!parameter.getProvider().isConsumer()) {
+                offset++;
+                continue;
+            }
+
+            int adjusted = i - offset;
+
+            if (parameter.isText()) {
+                arguments = combineRemaining(arguments, adjusted);
+            }
+
+            if (adjusted >= arguments.size()) {
+                if (parameter.isOptional()) {
+                    provided.setArgument(parameter.getDefaultValue());
+                    continue;
+                }
+
+                throw new ExitMessage(handler.getLocale().getMissingArgument(parameter.getName()), true);
+            }
+
+            provided.setArgument(arguments.get(adjusted));
+        }
+    }
+
+    private List<String> combineRemaining(List<String> arguments, int startIndex) {
+        List<String> previous = new ArrayList<>(arguments.subList(0, startIndex));
+        String combined = String.join(" ", arguments.subList(startIndex, arguments.size()));
+
+        if (!combined.isEmpty()) {
+            previous.add(combined);
+        }
+
+        return previous;
+    }
+
+    private void complete() {
+        for (ProvidedParameter parameter : providedParameters) {
+            if (!parameter.isProvided()) {
+                return;
+            }
+        }
+
+        List<Object> arguments = new ArrayList<>();
+
+        for (ProvidedParameter parameter : providedParameters) {
+            arguments.add(parameter.getValue());
+        }
+
+        handle.invoke(actor, label, arguments);
     }
 }
