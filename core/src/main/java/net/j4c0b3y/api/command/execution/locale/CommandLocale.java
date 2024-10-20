@@ -31,7 +31,7 @@ public class CommandLocale {
         lines.add("&cThat subcommand could not be found!");
 
         if (helpEnabled) {
-            lines.add("&7Run /" + label + " help for a list.");
+            lines.add("&7Run '/" + label + " help' for a list of subcommands.");
         }
 
         return lines;
