@@ -154,11 +154,15 @@ public abstract class CommandWrapper {
         List<String> suggestions = new ArrayList<>();
 
         for (CommandHandle handle : handles.values()) {
+            if (handle.isHidden() || !actor.hasPermission(handle.getPermission())) {
+                continue;
+            }
+
             List<String> matches = handle.matches(label -> label.startsWith(
                 String.join(" ", arguments).toLowerCase()
             ));
 
-            if (matches.isEmpty() || !actor.hasPermission(handle.getPermission())) {
+            if (matches.isEmpty()) {
                 continue;
             }
 
