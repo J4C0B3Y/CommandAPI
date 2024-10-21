@@ -60,8 +60,10 @@ public class CommandExecution {
 
             handler.runTask(() ->
                 handle.getWrapper().handleExceptions(actor, handle, label, () -> {
-                    provided.provide(provider.provide(this,
-                        new CommandArgument(provided.getArgument(), parameter)
+                    String argument = provided.getArgument();
+
+                    provided.provide(argument == null ? null : provider.provide(this,
+                        new CommandArgument(argument, parameter)
                     ));
 
                     if (provided.isProvided()) {
