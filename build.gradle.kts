@@ -64,7 +64,7 @@ subprojects {
         }
 
         publications {
-            create<MavenPublication>("maven") {
+            create<MavenPublication>("release") {
                 artifactId = this@subprojects.name
                 groupId = "${Project.GROUP}.${Project.NAME}"
                 version = Project.VERSION
