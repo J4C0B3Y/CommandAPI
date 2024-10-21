@@ -142,12 +142,17 @@ public abstract class CommandWrapper {
 
     public List<String> suggest(Actor actor, List<String> arguments) {
         CommandHandle handle = getHandle(arguments);
-        List<String> suggestions;
+        List<String> suggestions = new ArrayList<>();
 
-        if (handle == null || !actor.hasPermission(handle.getPermission())) {
-            suggestions = suggestHandles(actor, arguments);
-        } else {
-            suggestions = handle.suggest(actor, handle.stripLabel(arguments));
+        boolean suggestHandles = handle == null || !actor.hasPermission(handle.getPermission());
+        boolean rootCommand = handle != null && handle.getName().isEmpty();
+
+        if (suggestHandles || rootCommand) {
+            suggestions.addAll(suggestHandles(actor, arguments));
+        }
+
+        if (!suggestHandles || rootCommand) {
+            suggestions.addAll(handle.suggest(actor, handle.stripLabel(arguments)));
         }
 
         if (suggestions.size() == 1 && suggestions.get(0).isEmpty()) {
