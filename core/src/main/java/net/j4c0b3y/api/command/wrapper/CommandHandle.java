@@ -6,7 +6,6 @@ import net.j4c0b3y.api.command.annotation.command.Command;
 import net.j4c0b3y.api.command.annotation.command.Requires;
 import net.j4c0b3y.api.command.annotation.command.Usage;
 import net.j4c0b3y.api.command.exception.execution.UnknownFlagException;
-import net.j4c0b3y.api.command.exception.registration.InvalidHandleException;
 import net.j4c0b3y.api.command.exception.registration.ParameterStructureException;
 import net.j4c0b3y.api.command.execution.argument.flag.CommandFlag;
 import net.j4c0b3y.api.command.execution.argument.flag.FlagAction;
@@ -48,10 +47,6 @@ public class CommandHandle {
         this.method = method;
 
         Command command = method.getAnnotation(Command.class);
-
-        if (command == null) {
-            throw new InvalidHandleException("Method '" + method.getName() + "' must be annotated with @Command.");
-        }
 
         this.name = command.name().toLowerCase();
         this.description = command.description();

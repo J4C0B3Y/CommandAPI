@@ -4,6 +4,7 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import net.j4c0b3y.api.command.CommandHandler;
 import net.j4c0b3y.api.command.actor.Actor;
+import net.j4c0b3y.api.command.annotation.command.Command;
 import net.j4c0b3y.api.command.annotation.command.Help;
 import net.j4c0b3y.api.command.annotation.command.Requires;
 import net.j4c0b3y.api.command.annotation.registration.Ignore;
@@ -60,6 +61,8 @@ public abstract class CommandWrapper {
         this.help = clazz.getAnnotation(Help.class);
 
         for (Method method : clazz.getDeclaredMethods()) {
+            if (!method.isAnnotationPresent(Command.class)) continue;
+
             CommandHandle handle = new CommandHandle(this, method);
 
             if (handles.containsKey(handle.getName())) {
@@ -67,6 +70,10 @@ public abstract class CommandWrapper {
             }
 
             handles.put(handle.getName(), handle);
+        }
+
+        if (handles.isEmpty()) {
+            handler.getLogger().warning("Wrapper '" + clazz.getSimpleName() + "' doesn't contain any handles.");
         }
     }
 
