@@ -134,12 +134,20 @@ public abstract class CommandWrapper {
 
     public List<String> suggest(Actor actor, List<String> arguments) {
         CommandHandle handle = getHandle(arguments);
+        List<String> suggestions;
 
         if (handle == null || !actor.hasPermission(handle.getPermission())) {
-            return suggestHandles(actor, arguments);
+            suggestions = suggestHandles(actor, arguments);
+        } else {
+            suggestions = handle.suggest(actor, handle.stripLabel(arguments));
         }
 
-        return handle.suggest(actor, handle.stripLabel(arguments));
+        if (suggestions.size() == 1 && suggestions.get(0).isEmpty()) {
+            // https://bugs.mojang.com/browse/MC-165562
+            suggestions.set(0, " ");
+        }
+
+        return suggestions;
     }
 
     private List<String> suggestHandles(Actor actor, List<String> arguments) {

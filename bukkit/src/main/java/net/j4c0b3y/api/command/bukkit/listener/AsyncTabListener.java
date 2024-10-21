@@ -45,11 +45,6 @@ public class AsyncTabListener implements Listener {
             return;
         }
 
-        if (suggestions.size() == 1 && suggestions.get(0).isEmpty()) {
-            // https://bugs.mojang.com/browse/MC-165562
-            suggestions.set(0, " ");
-        }
-
         for (String suggestion : suggestions) {
             event.getCompletions().add(suggestion);
         }
