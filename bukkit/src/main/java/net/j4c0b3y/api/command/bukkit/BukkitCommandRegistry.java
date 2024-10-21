@@ -12,6 +12,7 @@ import org.bukkit.plugin.Plugin;
 
 import java.lang.reflect.Constructor;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 
 /**
@@ -55,7 +56,10 @@ public class BukkitCommandRegistry {
 
     public void register(BukkitCommandWrapper wrapper) {
         try {
-            for (Command command : knownCommands.values()) {
+            Iterator<Command> iterator = knownCommands.values().iterator();
+
+            while (iterator.hasNext()) {
+                Command command = iterator.next();
                 String name = command.getName().toLowerCase();
 
                 if (!wrapper.getName().equals(name) && !wrapper.getAliases().contains(name)) {
@@ -69,7 +73,7 @@ public class BukkitCommandRegistry {
                     handler.getLogger().warning("Overriding command '" + name + "' from '" + origin + "'.");
                 }
 
-                knownCommands.remove(command.getName());
+                iterator.remove();
             }
 
             commandMap.register(handler.getPlugin().getName(), wrapper.getCommand());
