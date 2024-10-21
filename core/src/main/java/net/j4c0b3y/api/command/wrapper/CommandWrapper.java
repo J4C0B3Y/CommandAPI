@@ -15,6 +15,7 @@ import net.j4c0b3y.api.command.execution.CommandExecution;
 import net.j4c0b3y.api.command.utils.AnnotationUtils;
 import net.j4c0b3y.api.command.utils.CheckedRunnable;
 import net.j4c0b3y.api.command.utils.ListUtils;
+import net.j4c0b3y.api.command.utils.StringUtils;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -65,11 +66,11 @@ public abstract class CommandWrapper {
 
             CommandHandle handle = new CommandHandle(this, method);
 
-            if (handles.containsKey(handle.getName())) {
+            if (handles.containsKey(handle.getName().toLowerCase())) {
                 throw new InvalidWrapperException("Duplicate handle '" + handle.getName() + "'.");
             }
 
-            handles.put(handle.getName(), handle);
+            handles.put(handle.getName().toLowerCase(), handle);
         }
 
         if (handles.isEmpty()) {
@@ -165,9 +166,9 @@ public abstract class CommandWrapper {
                 continue;
             }
 
-            List<String> matches = handle.matches(label -> label.startsWith(
-                String.join(" ", arguments).toLowerCase()
-            ));
+            List<String> matches = handle.matches(label ->
+                StringUtils.startsWithIgnoreCase(label, String.join(" ", arguments))
+            );
 
             if (matches.isEmpty()) {
                 continue;

@@ -48,7 +48,7 @@ public class CommandHandle {
 
         Command command = method.getAnnotation(Command.class);
 
-        this.name = command.name().toLowerCase();
+        this.name = command.name();
         this.description = command.description();
         this.aliases = ListUtils.map(command.aliases(), String::toLowerCase);
         this.hidden = command.hidden();
@@ -150,12 +150,12 @@ public class CommandHandle {
         for (int i = arguments.size(); i >= 0; i--) {
             String label = String.join(" ", arguments.subList(0, i)).toLowerCase();
 
-            if (label.equals(name)) {
+            if (label.equalsIgnoreCase(name)) {
                 return name;
             }
 
             for (String alias : aliases) {
-                if (label.equals(alias)) {
+                if (label.equalsIgnoreCase(alias)) {
                     return alias;
                 }
             }
