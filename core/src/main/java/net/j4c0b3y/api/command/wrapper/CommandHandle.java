@@ -10,13 +10,13 @@ import net.j4c0b3y.api.command.exception.registration.ParameterStructureExceptio
 import net.j4c0b3y.api.command.execution.argument.flag.CommandFlag;
 import net.j4c0b3y.api.command.execution.argument.flag.FlagAction;
 import net.j4c0b3y.api.command.utils.AnnotationUtils;
-import net.j4c0b3y.api.command.utils.ListUtils;
 import net.j4c0b3y.api.command.utils.StringUtils;
 import net.j4c0b3y.api.command.wrapper.parameter.CommandParameter;
 
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.function.Function;
@@ -50,7 +50,7 @@ public class CommandHandle {
 
         this.name = command.name();
         this.description = command.description();
-        this.aliases = ListUtils.map(command.aliases(), String::toLowerCase);
+        this.aliases = Arrays.asList(command.aliases());
         this.hidden = command.hidden();
         this.async = command.async();
 

@@ -92,8 +92,10 @@ public abstract class CommandWrapper {
         }
 
         for (CommandHandle handle : handles.values()) {
-            if (handle.getAliases().contains(label)) {
-                return handle;
+            for (String alias : handle.getAliases()) {
+                if (alias.equalsIgnoreCase(label)) {
+                    return handle;
+                }
             }
         }
 
