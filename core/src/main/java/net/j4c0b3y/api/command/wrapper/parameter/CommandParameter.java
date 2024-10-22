@@ -48,7 +48,15 @@ public class CommandParameter {
         this.classifiers = AnnotationUtils.getSpecial(annotations, Classifier.class);
         this.modifiers = AnnotationUtils.getSpecial(annotations, Modifier.class);
 
-        this.name = AnnotationUtils.getValue(parameter, Named.class, Named::value, parameter.getName());
+        this.provider = handle.getWrapper().getHandler().getBindingHandler().assign(this);
+
+        if (this.provider == null) {
+            throw new MissingProviderException("Parameter '" + parameter.getName() + "' has no valid providers bound for '" + type.getSimpleName() + "'.");
+        }
+
+        String name = AnnotationUtils.getValue(parameter, Named.class, Named::value, provider.getName());
+        this.name = name != null ? name : parameter.getName();
+
         this.defaultValue = AnnotationUtils.getValue(parameter, Default.class, Default::value, null);
         this.optional = defaultValue != null || parameter.isAnnotationPresent(Optional.class);
 
@@ -58,12 +66,6 @@ public class CommandParameter {
         // Use the parameter name if no flag names are specified.
         if (flagNames != null && flagNames.isEmpty()) {
             flagNames.add(name);
-        }
-
-        this.provider = handle.getWrapper().getHandler().getBindingHandler().assign(this);
-
-        if (this.provider == null) {
-            throw new MissingProviderException("Parameter '" + parameter.getName() + "' has no valid providers bound for '" + type.getSimpleName() + "'.");
         }
 
         this.last = !AnnotationUtils.getSpecial(annotations, Last.class).isEmpty();

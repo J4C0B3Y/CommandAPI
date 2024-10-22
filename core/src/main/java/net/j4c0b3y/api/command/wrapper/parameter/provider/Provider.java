@@ -29,6 +29,10 @@ public abstract class Provider<T> {
         return false;
     }
 
+    public String getName() {
+        return null;
+    }
+
     public abstract T provide(CommandExecution execution, CommandArgument argument);
 
     public List<String> suggest(Actor actor) {
