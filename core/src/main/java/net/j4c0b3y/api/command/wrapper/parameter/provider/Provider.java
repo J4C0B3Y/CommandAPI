@@ -16,9 +16,15 @@ import java.util.List;
 @Getter
 public abstract class Provider<T> {
     private final boolean consumer;
+    private final String defaultName;
+
+    public Provider(ProviderType type, String defaultName) {
+        this.consumer = type.isConsumer();
+        this.defaultName = defaultName;
+    }
 
     public Provider(ProviderType type) {
-        this.consumer = type.isConsumer();
+        this(type, null);
     }
 
     public T flagDefault(CommandExecution execution) {
@@ -27,10 +33,6 @@ public abstract class Provider<T> {
 
     public boolean isAsync() {
         return false;
-    }
-
-    public String getName() {
-        return null;
     }
 
     public abstract T provide(CommandExecution execution, CommandArgument argument);

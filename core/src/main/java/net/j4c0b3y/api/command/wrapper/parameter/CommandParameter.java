@@ -54,7 +54,7 @@ public class CommandParameter {
             throw new MissingProviderException("Parameter '" + parameter.getName() + "' has no valid providers bound for '" + type.getSimpleName() + "'.");
         }
 
-        String name = AnnotationUtils.getValue(parameter, Named.class, Named::value, provider.getName());
+        String name = AnnotationUtils.getValue(parameter, Named.class, Named::value, provider.getDefaultName());
         this.name = name != null ? name : parameter.getName();
 
         this.defaultValue = AnnotationUtils.getValue(parameter, Default.class, Default::value, null);
