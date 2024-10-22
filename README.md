@@ -1,3 +1,6 @@
 # Coming Soon...
 
-api is almost complete
+todo:
+- docs
+- some providers
+- test bungee
