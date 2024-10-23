@@ -5,6 +5,8 @@ import lombok.Setter;
 import net.j4c0b3y.api.command.CommandHandler;
 import net.j4c0b3y.api.command.bungee.locale.BungeeCommandLocale;
 import net.j4c0b3y.api.command.wrapper.CommandWrapper;
+import net.md_5.bungee.api.ChatColor;
+import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.plugin.Plugin;
 
 import java.util.List;
@@ -23,6 +25,8 @@ public class BungeeCommandHandler extends CommandHandler {
 
     public BungeeCommandHandler(Plugin plugin) {
         this.plugin = plugin;
+
+        setTranslator(text -> ChatColor.translateAlternateColorCodes('&', text));
         //TODO: Bind bungee defaults.
     }
 

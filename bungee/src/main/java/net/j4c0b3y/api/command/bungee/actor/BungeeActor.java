@@ -2,6 +2,7 @@ package net.j4c0b3y.api.command.bungee.actor;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import net.j4c0b3y.api.command.CommandHandler;
 import net.j4c0b3y.api.command.actor.Actor;
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.ProxyServer;
@@ -16,9 +17,13 @@ import java.util.UUID;
  * @since 30/08/2024
  */
 @Getter
-@RequiredArgsConstructor
 public class BungeeActor extends Actor {
     private final CommandSender sender;
+
+    public BungeeActor(CommandSender sender, CommandHandler handler) {
+        super(handler);
+        this.sender = sender;
+    }
 
     @Override
     public boolean hasPermission(String permission) {
@@ -27,7 +32,7 @@ public class BungeeActor extends Actor {
 
     @Override
     public void sendMessage(String message) {
-        sender.sendMessage(TextComponent.fromLegacy(message));
+        sender.sendMessage(new TextComponent(getHandler().getTranslator().apply(message)));
     }
 
     @Override

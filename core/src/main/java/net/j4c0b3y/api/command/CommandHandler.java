@@ -41,6 +41,7 @@ import net.j4c0b3y.api.command.wrapper.parameter.provider.impl.value.StringProvi
 import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
+import java.util.function.Function;
 import java.util.logging.Logger;
 
 /**
@@ -57,6 +58,7 @@ public abstract class CommandHandler {
     private CommandLocale locale = new CommandLocale();
 
     private FlagAction unknownFlagAction = FlagAction.ARGUMENT;
+    private Function<String, String> translator = (content) -> content;
 
     private boolean debug;
 

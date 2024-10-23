@@ -40,13 +40,13 @@ public class BukkitCommandWrapper extends CommandWrapper implements CommandExecu
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] arguments) {
-        dispatch(new BukkitActor(sender), label, Arrays.asList(arguments));
+        dispatch(new BukkitActor(sender, getHandler()), label, Arrays.asList(arguments));
         return true;
     }
 
     @Override
     public List<String> onTabComplete(CommandSender sender, Command command, String label, String[] arguments) {
-        return suggest(new BukkitActor(sender), Arrays.asList(arguments));
+        return suggest(new BukkitActor(sender, getHandler()), Arrays.asList(arguments));
     }
 
     private void registerPermissions() {

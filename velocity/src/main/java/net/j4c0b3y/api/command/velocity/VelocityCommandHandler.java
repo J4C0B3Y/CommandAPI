@@ -15,6 +15,7 @@ import net.j4c0b3y.api.command.velocity.provider.PlayerSenderProvider;
 import net.j4c0b3y.api.command.velocity.provider.RegisteredServerProvider;
 import net.j4c0b3y.api.command.velocity.provider.VelocityActorProvider;
 import net.j4c0b3y.api.command.wrapper.CommandWrapper;
+import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 
 import java.util.List;
 import java.util.logging.Logger;
@@ -36,6 +37,10 @@ public class VelocityCommandHandler extends CommandHandler {
         this.plugin = plugin;
         this.proxy = proxy;
         this.logger = logger;
+
+        LegacyComponentSerializer ampersand = LegacyComponentSerializer.legacyAmpersand();
+        LegacyComponentSerializer section = LegacyComponentSerializer.legacySection();
+        setTranslator(text -> section.serialize(ampersand.deserialize(text)));
     }
 
     @Override

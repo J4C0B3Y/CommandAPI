@@ -11,6 +11,7 @@ import net.j4c0b3y.api.command.bukkit.provider.*;
 import net.j4c0b3y.api.command.bukkit.utils.ClassUtils;
 import net.j4c0b3y.api.command.wrapper.CommandWrapper;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.World;
 import org.bukkit.command.CommandSender;
@@ -20,6 +21,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
+import java.util.function.Function;
 import java.util.logging.Logger;
 
 /**
@@ -38,6 +40,7 @@ public class BukkitCommandHandler extends CommandHandler {
         this.plugin = plugin;
         this.registry = new BukkitCommandRegistry(this);
 
+        setTranslator(text -> ChatColor.translateAlternateColorCodes('&', text));
         setDebug(true);
 
         ClassUtils.ifPresent("com.destroystokyo.paper.event.server.AsyncTabCompleteEvent", () -> {

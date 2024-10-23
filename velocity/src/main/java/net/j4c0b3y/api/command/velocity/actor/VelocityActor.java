@@ -5,7 +5,9 @@ import com.velocitypowered.api.proxy.ConsoleCommandSource;
 import com.velocitypowered.api.proxy.Player;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import net.j4c0b3y.api.command.CommandHandler;
 import net.j4c0b3y.api.command.actor.Actor;
+import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 
 import java.util.UUID;
@@ -16,10 +18,13 @@ import java.util.UUID;
  * @since 30/08/2024
  */
 @Getter
-@RequiredArgsConstructor
 public class VelocityActor extends Actor {
-    private final LegacyComponentSerializer serializer = LegacyComponentSerializer.legacyAmpersand();
     private final CommandSource source;
+
+    public VelocityActor(CommandSource source, CommandHandler handler) {
+        super(handler);
+        this.source = source;
+    }
 
     @Override
     public boolean hasPermission(String permission) {
@@ -28,7 +33,7 @@ public class VelocityActor extends Actor {
 
     @Override
     public void sendMessage(String message) {
-        source.sendMessage(serializer.deserialize(message));
+        source.sendMessage(Component.text(getHandler().getTranslator().apply(message)));
     }
 
     @Override

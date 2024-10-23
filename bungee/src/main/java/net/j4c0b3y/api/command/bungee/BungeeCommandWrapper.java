@@ -40,12 +40,12 @@ public class BungeeCommandWrapper extends CommandWrapper {
 
         @Override
         public void execute(CommandSender sender, String[] arguments) {
-            wrapper.dispatch(new BungeeActor(sender), getName(), Arrays.asList(arguments));
+            wrapper.dispatch(new BungeeActor(sender, wrapper.getHandler()), getName(), Arrays.asList(arguments));
         }
 
         @Override
         public Iterable<String> onTabComplete(CommandSender sender, String[] arguments) {
-            return wrapper.suggest(new BungeeActor(sender), Arrays.asList(arguments));
+            return wrapper.suggest(new BungeeActor(sender, wrapper.getHandler()), Arrays.asList(arguments));
         }
 
         @Override

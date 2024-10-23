@@ -2,6 +2,7 @@ package net.j4c0b3y.api.command.bukkit.actor;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import net.j4c0b3y.api.command.CommandHandler;
 import net.j4c0b3y.api.command.actor.Actor;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
@@ -16,9 +17,13 @@ import java.util.UUID;
  * @since 30/08/2024
  */
 @Getter
-@RequiredArgsConstructor
 public class BukkitActor extends Actor {
     private final CommandSender sender;
+
+    public BukkitActor(CommandSender sender, CommandHandler handler) {
+        super(handler);
+        this.sender = sender;
+    }
 
     @Override
     public boolean hasPermission(String permission) {
@@ -27,7 +32,7 @@ public class BukkitActor extends Actor {
 
     @Override
     public void sendMessage(String message) {
-        sender.sendMessage(ChatColor.translateAlternateColorCodes('&', message));
+        sender.sendMessage(getHandler().getTranslator().apply(message));
     }
 
     @Override
