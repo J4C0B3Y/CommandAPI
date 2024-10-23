@@ -37,7 +37,7 @@ public abstract class Provider<T> {
 
     public abstract T provide(CommandExecution execution, CommandArgument argument);
 
-    public List<String> suggest(Actor actor) {
+    public List<String> suggest(Actor actor, CommandArgument argument) {
         return Collections.emptyList();
     }
 }

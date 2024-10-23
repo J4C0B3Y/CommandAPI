@@ -51,7 +51,7 @@ public class BooleanProvider extends Provider<Boolean> {
     }
 
     @Override
-    public List<String> suggest(Actor actor) {
+    public List<String> suggest(Actor actor, CommandArgument argument) {
         List<String> suggestions = new ArrayList<>();
 
         suggestions.addAll(TRUE_VALUES);

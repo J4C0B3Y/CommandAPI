@@ -38,7 +38,7 @@ public class RegisteredServerProvider extends Provider<RegisteredServer> {
     }
 
     @Override
-    public List<String> suggest(Actor actor) {
+    public List<String> suggest(Actor actor, CommandArgument argument) {
         List<String> suggestions = new ArrayList<>();
 
         for (RegisteredServer server : handler.getProxy().getAllServers()) {

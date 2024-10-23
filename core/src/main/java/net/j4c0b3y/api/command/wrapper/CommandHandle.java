@@ -7,6 +7,7 @@ import net.j4c0b3y.api.command.annotation.command.Requires;
 import net.j4c0b3y.api.command.annotation.command.Usage;
 import net.j4c0b3y.api.command.exception.execution.UnknownFlagException;
 import net.j4c0b3y.api.command.exception.registration.ParameterStructureException;
+import net.j4c0b3y.api.command.execution.argument.CommandArgument;
 import net.j4c0b3y.api.command.execution.argument.flag.CommandFlag;
 import net.j4c0b3y.api.command.execution.argument.flag.FlagAction;
 import net.j4c0b3y.api.command.utils.AnnotationUtils;
@@ -203,7 +204,7 @@ public class CommandHandle {
                     CommandParameter parameter = getFlag(flag);
 
                     if (parameter != null && !parameter.isBoolean()) {
-                        suggestions.addAll(parameter.getProvider().suggest(actor));
+                        suggestions.addAll(parameter.getProvider().suggest(actor, new CommandArgument(prefix, parameter)));
                         return suggestions;
                     }
                 }
@@ -273,7 +274,9 @@ public class CommandHandle {
             return suggestions;
         }
 
-        suggestions.addAll(parameters.get(parameterIndex).getProvider().suggest(actor));
+        CommandParameter parameter = parameters.get(parameterIndex);
+
+        suggestions.addAll(parameter.getProvider().suggest(actor, new CommandArgument(prefix, parameter)));
         suggestions.removeIf(suggestion -> !StringUtils.startsWithIgnoreCase(suggestion, prefix));
 
         return suggestions;
