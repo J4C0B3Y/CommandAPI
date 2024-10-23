@@ -46,6 +46,14 @@ public class VelocityActor extends Actor {
         return isPlayer() ? ((Player) source).getUniqueId() : null;
     }
 
+    public Player getPlayer() {
+        if (!isPlayer()) {
+            throw new IllegalStateException("Source is not a player!");
+        }
+
+        return (Player) source;
+    }
+
     @Override
     public boolean isProxy() {
         return true;
