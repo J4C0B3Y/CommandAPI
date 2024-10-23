@@ -39,7 +39,7 @@ public class AsyncTabListener implements Listener {
         CommandWrapper wrapper = handler.getRegistry().getWrappers().get(command);
         if (wrapper == null) return;
 
-        List<String> suggestions = wrapper.suggest(new BukkitActor(event.getSender()), arguments);
+        List<String> suggestions = wrapper.suggest(new BukkitActor(event.getSender(), handler), arguments);
 
         if (suggestions.isEmpty()) {
             return;
