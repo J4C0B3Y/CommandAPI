@@ -8,6 +8,8 @@ import lombok.RequiredArgsConstructor;
 import net.j4c0b3y.api.command.actor.Actor;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 
+import java.util.UUID;
+
 /**
  * @author J4C0B3Y
  * @version CommandAPI
@@ -37,6 +39,11 @@ public class VelocityActor extends Actor {
     @Override
     public boolean isPlayer() {
         return source instanceof Player;
+    }
+
+    @Override
+    public UUID getUniqueId() {
+        return isPlayer() ? ((Player) source).getUniqueId() : null;
     }
 
     @Override

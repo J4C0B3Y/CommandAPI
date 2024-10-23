@@ -8,6 +8,8 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
 
+import java.util.UUID;
+
 /**
  * @author J4C0B3Y
  * @version CommandAPI
@@ -36,6 +38,11 @@ public class BukkitActor extends Actor {
     @Override
     public boolean isPlayer() {
         return sender instanceof Player;
+    }
+
+    @Override
+    public UUID getUniqueId() {
+        return isPlayer() ? ((Player) sender).getUniqueId() : null;
     }
 
     @Override

@@ -8,6 +8,8 @@ import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 
+import java.util.UUID;
+
 /**
  * @author J4C0B3Y
  * @version CommandAPI
@@ -36,6 +38,11 @@ public class BungeeActor extends Actor {
     @Override
     public boolean isPlayer() {
         return sender instanceof ProxiedPlayer;
+    }
+
+    @Override
+    public UUID getUniqueId() {
+        return isPlayer() ? ((ProxiedPlayer) sender).getUniqueId() : null;
     }
 
     @Override

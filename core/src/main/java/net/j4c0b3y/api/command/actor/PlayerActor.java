@@ -1,5 +1,7 @@
 package net.j4c0b3y.api.command.actor;
 
+import java.util.UUID;
+
 /**
  * @author J4C0B3Y
  * @version CommandAPI
@@ -7,4 +9,5 @@ package net.j4c0b3y.api.command.actor;
  */
 public interface PlayerActor {
     boolean isPlayer();
+    UUID getUniqueId();
 }
