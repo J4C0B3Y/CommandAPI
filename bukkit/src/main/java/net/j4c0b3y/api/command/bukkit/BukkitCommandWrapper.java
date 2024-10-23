@@ -2,6 +2,7 @@ package net.j4c0b3y.api.command.bukkit;
 
 import lombok.Getter;
 import net.j4c0b3y.api.command.bukkit.actor.BukkitActor;
+import net.j4c0b3y.api.command.wrapper.CommandHandle;
 import net.j4c0b3y.api.command.wrapper.CommandWrapper;
 import org.bukkit.command.*;
 
@@ -28,6 +29,8 @@ public class BukkitCommandWrapper extends CommandWrapper implements CommandExecu
         this.command.setPermission(getPermission());
         this.command.setDescription(getDescription());
         this.command.setAliases(getAliases());
+
+        registerPermissions();
     }
 
     @Override
@@ -44,5 +47,14 @@ public class BukkitCommandWrapper extends CommandWrapper implements CommandExecu
     @Override
     public List<String> onTabComplete(CommandSender sender, Command command, String label, String[] arguments) {
         return suggest(new BukkitActor(sender), Arrays.asList(arguments));
+    }
+
+    private void registerPermissions() {
+        BukkitCommandRegistry registry = bukkitHandler.getRegistry();
+        registry.registerPermission(getPermission());
+
+        for (CommandHandle handle : getHandles().values()) {
+            registry.registerPermission(handle.getPermission());
+        }
     }
 }

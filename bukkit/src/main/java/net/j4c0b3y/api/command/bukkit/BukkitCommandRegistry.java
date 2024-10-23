@@ -8,7 +8,10 @@ import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.PluginCommand;
 import org.bukkit.command.SimpleCommandMap;
+import org.bukkit.permissions.Permission;
+import org.bukkit.permissions.PermissionDefault;
 import org.bukkit.plugin.Plugin;
+import org.bukkit.plugin.PluginManager;
 
 import java.lang.reflect.Constructor;
 import java.util.HashMap;
@@ -81,6 +84,21 @@ public class BukkitCommandRegistry {
         } catch (Exception exception) {
             throw new RegistrationException("Failed to register wrapper in command map!", exception);
         }
+    }
+
+    public void registerPermission(String name) {
+        if (name == null || name.isEmpty()) return;
+
+        PluginManager pluginManager = handler.getPlugin().getServer().getPluginManager();
+
+        for (Permission permission : pluginManager.getPermissions()) {
+            if (permission.getName().equals(name)) return;
+        }
+
+        pluginManager.addPermission(new Permission(name,
+            "A permission registered by " + handler.getPlugin().getName(),
+            PermissionDefault.OP
+        ));
     }
 
     public PluginCommand getPluginCommand(BukkitCommandWrapper wrapper) {
