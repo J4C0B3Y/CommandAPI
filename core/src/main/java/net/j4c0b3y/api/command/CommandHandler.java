@@ -92,6 +92,14 @@ public abstract class CommandHandler {
         register(wrapper, annotation.name(), annotation.aliases());
     }
 
+    public void register(Class<?> clazz) {
+        try {
+            register(clazz.getConstructor().newInstance());
+        } catch (ReflectiveOperationException exception) {
+            throw new RegistrationException("Failed to instantiate wrapper!", exception);
+        }
+    }
+
     public void runTask(Runnable task, boolean async) {
         if (!async) {
             task.run();
