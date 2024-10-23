@@ -90,10 +90,7 @@ public class BukkitCommandRegistry {
         if (name == null || name.isEmpty()) return;
 
         PluginManager pluginManager = handler.getPlugin().getServer().getPluginManager();
-
-        for (Permission permission : pluginManager.getPermissions()) {
-            if (permission.getName().equals(name)) return;
-        }
+        if (pluginManager.getPermission(name) != null) return;
 
         pluginManager.addPermission(new Permission(name,
             "A permission registered by " + handler.getPlugin().getName(),
