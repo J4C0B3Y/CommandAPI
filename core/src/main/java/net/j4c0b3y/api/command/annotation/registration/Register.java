@@ -13,7 +13,7 @@ import java.lang.annotation.Target;
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Register {
-    String name() default "";
+    String name();
     String[] aliases() default {};
     String description() default "";
 }
