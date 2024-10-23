@@ -19,4 +19,8 @@ public class ExitMessage extends RuntimeException {
     public ExitMessage(String message) {
         this(message, false);
     }
+
+    public ExitMessage() {
+        this(null, true);
+    }
 }
