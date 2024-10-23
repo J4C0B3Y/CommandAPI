@@ -200,7 +200,9 @@ public abstract class CommandWrapper {
             }
 
             if (throwable instanceof ExitMessage) {
-                actor.sendMessage(throwable.getMessage());
+                if (throwable.getMessage() != null) {
+                    actor.sendMessage(throwable.getMessage());
+                }
 
                 if (((ExitMessage) throwable).isShowUsage()) {
                     handler.getUsageHandler().sendUsage(actor, handle, label);
