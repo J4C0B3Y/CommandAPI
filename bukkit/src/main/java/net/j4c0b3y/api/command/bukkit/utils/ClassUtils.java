@@ -21,14 +21,18 @@ public class ClassUtils {
         }
     }
 
-    public Object getField(Object object, String name) throws ReflectiveOperationException {
-        Field field = object.getClass().getDeclaredField(name);
+    public Object getField(Object object, Class<?> type, String name) throws ReflectiveOperationException {
+        Field field = type.getDeclaredField(name);
         field.setAccessible(true);
         return field.get(object);
     }
 
-    public void setField(Object object, String name, Object value) throws ReflectiveOperationException {
-        Field field = object.getClass().getDeclaredField(name);
+    public Object getField(Object object, String name) throws ReflectiveOperationException {
+        return getField(object, object.getClass(), name);
+    }
+
+    public void setField(Object object, Class<?> type, String name, Object value) throws ReflectiveOperationException {
+        Field field = type.getDeclaredField(name);
         field.setAccessible(true);
         field.set(object, value);
     }

@@ -38,14 +38,14 @@ public class BukkitCommandRegistry {
         this.handler = handler;
 
         try {
-            this.commandMap = (SimpleCommandMap) ClassUtils.getField(Bukkit.getPluginManager(), "commandMap");
-            this.knownCommands = new HashMap<>((Map<String, Command>) ClassUtils.getField(this.commandMap, "knownCommands"));
+            this.commandMap = (SimpleCommandMap) ClassUtils.getField(Bukkit.getServer(), "commandMap");
+            this.knownCommands = new HashMap<>((Map<String, Command>) ClassUtils.getField(this.commandMap, SimpleCommandMap.class, "knownCommands"));
         } catch (Exception exception) {
             throw new IllegalStateException("Failed to access command map!", exception);
         }
 
         try {
-            ClassUtils.setField(this.commandMap, "knownCommands", this.knownCommands);
+            ClassUtils.setField(this.commandMap, SimpleCommandMap.class, "knownCommands", this.knownCommands);
         } catch (Exception exception) {
             throw new IllegalStateException("Failed to patch command map!");
         }
