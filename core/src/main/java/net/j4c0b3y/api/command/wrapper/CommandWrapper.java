@@ -186,6 +186,10 @@ public abstract class CommandWrapper {
             }
         }
 
+        if (isHelp() && !this.help.ignore()) {
+            suggestions.add("help");
+        }
+
         return suggestions;
     }
 
