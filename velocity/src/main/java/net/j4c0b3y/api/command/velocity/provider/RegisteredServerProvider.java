@@ -28,7 +28,7 @@ public class RegisteredServerProvider extends Provider<RegisteredServer> {
 
     @Override
     public RegisteredServer provide(CommandExecution execution, CommandArgument argument) {
-        Optional<RegisteredServer> server = handler.getProxy().getServer(argument.getValue().toLowerCase());
+        Optional<RegisteredServer> server = handler.getProxy().getServer(argument.getValue());
 
         if (server.isEmpty()) {
             throw new ExitMessage(handler.getVelocityLocale().getInvalidServer(argument.getValue()));
