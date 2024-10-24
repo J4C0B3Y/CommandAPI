@@ -36,4 +36,8 @@ public class BindingHandler {
 
         return null;
     }
+
+    public void clear() {
+        bindings.clear();
+    }
 }

@@ -37,4 +37,8 @@ public class ModifierHandler {
 
         return value;
     }
+
+    public void clear() {
+        modifiers.clear();
+    }
 }
