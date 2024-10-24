@@ -13,7 +13,7 @@ import org.bukkit.OfflinePlayer;
  */
 public class OfflinePlayerProvider extends Provider<OfflinePlayer> {
     public OfflinePlayerProvider() {
-        super(ProviderType.ARGUMENT);
+        super(ProviderType.ARGUMENT, "player");
     }
 
     @Override

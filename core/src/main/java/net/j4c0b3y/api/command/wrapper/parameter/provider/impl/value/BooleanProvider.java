@@ -21,7 +21,7 @@ public class BooleanProvider extends Provider<Boolean> {
     private final static List<String> FALSE_VALUES = Arrays.asList("false", "no");
 
     public BooleanProvider() {
-        super(ProviderType.ARGUMENT);
+        super(ProviderType.ARGUMENT, "boolean");
     }
 
     @Override

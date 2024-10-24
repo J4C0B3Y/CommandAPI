@@ -22,7 +22,7 @@ public class WorldProvider extends Provider<World> {
     private final BukkitCommandHandler handler;
 
     public WorldProvider(BukkitCommandHandler handler) {
-        super(ProviderType.ARGUMENT);
+        super(ProviderType.ARGUMENT, "world");
         this.handler = handler;
     }
 

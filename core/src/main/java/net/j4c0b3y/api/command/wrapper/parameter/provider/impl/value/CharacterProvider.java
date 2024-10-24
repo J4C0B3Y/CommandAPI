@@ -14,7 +14,7 @@ import net.j4c0b3y.api.command.wrapper.parameter.provider.ProviderType;
 public class CharacterProvider extends Provider<Character> {
 
     public CharacterProvider() {
-        super(ProviderType.ARGUMENT);
+        super(ProviderType.ARGUMENT, "character");
     }
 
     @Override

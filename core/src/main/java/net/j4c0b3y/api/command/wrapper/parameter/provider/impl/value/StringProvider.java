@@ -13,7 +13,7 @@ import net.j4c0b3y.api.command.wrapper.parameter.provider.ProviderType;
 public class StringProvider extends Provider<String> {
 
     public StringProvider() {
-        super(ProviderType.ARGUMENT);
+        super(ProviderType.ARGUMENT, "string");
     }
 
     @Override

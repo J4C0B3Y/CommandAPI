@@ -22,7 +22,7 @@ public class RegisteredServerProvider extends Provider<RegisteredServer> {
     private final VelocityCommandHandler handler;
 
     public RegisteredServerProvider(VelocityCommandHandler handler) {
-        super(ProviderType.ARGUMENT);
+        super(ProviderType.ARGUMENT, "server");
         this.handler = handler;
     }
 

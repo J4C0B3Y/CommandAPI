@@ -23,7 +23,7 @@ public class PlayerProvider extends Provider<Player> {
     private final BukkitCommandHandler handler;
 
     public PlayerProvider(BukkitCommandHandler handler) {
-        super(ProviderType.ARGUMENT);
+        super(ProviderType.ARGUMENT, "player");
         this.handler = handler;
     }
 
