@@ -7,4 +7,6 @@ package net.j4c0b3y.api.command.actor;
  */
 public interface ProxyActor {
     boolean isProxy();
+    boolean hasPermission(String permission);
+    void sendMessage(String message);
 }

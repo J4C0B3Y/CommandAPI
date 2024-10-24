@@ -10,4 +10,6 @@ import java.util.UUID;
 public interface PlayerActor {
     boolean isPlayer();
     UUID getUniqueId();
+    boolean hasPermission(String permission);
+    void sendMessage(String message);
 }
