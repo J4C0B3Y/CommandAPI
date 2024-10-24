@@ -1,5 +1,6 @@
 package net.j4c0b3y.api.command.execution.usage.impl;
 
+import lombok.RequiredArgsConstructor;
 import net.j4c0b3y.api.command.actor.Actor;
 import net.j4c0b3y.api.command.execution.usage.UsageHandler;
 import net.j4c0b3y.api.command.wrapper.CommandHandle;
@@ -13,7 +14,9 @@ import java.util.List;
  * @version CommandAPI
  * @since 1/09/2024
  */
+@RequiredArgsConstructor
 public class SimpleUsageHandler implements UsageHandler {
+    private final boolean requireHelp;
 
     @Override
     public void sendUsage(Actor actor, CommandHandle handle, String label) {
@@ -22,7 +25,7 @@ public class SimpleUsageHandler implements UsageHandler {
 
     @Override
     public boolean sendHelp(Actor actor, CommandWrapper wrapper, String label, List<String> arguments) {
-        if (arguments.isEmpty() || !arguments.get(0).equals("help")) {
+        if (requireHelp && (arguments.isEmpty() || !arguments.get(0).equals("help"))) {
             return false;
         }
 
