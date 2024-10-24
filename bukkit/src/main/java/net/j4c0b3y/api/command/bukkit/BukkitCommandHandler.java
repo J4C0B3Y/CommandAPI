@@ -40,14 +40,15 @@ public class BukkitCommandHandler extends CommandHandler {
         this.registry = new BukkitCommandRegistry(this);
 
         setTranslator(text -> ChatColor.translateAlternateColorCodes('&', text));
-        setDebug(true);
 
-        ClassUtils.ifPresent("com.destroystokyo.paper.event.server.AsyncTabCompleteEvent", () -> {
-            plugin.getServer().getPluginManager().registerEvents(new AsyncTabListener(this), plugin);
+        Bukkit.getScheduler().runTask(plugin, () -> {
+            ClassUtils.ifPresent("com.destroystokyo.paper.event.server.AsyncTabCompleteEvent", () -> {
+                plugin.getServer().getPluginManager().registerEvents(new AsyncTabListener(this), plugin);
 
-            if (isDebug()) {
-                plugin.getLogger().info("Enabled async tab completion support.");
-            }
+                if (isDebug()) {
+                    plugin.getLogger().info("Enabled async tab completion support.");
+                }
+            });
         });
     }
 
