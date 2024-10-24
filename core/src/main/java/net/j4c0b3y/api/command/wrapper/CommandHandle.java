@@ -5,6 +5,7 @@ import net.j4c0b3y.api.command.actor.Actor;
 import net.j4c0b3y.api.command.annotation.command.Command;
 import net.j4c0b3y.api.command.annotation.command.Requires;
 import net.j4c0b3y.api.command.annotation.command.Usage;
+import net.j4c0b3y.api.command.annotation.parameter.Manual;
 import net.j4c0b3y.api.command.exception.execution.UnknownFlagException;
 import net.j4c0b3y.api.command.exception.registration.ParameterStructureException;
 import net.j4c0b3y.api.command.execution.argument.CommandArgument;
@@ -275,8 +276,12 @@ public class CommandHandle {
         }
 
         CommandParameter parameter = parameters.get(parameterIndex);
+        Manual manual = parameter.getAnnotation(Manual.class);
 
-        suggestions.addAll(parameter.getProvider().suggest(actor, new CommandArgument(prefix, parameter)));
+        if (manual == null || (!manual.value().isEmpty() && actor.hasPermission(manual.value()))) {
+            suggestions.addAll(parameter.getProvider().suggest(actor, new CommandArgument(prefix, parameter)));
+        }
+
         suggestions.removeIf(suggestion -> !StringUtils.startsWithIgnoreCase(suggestion, prefix));
 
         return suggestions;
