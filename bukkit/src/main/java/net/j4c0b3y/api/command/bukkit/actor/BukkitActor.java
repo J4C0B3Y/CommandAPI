@@ -1,10 +1,8 @@
 package net.j4c0b3y.api.command.bukkit.actor;
 
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
 import net.j4c0b3y.api.command.CommandHandler;
 import net.j4c0b3y.api.command.actor.Actor;
-import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;

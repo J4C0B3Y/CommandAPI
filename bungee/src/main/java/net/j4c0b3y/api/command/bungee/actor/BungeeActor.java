@@ -1,7 +1,6 @@
 package net.j4c0b3y.api.command.bungee.actor;
 
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
 import net.j4c0b3y.api.command.CommandHandler;
 import net.j4c0b3y.api.command.actor.Actor;
 import net.md_5.bungee.api.CommandSender;
