@@ -119,7 +119,6 @@ public class BukkitCommandHandler extends CommandHandler {
         bind(WorldType.class).to(new EnumProvider<>(WorldType.class));
         bind(SkullType.class).to(new EnumProvider<>(SkullType.class));
         bind(Material.class).to(new EnumProvider<>(Material.class));
-        bind(Particle.class).to(new EnumProvider<>(Particle.class));
         bind(Effect.class).to(new EnumProvider<>(Effect.class));
         bind(Sound.class).to(new EnumProvider<>(Sound.class));
         bind(Biome.class).to(new EnumProvider<>(Biome.class));
