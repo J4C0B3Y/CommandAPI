@@ -30,10 +30,7 @@ import net.j4c0b3y.api.command.wrapper.binding.provider.impl.actor.ActorProvider
 import net.j4c0b3y.api.command.wrapper.binding.provider.impl.actor.ConsoleActorProvider;
 import net.j4c0b3y.api.command.wrapper.binding.provider.impl.actor.PlayerActorProvider;
 import net.j4c0b3y.api.command.wrapper.binding.provider.impl.actor.ProxyActorProvider;
-import net.j4c0b3y.api.command.wrapper.binding.provider.impl.argument.BooleanProvider;
-import net.j4c0b3y.api.command.wrapper.binding.provider.impl.argument.CharacterProvider;
-import net.j4c0b3y.api.command.wrapper.binding.provider.impl.argument.NumberProvider;
-import net.j4c0b3y.api.command.wrapper.binding.provider.impl.argument.StringProvider;
+import net.j4c0b3y.api.command.wrapper.binding.provider.impl.argument.*;
 import net.j4c0b3y.api.command.wrapper.binding.provider.impl.context.CommandExecutionProvider;
 import net.j4c0b3y.api.command.wrapper.binding.provider.impl.context.CommandHandleProvider;
 import net.j4c0b3y.api.command.wrapper.binding.provider.impl.context.CommandWrapperProvider;
@@ -41,6 +38,7 @@ import net.j4c0b3y.api.command.wrapper.binding.provider.impl.context.LabelProvid
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.Function;
 import java.util.logging.Logger;
@@ -117,6 +115,7 @@ public abstract class CommandHandler {
         bind(String.class).to(new StringProvider());
         bind(char.class).to(new CharacterProvider());
         bind(boolean.class).to(new BooleanProvider());
+        bind(UUID.class).to(new UUIDProvider());
 
         bind(int.class).to(new NumberProvider<>(Integer::parseInt, "integer", 0));
         bind(double.class).to(new NumberProvider<>(Double::parseDouble, "double", 0D));
