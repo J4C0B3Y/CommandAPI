@@ -5,6 +5,7 @@ import lombok.experimental.UtilityClass;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.AnnotatedElement;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.function.Function;
 
@@ -35,5 +36,9 @@ public class AnnotationUtils {
         }
 
         return special;
+    }
+
+    public List<Annotation> getSpecial(Annotation[] annotations, Class<? extends Annotation> type) {
+        return getSpecial(Arrays.asList(annotations), type);
     }
 }

@@ -8,9 +8,10 @@ import net.j4c0b3y.api.command.exception.execution.UnknownFlagException;
 import net.j4c0b3y.api.command.execution.argument.CommandArgument;
 import net.j4c0b3y.api.command.execution.argument.flag.CommandFlag;
 import net.j4c0b3y.api.command.wrapper.CommandHandle;
-import net.j4c0b3y.api.command.wrapper.parameter.CommandParameter;
-import net.j4c0b3y.api.command.wrapper.parameter.provider.Provider;
+import net.j4c0b3y.api.command.wrapper.CommandParameter;
+import net.j4c0b3y.api.command.wrapper.binding.provider.Provider;
 
+import java.lang.annotation.Annotation;
 import java.util.*;
 
 /**
@@ -41,6 +42,20 @@ public class CommandExecution {
     }
 
     public void execute() {
+        // Wrapper conditions
+        for (Annotation condition : handle.getWrapper().getConditions()) {
+            if (!handler.getConditionHandler().validate(condition, this)) {
+                return;
+            }
+        }
+
+        // Handle conditions
+        for (Annotation condition : handle.getConditions()) {
+            if (!handler.getConditionHandler().validate(condition, this)) {
+                return;
+            }
+        }
+
         if (providedParameters.isEmpty()) {
             complete();
         }

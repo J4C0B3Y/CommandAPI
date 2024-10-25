@@ -5,6 +5,7 @@ import net.j4c0b3y.api.command.actor.Actor;
 import net.j4c0b3y.api.command.annotation.command.Command;
 import net.j4c0b3y.api.command.annotation.command.Requires;
 import net.j4c0b3y.api.command.annotation.command.Usage;
+import net.j4c0b3y.api.command.annotation.command.condition.Condition;
 import net.j4c0b3y.api.command.annotation.parameter.Manual;
 import net.j4c0b3y.api.command.exception.execution.UnknownFlagException;
 import net.j4c0b3y.api.command.exception.registration.ParameterStructureException;
@@ -13,8 +14,8 @@ import net.j4c0b3y.api.command.execution.argument.flag.CommandFlag;
 import net.j4c0b3y.api.command.execution.argument.flag.FlagAction;
 import net.j4c0b3y.api.command.utils.AnnotationUtils;
 import net.j4c0b3y.api.command.utils.StringUtils;
-import net.j4c0b3y.api.command.wrapper.parameter.CommandParameter;
 
+import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
 import java.util.ArrayList;
@@ -40,6 +41,7 @@ public class CommandHandle {
     private final boolean async;
 
     private final List<CommandParameter> parameters = new ArrayList<>();
+    private final List<Annotation> conditions;
 
     private final String permission;
     private final String usage;
@@ -84,6 +86,7 @@ public class CommandHandle {
             }
         }
 
+        this.conditions = AnnotationUtils.getSpecial(method.getAnnotations(), Condition.class);
         this.permission = AnnotationUtils.getValue(method, Requires.class, Requires::value, "");
         this.usage = AnnotationUtils.getValue(method, Usage.class, Usage::value, generateUsage());
     }

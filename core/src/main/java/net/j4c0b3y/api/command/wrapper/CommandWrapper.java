@@ -7,6 +7,7 @@ import net.j4c0b3y.api.command.actor.Actor;
 import net.j4c0b3y.api.command.annotation.command.Command;
 import net.j4c0b3y.api.command.annotation.command.Help;
 import net.j4c0b3y.api.command.annotation.command.Requires;
+import net.j4c0b3y.api.command.annotation.command.condition.Condition;
 import net.j4c0b3y.api.command.annotation.registration.Ignore;
 import net.j4c0b3y.api.command.annotation.registration.Register;
 import net.j4c0b3y.api.command.exception.execution.ExitMessage;
@@ -17,6 +18,7 @@ import net.j4c0b3y.api.command.utils.CheckedRunnable;
 import net.j4c0b3y.api.command.utils.ListUtils;
 import net.j4c0b3y.api.command.utils.StringUtils;
 
+import java.lang.annotation.Annotation;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -44,6 +46,7 @@ public abstract class CommandWrapper {
     private final Help help;
 
     private final Map<String, CommandHandle> handles = new HashMap<>();
+    private final List<Annotation> conditions;
 
     public CommandWrapper(Object object, String name, List<String> aliases, CommandHandler handler) {
         this.name = name.toLowerCase();
@@ -76,6 +79,8 @@ public abstract class CommandWrapper {
         if (handles.isEmpty()) {
             handler.getLogger().warning("Wrapper '" + clazz.getSimpleName() + "' doesn't contain any handles.");
         }
+
+        this.conditions = AnnotationUtils.getSpecial(clazz.getAnnotations(), Condition.class);
     }
 
     public abstract void register();

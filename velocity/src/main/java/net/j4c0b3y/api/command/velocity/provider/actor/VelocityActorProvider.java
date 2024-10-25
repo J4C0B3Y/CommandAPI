@@ -5,8 +5,8 @@ import net.j4c0b3y.api.command.execution.CommandExecution;
 import net.j4c0b3y.api.command.execution.argument.CommandArgument;
 import net.j4c0b3y.api.command.velocity.VelocityCommandHandler;
 import net.j4c0b3y.api.command.velocity.actor.VelocityActor;
-import net.j4c0b3y.api.command.wrapper.parameter.provider.Provider;
-import net.j4c0b3y.api.command.wrapper.parameter.provider.ProviderType;
+import net.j4c0b3y.api.command.wrapper.binding.provider.Provider;
+import net.j4c0b3y.api.command.wrapper.binding.provider.ProviderType;
 
 /**
  * @author J4C0B3Y

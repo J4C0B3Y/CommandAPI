@@ -2,8 +2,8 @@ package net.j4c0b3y.api.command.bukkit.provider.actor;
 
 import net.j4c0b3y.api.command.execution.CommandExecution;
 import net.j4c0b3y.api.command.execution.argument.CommandArgument;
-import net.j4c0b3y.api.command.wrapper.parameter.provider.Provider;
-import net.j4c0b3y.api.command.wrapper.parameter.provider.ProviderType;
+import net.j4c0b3y.api.command.wrapper.binding.provider.Provider;
+import net.j4c0b3y.api.command.wrapper.binding.provider.ProviderType;
 import org.bukkit.command.CommandSender;
 
 /**

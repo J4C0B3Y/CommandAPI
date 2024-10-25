@@ -14,7 +14,7 @@ import net.j4c0b3y.api.command.bukkit.provider.argument.PlayerProvider;
 import net.j4c0b3y.api.command.bukkit.provider.argument.WorldProvider;
 import net.j4c0b3y.api.command.bukkit.utils.ClassUtils;
 import net.j4c0b3y.api.command.wrapper.CommandWrapper;
-import net.j4c0b3y.api.command.wrapper.parameter.provider.impl.argument.EnumProvider;
+import net.j4c0b3y.api.command.wrapper.binding.provider.impl.argument.EnumProvider;
 import org.bukkit.*;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.block.Biome;

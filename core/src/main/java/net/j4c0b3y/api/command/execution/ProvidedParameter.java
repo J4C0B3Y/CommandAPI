@@ -3,7 +3,7 @@ package net.j4c0b3y.api.command.execution;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
-import net.j4c0b3y.api.command.wrapper.parameter.CommandParameter;
+import net.j4c0b3y.api.command.wrapper.CommandParameter;
 
 /**
  * @author J4C0B3Y

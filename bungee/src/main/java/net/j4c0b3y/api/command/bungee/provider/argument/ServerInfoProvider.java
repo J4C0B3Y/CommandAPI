@@ -5,8 +5,8 @@ import net.j4c0b3y.api.command.bungee.BungeeCommandHandler;
 import net.j4c0b3y.api.command.exception.execution.ExitMessage;
 import net.j4c0b3y.api.command.execution.CommandExecution;
 import net.j4c0b3y.api.command.execution.argument.CommandArgument;
-import net.j4c0b3y.api.command.wrapper.parameter.provider.Provider;
-import net.j4c0b3y.api.command.wrapper.parameter.provider.ProviderType;
+import net.j4c0b3y.api.command.wrapper.binding.provider.Provider;
+import net.j4c0b3y.api.command.wrapper.binding.provider.ProviderType;
 import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.config.ServerInfo;
 
