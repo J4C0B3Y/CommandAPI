@@ -30,14 +30,14 @@ import net.j4c0b3y.api.command.wrapper.binding.provider.impl.actor.ActorProvider
 import net.j4c0b3y.api.command.wrapper.binding.provider.impl.actor.ConsoleActorProvider;
 import net.j4c0b3y.api.command.wrapper.binding.provider.impl.actor.PlayerActorProvider;
 import net.j4c0b3y.api.command.wrapper.binding.provider.impl.actor.ProxyActorProvider;
-import net.j4c0b3y.api.command.wrapper.binding.provider.impl.context.CommandExecutionProvider;
-import net.j4c0b3y.api.command.wrapper.binding.provider.impl.context.CommandHandleProvider;
-import net.j4c0b3y.api.command.wrapper.binding.provider.impl.context.CommandWrapperProvider;
-import net.j4c0b3y.api.command.wrapper.binding.provider.impl.context.LabelProvider;
 import net.j4c0b3y.api.command.wrapper.binding.provider.impl.argument.BooleanProvider;
 import net.j4c0b3y.api.command.wrapper.binding.provider.impl.argument.CharacterProvider;
 import net.j4c0b3y.api.command.wrapper.binding.provider.impl.argument.NumberProvider;
 import net.j4c0b3y.api.command.wrapper.binding.provider.impl.argument.StringProvider;
+import net.j4c0b3y.api.command.wrapper.binding.provider.impl.context.CommandExecutionProvider;
+import net.j4c0b3y.api.command.wrapper.binding.provider.impl.context.CommandHandleProvider;
+import net.j4c0b3y.api.command.wrapper.binding.provider.impl.context.CommandWrapperProvider;
+import net.j4c0b3y.api.command.wrapper.binding.provider.impl.context.LabelProvider;
 
 import java.util.Arrays;
 import java.util.List;
