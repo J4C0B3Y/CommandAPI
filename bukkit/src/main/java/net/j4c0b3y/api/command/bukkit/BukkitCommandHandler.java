@@ -16,7 +16,6 @@ import net.j4c0b3y.api.command.bukkit.utils.ClassUtils;
 import net.j4c0b3y.api.command.wrapper.CommandWrapper;
 import net.j4c0b3y.api.command.wrapper.binding.provider.impl.argument.EnumProvider;
 import org.bukkit.*;
-import org.bukkit.attribute.Attribute;
 import org.bukkit.block.Biome;
 import org.bukkit.block.BlockFace;
 import org.bukkit.command.CommandSender;
@@ -117,7 +116,6 @@ public class BukkitCommandHandler extends CommandHandler {
         bind(World.Environment.class).to(new EnumProvider<>(World.Environment.class));
         bind(Instrument.class).to(new EnumProvider<>(Instrument.class));
         bind(Difficulty.class).to(new EnumProvider<>(Difficulty.class));
-        bind(Attribute.class).to(new EnumProvider<>(Attribute.class));
         bind(WorldType.class).to(new EnumProvider<>(WorldType.class));
         bind(SkullType.class).to(new EnumProvider<>(SkullType.class));
         bind(Material.class).to(new EnumProvider<>(Material.class));
