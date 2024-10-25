@@ -82,11 +82,19 @@ public class CommandLocale {
     }
 
     public String getBelowMinimum(String minimum, String argument) {
-        return "Minimum '" + minimum + "', found '" + argument + "'";
+        return "&cMinimum '" + minimum + "', found '" + argument + "'";
     }
 
     public String getAboveMaximum(String maximum, String argument) {
-        return "Maximum '" + maximum + "', found '" + argument + "'";
+        return "&cMaximum '" + maximum + "', found '" + argument + "'";
     }
 
+    public String getInvalidServer(String argument) {
+        return "&cA server with name '" + argument + "' doesn't exist.";
+    }
+
+    public String getInvalidEnum(String argument, List<String> valid) {
+        return "&cNo value found for '" + argument + "', " +
+            "valid: " + String.join(", ", valid);
+    }
 }

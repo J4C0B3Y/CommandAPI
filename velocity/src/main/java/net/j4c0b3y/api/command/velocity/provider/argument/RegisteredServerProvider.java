@@ -1,4 +1,4 @@
-package net.j4c0b3y.api.command.velocity.provider;
+package net.j4c0b3y.api.command.velocity.provider.argument;
 
 import com.velocitypowered.api.proxy.server.RegisteredServer;
 import net.j4c0b3y.api.command.actor.Actor;
@@ -31,7 +31,7 @@ public class RegisteredServerProvider extends Provider<RegisteredServer> {
         Optional<RegisteredServer> server = handler.getProxy().getServer(argument.getValue());
 
         if (server.isEmpty()) {
-            throw new ExitMessage(handler.getVelocityLocale().getInvalidServer(argument.getValue()));
+            throw new ExitMessage(handler.getLocale().getInvalidServer(argument.getValue()));
         }
 
         return server.get();

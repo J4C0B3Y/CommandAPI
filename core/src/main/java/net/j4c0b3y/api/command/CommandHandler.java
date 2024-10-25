@@ -33,10 +33,10 @@ import net.j4c0b3y.api.command.wrapper.parameter.provider.impl.context.CommandEx
 import net.j4c0b3y.api.command.wrapper.parameter.provider.impl.context.CommandHandleProvider;
 import net.j4c0b3y.api.command.wrapper.parameter.provider.impl.context.CommandWrapperProvider;
 import net.j4c0b3y.api.command.wrapper.parameter.provider.impl.context.LabelProvider;
-import net.j4c0b3y.api.command.wrapper.parameter.provider.impl.value.BooleanProvider;
-import net.j4c0b3y.api.command.wrapper.parameter.provider.impl.value.CharacterProvider;
-import net.j4c0b3y.api.command.wrapper.parameter.provider.impl.value.NumberProvider;
-import net.j4c0b3y.api.command.wrapper.parameter.provider.impl.value.StringProvider;
+import net.j4c0b3y.api.command.wrapper.parameter.provider.impl.argument.BooleanProvider;
+import net.j4c0b3y.api.command.wrapper.parameter.provider.impl.argument.CharacterProvider;
+import net.j4c0b3y.api.command.wrapper.parameter.provider.impl.argument.NumberProvider;
+import net.j4c0b3y.api.command.wrapper.parameter.provider.impl.argument.StringProvider;
 
 import java.util.Arrays;
 import java.util.List;

@@ -15,6 +15,10 @@ public class BukkitCommandLocale {
         return "&cA player with name '" + argument + "' is not online.";
     }
 
+    public String getInvalidOfflinePlayer(String argument) {
+        return "&cA player with name '" + argument + "' has never joined before.";
+    }
+
     public String getBukkitOnly() {
         return "&cThis command can only be run through bukkit.";
     }

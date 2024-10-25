@@ -7,17 +7,23 @@ import net.j4c0b3y.api.command.annotation.parameter.classifier.Sender;
 import net.j4c0b3y.api.command.bukkit.actor.BukkitActor;
 import net.j4c0b3y.api.command.bukkit.listener.AsyncTabListener;
 import net.j4c0b3y.api.command.bukkit.locale.BukkitCommandLocale;
-import net.j4c0b3y.api.command.bukkit.provider.*;
+import net.j4c0b3y.api.command.bukkit.provider.actor.*;
+import net.j4c0b3y.api.command.bukkit.provider.argument.OfflinePlayerProvider;
+import net.j4c0b3y.api.command.bukkit.provider.argument.PlayerProvider;
+import net.j4c0b3y.api.command.bukkit.provider.argument.WorldProvider;
 import net.j4c0b3y.api.command.bukkit.utils.ClassUtils;
 import net.j4c0b3y.api.command.wrapper.CommandWrapper;
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.OfflinePlayer;
-import org.bukkit.World;
+import net.j4c0b3y.api.command.wrapper.parameter.provider.impl.argument.EnumProvider;
+import org.bukkit.*;
+import org.bukkit.attribute.Attribute;
+import org.bukkit.block.Biome;
+import org.bukkit.block.BlockFace;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.potion.PotionType;
 
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
@@ -81,16 +87,40 @@ public class BukkitCommandHandler extends CommandHandler {
     public void bindDefaults() {
         super.bindDefaults();
 
-        bind(World.class).to(new WorldProvider(this));
+        BukkitActorProvider actorProvider = new BukkitActorProvider(this);
+
+        bind(BukkitActor.class).annotated(Sender.class).to(actorProvider);
+        bind(Player.class).annotated(Sender.class).to(new PlayerSenderProvider(actorProvider));
+        bind(CommandSender.class).annotated(Sender.class).to(new CommandSenderProvider(actorProvider));
+        bind(ConsoleCommandSender.class).annotated(Sender.class).to(new ConsoleCommandSenderProvider(actorProvider));
 
         bind(Player.class).to(new PlayerProvider(this));
-        bind(OfflinePlayer.class).to(new OfflinePlayerProvider());
+        bind(OfflinePlayer.class).to(new OfflinePlayerProvider(this));
 
-        BukkitActorProvider bukkitActorProvider = new BukkitActorProvider(this);
+        bind(World.class).to(new WorldProvider(this));
 
-        bind(BukkitActor.class).annotated(Sender.class).to(bukkitActorProvider);
-        bind(Player.class).annotated(Sender.class).to(new PlayerSenderProvider(bukkitActorProvider));
-        bind(CommandSender.class).annotated(Sender.class).to(new CommandSenderProvider(bukkitActorProvider));
-        bind(ConsoleCommandSender.class).annotated(Sender.class).to(new ConsoleCommandSenderProvider(bukkitActorProvider));
+        bind(EntityEffect.class).to(new EnumProvider<>(EntityEffect.class, "effect"));
+        bind(WeatherType.class).to(new EnumProvider<>(WeatherType.class, "weather"));
+        bind(EntityType.class).to(new EnumProvider<>(EntityType.class, "entity"));
+        bind(PotionType.class).to(new EnumProvider<>(PotionType.class, "potion"));
+        bind(TreeSpecies.class).to(new EnumProvider<>(TreeSpecies.class, "tree"));
+        bind(GameMode.class).to(new EnumProvider<>(GameMode.class, "gamemode"));
+        bind(ChatColor.class).to(new EnumProvider<>(ChatColor.class, "color"));
+        bind(BlockFace.class).to(new EnumProvider<>(BlockFace.class, "face"));
+        bind(DyeColor.class).to(new EnumProvider<>(DyeColor.class, "color"));
+        bind(TreeType.class).to(new EnumProvider<>(TreeType.class, "tree"));
+
+        bind(World.Environment.class).to(new EnumProvider<>(World.Environment.class));
+        bind(Instrument.class).to(new EnumProvider<>(Instrument.class));
+        bind(Difficulty.class).to(new EnumProvider<>(Difficulty.class));
+        bind(Attribute.class).to(new EnumProvider<>(Attribute.class));
+        bind(WorldType.class).to(new EnumProvider<>(WorldType.class));
+        bind(SkullType.class).to(new EnumProvider<>(SkullType.class));
+        bind(Material.class).to(new EnumProvider<>(Material.class));
+        bind(Particle.class).to(new EnumProvider<>(Particle.class));
+        bind(Effect.class).to(new EnumProvider<>(Effect.class));
+        bind(Sound.class).to(new EnumProvider<>(Sound.class));
+        bind(Biome.class).to(new EnumProvider<>(Biome.class));
+        bind(Art.class).to(new EnumProvider<>(Art.class));
     }
 }

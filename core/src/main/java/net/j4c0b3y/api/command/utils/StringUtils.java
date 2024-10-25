@@ -18,4 +18,13 @@ public class StringUtils {
     public boolean startsWithIgnoreCase(String content, String prefix) {
         return content.toLowerCase().startsWith(prefix.toLowerCase());
     }
+    
+    public String decapitalize(String content) {
+        if (content == null || content.isEmpty()) return content;
+
+        char[] characters = content.toCharArray();
+        characters[0] = Character.toLowerCase(characters[0]);
+
+        return new String(characters);
+    }
 }

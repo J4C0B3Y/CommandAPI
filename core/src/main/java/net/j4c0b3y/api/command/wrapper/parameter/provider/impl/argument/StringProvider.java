@@ -1,4 +1,4 @@
-package net.j4c0b3y.api.command.wrapper.parameter.provider.impl.value;
+package net.j4c0b3y.api.command.wrapper.parameter.provider.impl.argument;
 
 import net.j4c0b3y.api.command.execution.CommandExecution;
 import net.j4c0b3y.api.command.execution.argument.CommandArgument;

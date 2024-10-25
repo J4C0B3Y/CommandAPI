@@ -1,4 +1,4 @@
-package net.j4c0b3y.api.command.bukkit.provider;
+package net.j4c0b3y.api.command.bukkit.provider.actor;
 
 import net.j4c0b3y.api.command.execution.CommandExecution;
 import net.j4c0b3y.api.command.execution.argument.CommandArgument;
@@ -21,6 +21,6 @@ public class CommandSenderProvider extends Provider<CommandSender> {
 
     @Override
     public CommandSender provide(CommandExecution execution, CommandArgument argument) {
-        return bukkitActorProvider.provide(execution, null).getSender();
+        return bukkitActorProvider.provide(execution, argument).getSender();
     }
 }

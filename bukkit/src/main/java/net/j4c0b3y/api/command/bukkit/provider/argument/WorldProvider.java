@@ -1,4 +1,4 @@
-package net.j4c0b3y.api.command.bukkit.provider;
+package net.j4c0b3y.api.command.bukkit.provider.argument;
 
 import net.j4c0b3y.api.command.actor.Actor;
 import net.j4c0b3y.api.command.bukkit.BukkitCommandHandler;

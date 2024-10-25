@@ -1,4 +1,4 @@
-package net.j4c0b3y.api.command.velocity.provider;
+package net.j4c0b3y.api.command.velocity.provider.actor;
 
 import com.velocitypowered.api.command.CommandSource;
 import net.j4c0b3y.api.command.execution.CommandExecution;

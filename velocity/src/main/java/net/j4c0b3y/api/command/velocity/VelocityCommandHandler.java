@@ -1,6 +1,7 @@
 package net.j4c0b3y.api.command.velocity;
 
 import com.velocitypowered.api.command.CommandSource;
+import com.velocitypowered.api.proxy.ConsoleCommandSource;
 import com.velocitypowered.api.proxy.Player;
 import com.velocitypowered.api.proxy.ProxyServer;
 import com.velocitypowered.api.proxy.server.RegisteredServer;
@@ -10,10 +11,11 @@ import net.j4c0b3y.api.command.CommandHandler;
 import net.j4c0b3y.api.command.annotation.parameter.classifier.Sender;
 import net.j4c0b3y.api.command.velocity.actor.VelocityActor;
 import net.j4c0b3y.api.command.velocity.locale.VelocityCommandLocale;
-import net.j4c0b3y.api.command.velocity.provider.CommandSourceProvider;
-import net.j4c0b3y.api.command.velocity.provider.PlayerSenderProvider;
-import net.j4c0b3y.api.command.velocity.provider.RegisteredServerProvider;
-import net.j4c0b3y.api.command.velocity.provider.VelocityActorProvider;
+import net.j4c0b3y.api.command.velocity.provider.actor.CommandSourceProvider;
+import net.j4c0b3y.api.command.velocity.provider.actor.ConsoleCommandSourceProvider;
+import net.j4c0b3y.api.command.velocity.provider.actor.PlayerSenderProvider;
+import net.j4c0b3y.api.command.velocity.provider.actor.VelocityActorProvider;
+import net.j4c0b3y.api.command.velocity.provider.argument.RegisteredServerProvider;
 import net.j4c0b3y.api.command.wrapper.CommandWrapper;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 
@@ -52,12 +54,13 @@ public class VelocityCommandHandler extends CommandHandler {
     public void bindDefaults() {
         super.bindDefaults();
 
+        VelocityActorProvider actorProvider = new VelocityActorProvider(this);
+
+        bind(VelocityActor.class).annotated(Sender.class).to(actorProvider);
+        bind(Player.class).annotated(Sender.class).to(new PlayerSenderProvider(actorProvider));
+        bind(CommandSource.class).annotated(Sender.class).to(new CommandSourceProvider(actorProvider));
+        bind(ConsoleCommandSource.class).annotated(Sender.class).to(new ConsoleCommandSourceProvider(actorProvider));
+
         bind(RegisteredServer.class).to(new RegisteredServerProvider(this));
-
-        VelocityActorProvider velocityActorProvider = new VelocityActorProvider(this);
-
-        bind(VelocityActor.class).annotated(Sender.class).to(velocityActorProvider);
-        bind(CommandSource.class).annotated(Sender.class).to(new CommandSourceProvider(velocityActorProvider));
-        bind(Player.class).annotated(Sender.class).to(new PlayerSenderProvider(velocityActorProvider));
     }
 }
