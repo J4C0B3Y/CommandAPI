@@ -8,6 +8,7 @@ import net.j4c0b3y.api.command.bukkit.actor.BukkitActor;
 import net.j4c0b3y.api.command.bukkit.listener.AsyncTabListener;
 import net.j4c0b3y.api.command.bukkit.locale.BukkitCommandLocale;
 import net.j4c0b3y.api.command.bukkit.provider.actor.*;
+import net.j4c0b3y.api.command.bukkit.provider.argument.EnchantmentProvider;
 import net.j4c0b3y.api.command.bukkit.provider.argument.OfflinePlayerProvider;
 import net.j4c0b3y.api.command.bukkit.provider.argument.PlayerProvider;
 import net.j4c0b3y.api.command.bukkit.provider.argument.WorldProvider;
@@ -20,6 +21,7 @@ import org.bukkit.block.Biome;
 import org.bukkit.block.BlockFace;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -98,6 +100,7 @@ public class BukkitCommandHandler extends CommandHandler {
         bind(OfflinePlayer.class).to(new OfflinePlayerProvider(this));
 
         bind(World.class).to(new WorldProvider(this));
+        bind(Enchantment.class).to(new EnchantmentProvider());
 
         bind(EntityEffect.class).to(new EnumProvider<>(EntityEffect.class, "effect"));
         bind(WeatherType.class).to(new EnumProvider<>(WeatherType.class, "weather"));
@@ -109,6 +112,7 @@ public class BukkitCommandHandler extends CommandHandler {
         bind(BlockFace.class).to(new EnumProvider<>(BlockFace.class, "face"));
         bind(DyeColor.class).to(new EnumProvider<>(DyeColor.class, "color"));
         bind(TreeType.class).to(new EnumProvider<>(TreeType.class, "tree"));
+        bind(Art.class).to(new EnumProvider<>(Art.class, "painting"));
 
         bind(World.Environment.class).to(new EnumProvider<>(World.Environment.class));
         bind(Instrument.class).to(new EnumProvider<>(Instrument.class));
@@ -121,6 +125,5 @@ public class BukkitCommandHandler extends CommandHandler {
         bind(Effect.class).to(new EnumProvider<>(Effect.class));
         bind(Sound.class).to(new EnumProvider<>(Sound.class));
         bind(Biome.class).to(new EnumProvider<>(Biome.class));
-        bind(Art.class).to(new EnumProvider<>(Art.class));
     }
 }
