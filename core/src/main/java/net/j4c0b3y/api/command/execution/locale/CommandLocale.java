@@ -95,6 +95,6 @@ public class CommandLocale {
 
     public String getInvalidEnum(String argument, List<String> valid) {
         return "&cNo value found for '" + argument + "', " +
-            "valid: " + String.join(", ", valid);
+            "valid: " + String.join(", ", valid) + ".";
     }
 }
