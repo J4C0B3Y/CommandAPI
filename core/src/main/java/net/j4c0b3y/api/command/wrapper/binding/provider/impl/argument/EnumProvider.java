@@ -1,12 +1,12 @@
 package net.j4c0b3y.api.command.wrapper.binding.provider.impl.argument;
 
-import net.j4c0b3y.api.command.actor.Actor;
 import net.j4c0b3y.api.command.exception.execution.ExitMessage;
 import net.j4c0b3y.api.command.execution.CommandExecution;
 import net.j4c0b3y.api.command.execution.argument.CommandArgument;
 import net.j4c0b3y.api.command.utils.StringUtils;
-import net.j4c0b3y.api.command.wrapper.binding.provider.ProviderType;
 import net.j4c0b3y.api.command.wrapper.binding.provider.Provider;
+import net.j4c0b3y.api.command.wrapper.binding.provider.ProviderType;
+import net.j4c0b3y.api.command.wrapper.suggestion.CommandSuggestion;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,12 +39,12 @@ public class EnumProvider<T extends Enum<T>> extends Provider<T> {
         }
 
         throw new ExitMessage(execution.getHandler().getLocale()
-            .getInvalidEnum(name, suggest(execution.getActor(), argument))
+            .getInvalidEnum(name, suggest(null, null))
         );
     }
 
     @Override
-    public List<String> suggest(Actor actor, CommandArgument argument) {
+    public List<String> suggest(CommandSuggestion suggestion, CommandArgument argument) {
         List<String> suggestions = new ArrayList<>();
 
         for (T constant : type.getEnumConstants()) {

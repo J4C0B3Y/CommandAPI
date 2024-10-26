@@ -8,6 +8,7 @@ import net.j4c0b3y.api.command.execution.CommandExecution;
 import net.j4c0b3y.api.command.execution.argument.CommandArgument;
 import net.j4c0b3y.api.command.wrapper.binding.provider.Provider;
 import net.j4c0b3y.api.command.wrapper.binding.provider.ProviderType;
+import net.j4c0b3y.api.command.wrapper.suggestion.CommandSuggestion;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
@@ -39,11 +40,11 @@ public class PlayerProvider extends Provider<Player> {
     }
 
     @Override
-    public List<String> suggest(Actor actor, CommandArgument argument) {
+    public List<String> suggest(CommandSuggestion suggestion, CommandArgument argument) {
         List<String> suggestions = new ArrayList<>();
 
         for (Player player : Bukkit.getOnlinePlayers()) {
-            if (canSee(actor, player)) {
+            if (canSee(suggestion.getActor(), player)) {
                 suggestions.add(player.getName());
             }
         }

@@ -1,9 +1,9 @@
 package net.j4c0b3y.api.command.wrapper.binding.provider;
 
 import lombok.Getter;
-import net.j4c0b3y.api.command.actor.Actor;
 import net.j4c0b3y.api.command.execution.CommandExecution;
 import net.j4c0b3y.api.command.execution.argument.CommandArgument;
+import net.j4c0b3y.api.command.wrapper.suggestion.CommandSuggestion;
 
 import java.util.Collections;
 import java.util.List;
@@ -37,7 +37,7 @@ public abstract class Provider<T> {
 
     public abstract T provide(CommandExecution execution, CommandArgument argument);
 
-    public List<String> suggest(Actor actor, CommandArgument argument) {
+    public List<String> suggest(CommandSuggestion suggestion, CommandArgument argument) {
         return Collections.emptyList();
     }
 }

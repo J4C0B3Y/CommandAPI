@@ -1,12 +1,12 @@
 package net.j4c0b3y.api.command.bukkit.provider.argument;
 
-import net.j4c0b3y.api.command.actor.Actor;
 import net.j4c0b3y.api.command.bukkit.BukkitCommandHandler;
 import net.j4c0b3y.api.command.exception.execution.ExitMessage;
 import net.j4c0b3y.api.command.execution.CommandExecution;
 import net.j4c0b3y.api.command.execution.argument.CommandArgument;
 import net.j4c0b3y.api.command.wrapper.binding.provider.Provider;
 import net.j4c0b3y.api.command.wrapper.binding.provider.ProviderType;
+import net.j4c0b3y.api.command.wrapper.suggestion.CommandSuggestion;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 
@@ -43,7 +43,7 @@ public class WorldProvider extends Provider<World> {
     }
 
     @Override
-    public List<String> suggest(Actor actor, CommandArgument argument) {
+    public List<String> suggest(CommandSuggestion suggestion, CommandArgument argument) {
         List<String> suggestions = new ArrayList<>();
 
         for (World world : Bukkit.getWorlds()) {

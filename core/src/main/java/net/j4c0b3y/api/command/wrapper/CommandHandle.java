@@ -14,6 +14,7 @@ import net.j4c0b3y.api.command.execution.argument.flag.CommandFlag;
 import net.j4c0b3y.api.command.execution.argument.flag.FlagAction;
 import net.j4c0b3y.api.command.utils.AnnotationUtils;
 import net.j4c0b3y.api.command.utils.StringUtils;
+import net.j4c0b3y.api.command.wrapper.suggestion.CommandSuggestion;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
@@ -208,7 +209,11 @@ public class CommandHandle {
                     CommandParameter parameter = getFlag(flag);
 
                     if (parameter != null && !parameter.isBoolean()) {
-                        suggestions.addAll(parameter.getProvider().suggest(actor, new CommandArgument(prefix, parameter)));
+                        suggestions.addAll(parameter.getProvider().suggest(
+                            new CommandSuggestion(actor, arguments),
+                            new CommandArgument(prefix, parameter)
+                        ));
+
                         return suggestions;
                     }
                 }
@@ -282,7 +287,10 @@ public class CommandHandle {
         Manual manual = parameter.getAnnotation(Manual.class);
 
         if (manual == null || (!manual.value().isEmpty() && actor.hasPermission(manual.value()))) {
-            suggestions.addAll(parameter.getProvider().suggest(actor, new CommandArgument(prefix, parameter)));
+            suggestions.addAll(parameter.getProvider().suggest(
+                new CommandSuggestion(actor, arguments),
+                new CommandArgument(prefix, parameter)
+            ));
         }
 
         suggestions.removeIf(suggestion -> !StringUtils.startsWithIgnoreCase(suggestion, prefix));

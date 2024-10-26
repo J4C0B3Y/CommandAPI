@@ -1,11 +1,11 @@
 package net.j4c0b3y.api.command.bukkit.provider.argument;
 
-import net.j4c0b3y.api.command.actor.Actor;
 import net.j4c0b3y.api.command.exception.execution.ExitMessage;
 import net.j4c0b3y.api.command.execution.CommandExecution;
 import net.j4c0b3y.api.command.execution.argument.CommandArgument;
 import net.j4c0b3y.api.command.wrapper.binding.provider.Provider;
 import net.j4c0b3y.api.command.wrapper.binding.provider.ProviderType;
+import net.j4c0b3y.api.command.wrapper.suggestion.CommandSuggestion;
 import org.bukkit.enchantments.Enchantment;
 
 import java.util.ArrayList;
@@ -28,7 +28,7 @@ public class EnchantmentProvider extends Provider<Enchantment> {
 
         if (enchantment == null) {
             throw new ExitMessage(execution.getHandler().getLocale()
-                .getInvalidEnum(argument.getValue(), suggest(execution.getActor(), argument))
+                .getInvalidEnum(argument.getValue(), suggest(null, null))
             );
         }
 
@@ -36,7 +36,7 @@ public class EnchantmentProvider extends Provider<Enchantment> {
     }
 
     @Override
-    public List<String> suggest(Actor actor, CommandArgument argument) {
+    public List<String> suggest(CommandSuggestion suggestion, CommandArgument argument) {
         List<String> suggestions = new ArrayList<>();
 
         for (Enchantment enchantment : Enchantment.values()) {
