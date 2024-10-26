@@ -49,7 +49,9 @@ public class SimpleUsageHandler implements UsageHandler {
     }
 
     private String getFullUsage(CommandHandle handle, String label) {
-        String space = !handle.getName().isEmpty() ? " " : "";
-        return "/" + label + space + handle.getName() + " " + handle.getUsage();
+        String labelSpace = !handle.getName().isEmpty() ? " " : "";
+        String nameSpace = !handle.getUsage().isEmpty() ? " " : "";
+
+        return "/" + label + labelSpace + handle.getName() + nameSpace + handle.getUsage();
     }
 }
