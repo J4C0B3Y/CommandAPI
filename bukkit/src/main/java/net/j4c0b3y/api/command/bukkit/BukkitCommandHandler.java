@@ -48,15 +48,17 @@ public class BukkitCommandHandler extends CommandHandler {
 
         setTranslator(text -> ChatColor.translateAlternateColorCodes('&', text));
 
-        Bukkit.getScheduler().runTask(plugin, () ->
+        Bukkit.getScheduler().runTask(plugin, () -> {
+            if (!plugin.isEnabled()) return;
+
             ClassUtils.ifPresent("com.destroystokyo.paper.event.server.AsyncTabCompleteEvent", () -> {
                 plugin.getServer().getPluginManager().registerEvents(new AsyncTabListener(this), plugin);
 
                 if (isDebug()) {
                     plugin.getLogger().info("Enabled async tab completion support.");
                 }
-            })
-        );
+            });
+        });
     }
 
     @Override
