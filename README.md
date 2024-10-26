@@ -1,6 +1,4 @@
 # Coming Soon...
 
-todo:
-- docs
-- some providers
-- test bungee
+basically finished, docs coming soon
+might push breaking changes, use at own risk
