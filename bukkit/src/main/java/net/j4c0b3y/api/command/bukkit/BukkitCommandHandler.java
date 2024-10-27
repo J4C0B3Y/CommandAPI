@@ -62,6 +62,8 @@ public class BukkitCommandHandler extends CommandHandler {
                 }
             });
         });
+
+        bindDefaults();
     }
 
     @Override

@@ -43,6 +43,7 @@ public class VelocityCommandHandler extends CommandHandler {
         LegacyComponentSerializer ampersand = LegacyComponentSerializer.legacyAmpersand();
         LegacyComponentSerializer section = LegacyComponentSerializer.legacySection();
         setTranslator(text -> section.serialize(ampersand.deserialize(text)));
+        bindDefaults();
     }
 
     @Override

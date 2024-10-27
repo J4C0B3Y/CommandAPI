@@ -37,6 +37,7 @@ public class BungeeCommandHandler extends CommandHandler {
         this.plugin = plugin;
 
         setTranslator(text -> ChatColor.translateAlternateColorCodes('&', text));
+        bindDefaults();
     }
 
     @Override

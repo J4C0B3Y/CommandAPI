@@ -62,10 +62,6 @@ public abstract class CommandHandler {
 
     private boolean debug;
 
-    public CommandHandler() {
-        bindDefaults();
-    }
-
     public abstract CommandWrapper wrap(Object wrapper, String name, List<String> aliases);
     public abstract Logger getLogger();
 
