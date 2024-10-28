@@ -92,6 +92,11 @@ public class CommandHandle {
         this.usage = AnnotationUtils.getValue(method, Usage.class, Usage::value, generateUsage());
     }
 
+    public String getFullName() {
+        String space = !name.isEmpty() ? " " : "";
+        return wrapper.getName() + space + name;
+    }
+
     public boolean hasDescription() {
         return !description.isEmpty();
     }
