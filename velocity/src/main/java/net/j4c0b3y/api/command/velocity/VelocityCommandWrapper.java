@@ -58,6 +58,6 @@ public class VelocityCommandWrapper extends CommandWrapper implements SimpleComm
 
     @Override
     public boolean hasPermission(Invocation invocation) {
-        return invocation.source().hasPermission(getPermission());
+        return !hasPermission() || invocation.source().hasPermission(getPermission());
     }
 }

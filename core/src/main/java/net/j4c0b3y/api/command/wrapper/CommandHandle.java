@@ -88,7 +88,7 @@ public class CommandHandle {
         }
 
         this.conditions = AnnotationUtils.getSpecial(method.getAnnotations(), Condition.class);
-        this.permission = AnnotationUtils.getValue(method, Requires.class, Requires::value, "");
+        this.permission = AnnotationUtils.getValue(method, Requires.class, Requires::value, null);
         this.usage = AnnotationUtils.getValue(method, Usage.class, Usage::value, generateUsage());
     }
 
@@ -99,6 +99,10 @@ public class CommandHandle {
 
     public boolean hasDescription() {
         return !description.isEmpty();
+    }
+
+    public boolean hasPermission() {
+        return permission != null;
     }
 
     public String generateUsage() {
