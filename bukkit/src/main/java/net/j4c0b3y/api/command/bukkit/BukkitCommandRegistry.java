@@ -80,7 +80,7 @@ public class BukkitCommandRegistry {
     }
 
     public void registerPermission(String name) {
-        if (name == null || name.isEmpty()) return;
+        if (name == null) return;
 
         PluginManager pluginManager = handler.getPlugin().getServer().getPluginManager();
         if (pluginManager.getPermission(name) != null) return;

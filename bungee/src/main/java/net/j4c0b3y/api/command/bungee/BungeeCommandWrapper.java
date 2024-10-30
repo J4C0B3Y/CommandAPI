@@ -50,7 +50,7 @@ public class BungeeCommandWrapper extends CommandWrapper {
 
         @Override
         public boolean hasPermission(CommandSender sender) {
-            return sender.hasPermission(wrapper.getPermission());
+            return !wrapper.hasPermission() || sender.hasPermission(wrapper.getPermission());
         }
     }
 }

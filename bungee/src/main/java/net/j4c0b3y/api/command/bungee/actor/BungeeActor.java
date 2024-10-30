@@ -26,7 +26,7 @@ public class BungeeActor extends Actor {
 
     @Override
     public boolean hasPermission(String permission) {
-        return permission.isEmpty() || sender.hasPermission(permission);
+        return permission == null || sender.hasPermission(permission);
     }
 
     @Override

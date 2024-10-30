@@ -26,7 +26,7 @@ public class VelocityActor extends Actor {
 
     @Override
     public boolean hasPermission(String permission) {
-        return permission.isEmpty() || source.hasPermission(permission);
+        return permission == null || source.hasPermission(permission);
     }
 
     @Override

@@ -61,7 +61,7 @@ public abstract class CommandWrapper {
         }
 
         this.description = AnnotationUtils.getValue(clazz, Register.class, Register::description, "");
-        this.permission = AnnotationUtils.getValue(clazz, Requires.class, Requires::value, "");
+        this.permission = AnnotationUtils.getValue(clazz, Requires.class, Requires::value, null);
         this.help = clazz.getAnnotation(Help.class);
 
         for (Method method : clazz.getDeclaredMethods()) {
@@ -87,6 +87,10 @@ public abstract class CommandWrapper {
 
     public boolean isHelp() {
         return help != null;
+    }
+
+    public boolean hasPermission() {
+        return permission != null;
     }
 
     public CommandHandle getHandle(String label) {
