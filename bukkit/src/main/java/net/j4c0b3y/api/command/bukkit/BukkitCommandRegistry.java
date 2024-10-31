@@ -14,9 +14,7 @@ import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
 
 import java.lang.reflect.Constructor;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @author J4C0B3Y
@@ -39,15 +37,9 @@ public class BukkitCommandRegistry {
 
         try {
             this.commandMap = (SimpleCommandMap) ClassUtils.getField(Bukkit.getServer(), "commandMap");
-            this.knownCommands = new HashMap<>((Map<String, Command>) ClassUtils.getField(this.commandMap, SimpleCommandMap.class, "knownCommands"));
+            this.knownCommands = (Map<String, Command>) ClassUtils.getField(this.commandMap, SimpleCommandMap.class, "knownCommands");
         } catch (Exception exception) {
             throw new IllegalStateException("Failed to access command map!", exception);
-        }
-
-        try {
-            ClassUtils.setField(this.commandMap, SimpleCommandMap.class, "knownCommands", this.knownCommands);
-        } catch (Exception exception) {
-            throw new IllegalStateException("Failed to patch command map!");
         }
 
         try {
@@ -59,24 +51,25 @@ public class BukkitCommandRegistry {
 
     public void register(BukkitCommandWrapper wrapper) {
         try {
-            Iterator<Command> iterator = knownCommands.values().iterator();
+            List<String> labels = new ArrayList<>();
+            labels.add(wrapper.getName());
+            labels.addAll(wrapper.getAliases());
 
-            while (iterator.hasNext()) {
-                Command command = iterator.next();
-                String name = command.getName().toLowerCase();
+            for (String label : labels) {
+                Command command = knownCommands.get(label);
+                if (command == null) continue;
 
-                if (!wrapper.getName().equals(name) && !wrapper.getAliases().contains(name)) {
-                    continue;
+                if (command instanceof PluginCommand) {
+                    Plugin plugin = ((PluginCommand) command).getPlugin();
+                    if (plugin == handler.getPlugin()) continue;
+
+                    if (handler.isDebug()) {
+                        String origin = plugin.getDescription().getName();
+                        handler.getLogger().warning("Overriding command '" + label + "' from '" + origin + "'.");
+                    }
                 }
 
-                if (handler.isDebug()) {
-                    Plugin plugin = command instanceof PluginCommand ? ((PluginCommand) command).getPlugin() : null;
-                    String origin = plugin != null ? plugin.getDescription().getFullName() : "Unknown";
-
-                    handler.getLogger().warning("Overriding command '" + name + "' from '" + origin + "'.");
-                }
-
-                iterator.remove();
+                knownCommands.remove(label);
             }
 
             commandMap.register(handler.getPlugin().getName(), wrapper.getCommand());
