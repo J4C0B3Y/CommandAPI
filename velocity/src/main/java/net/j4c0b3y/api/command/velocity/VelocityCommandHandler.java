@@ -17,9 +17,11 @@ import net.j4c0b3y.api.command.velocity.provider.actor.PlayerSenderProvider;
 import net.j4c0b3y.api.command.velocity.provider.actor.VelocityActorProvider;
 import net.j4c0b3y.api.command.velocity.provider.argument.RegisteredServerProvider;
 import net.j4c0b3y.api.command.wrapper.CommandWrapper;
+import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 
 import java.util.List;
+import java.util.function.Function;
 import java.util.logging.Logger;
 
 /**
@@ -34,15 +36,13 @@ public class VelocityCommandHandler extends CommandHandler {
     private final Logger logger;
 
     private VelocityCommandLocale velocityLocale = new VelocityCommandLocale();
+    private Function<String, Component> velocityTranslator = LegacyComponentSerializer.legacyAmpersand()::deserialize;
 
     public VelocityCommandHandler(Object plugin, ProxyServer proxy, Logger logger) {
         this.plugin = plugin;
         this.proxy = proxy;
         this.logger = logger;
 
-        LegacyComponentSerializer ampersand = LegacyComponentSerializer.legacyAmpersand();
-        LegacyComponentSerializer section = LegacyComponentSerializer.legacySection();
-        setTranslator(text -> section.serialize(ampersand.deserialize(text)));
         bindDefaults();
     }
 

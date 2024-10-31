@@ -4,9 +4,8 @@ import com.velocitypowered.api.command.CommandSource;
 import com.velocitypowered.api.proxy.ConsoleCommandSource;
 import com.velocitypowered.api.proxy.Player;
 import lombok.Getter;
-import net.j4c0b3y.api.command.CommandHandler;
 import net.j4c0b3y.api.command.actor.Actor;
-import net.kyori.adventure.text.Component;
+import net.j4c0b3y.api.command.velocity.VelocityCommandHandler;
 
 import java.util.UUID;
 
@@ -18,9 +17,11 @@ import java.util.UUID;
 @Getter
 public class VelocityActor extends Actor {
     private final CommandSource source;
+    private final VelocityCommandHandler handler;
 
-    public VelocityActor(CommandSource source, CommandHandler handler) {
+    public VelocityActor(CommandSource source, VelocityCommandHandler handler) {
         super(handler);
+        this.handler = handler;
         this.source = source;
     }
 
@@ -31,7 +32,8 @@ public class VelocityActor extends Actor {
 
     @Override
     public void sendMessage(String message) {
-        source.sendMessage(Component.text(getHandler().getTranslator().apply(message)));
+        String translated = handler.getTranslator().apply(message);
+        source.sendMessage(handler.getVelocityTranslator().apply(translated));
     }
 
     @Override

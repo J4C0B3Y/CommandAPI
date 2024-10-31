@@ -58,7 +58,7 @@ public abstract class CommandHandler {
     private CommandLocale locale = new CommandLocale();
 
     private FlagAction unknownFlagAction = FlagAction.ARGUMENT;
-    private Function<String, String> translator = (content) -> content;
+    private Function<String, String> translator = content -> content;
 
     private boolean debug;
 
