@@ -10,7 +10,7 @@ import java.lang.annotation.Target;
  * @version CommandAPI
  * @since 28/08/2024
  */
-@Target({ElementType.TYPE, ElementType.METHOD})
+@Target({ElementType.TYPE, ElementType.METHOD, ElementType.PARAMETER})
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Requires {
     String value();

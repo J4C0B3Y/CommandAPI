@@ -77,6 +77,11 @@ public class CommandExecution {
                 handle.getWrapper().handleExceptions(actor, handle, label, () -> {
                     boolean skip = provided.getArgument() == null && provider.isConsumer();
 
+                    if (!skip && !actor.hasPermission(parameter.getPermission())) {
+                        handler.getLocale().getNoPermission().forEach(actor::sendMessage);
+                        return;
+                    }
+
                     provided.provide(skip ? null : provider.provide(this,
                         new CommandArgument(provided.getArgument(), parameter)
                     ));

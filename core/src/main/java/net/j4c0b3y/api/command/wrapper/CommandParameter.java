@@ -1,9 +1,11 @@
 package net.j4c0b3y.api.command.wrapper;
 
 import lombok.Getter;
+import net.j4c0b3y.api.command.annotation.command.Requires;
 import net.j4c0b3y.api.command.annotation.parameter.*;
 import net.j4c0b3y.api.command.annotation.parameter.classifier.Classifier;
 import net.j4c0b3y.api.command.annotation.parameter.modifier.Modifier;
+import net.j4c0b3y.api.command.exception.registration.InvalidParameterException;
 import net.j4c0b3y.api.command.exception.registration.MissingProviderException;
 import net.j4c0b3y.api.command.utils.AnnotationUtils;
 import net.j4c0b3y.api.command.utils.ListUtils;
@@ -36,6 +38,7 @@ public class CommandParameter {
     private final List<String> flagNames;
 
     private final Provider<?> provider;
+    private final String permission;
 
     private final boolean last;
     private final boolean text;
@@ -53,11 +56,17 @@ public class CommandParameter {
             throw new MissingProviderException("Parameter '" + parameter.getName() + "' has no valid providers bound for '" + type.getSimpleName() + "'.");
         }
 
+        this.permission = AnnotationUtils.getValue(parameter, Requires.class, Requires::value, null);
+
         String name = AnnotationUtils.getValue(parameter, Named.class, Named::value, provider.getDefaultName());
         this.name = name != null ? name : parameter.getName();
 
         this.defaultValue = AnnotationUtils.getValue(parameter, Default.class, Default::value, null);
         this.optional = defaultValue != null || parameter.isAnnotationPresent(Optional.class);
+
+        if (hasPermission() && !optional) {
+            throw new InvalidParameterException("Parameter '" + parameter.getName() + "' has @Requires but is not optional.");
+        }
 
         this.options = AnnotationUtils.getValue(parameter, Option.class, option -> ListUtils.map(option.value(), String::toLowerCase), Collections.emptyList());
         this.flagNames = AnnotationUtils.getValue(parameter, Flag.class, flag -> ListUtils.asList(flag.value()), null);
@@ -77,6 +86,10 @@ public class CommandParameter {
 
     public boolean isFlag() {
         return flagNames != null && !flagNames.isEmpty();
+    }
+
+    public boolean hasPermission() {
+        return permission != null;
     }
 
     public boolean hasOption(String option) {

@@ -293,9 +293,10 @@ public class CommandHandle {
         }
 
         CommandParameter parameter = parameters.get(parameterIndex);
-        Manual manual = parameter.getAnnotation(Manual.class);
+        Requires requires = parameter.getAnnotation(Requires.class);
+        boolean manual = parameter.hasAnnotation(Manual.class);
 
-        if (manual == null || (!manual.value().isEmpty() && actor.hasPermission(manual.value()))) {
+        if (!manual && (requires == null || (!requires.value().isEmpty() && actor.hasPermission(requires.value())))) {
             suggestions.addAll(parameter.getProvider().suggest(
                 new CommandSuggestion(actor, arguments),
                 new CommandArgument(prefix, parameter)
