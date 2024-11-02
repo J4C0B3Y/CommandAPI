@@ -69,14 +69,24 @@ public abstract class CommandHandler {
         return new BindingBuilder<>(type, this);
     }
 
-    public void register(Object wrapper, String name, String... aliases) {
+    public void register(Object wrapper, String name, String permission, String... aliases) {
         if (wrapper.getClass().isAnnotationPresent(Ignore.class)) return;
 
         try {
-            wrap(wrapper, name, Arrays.asList(aliases)).register();
+            CommandWrapper wrapped = wrap(wrapper, name, Arrays.asList(aliases));
+
+            if (permission != null) {
+                wrapped.setPermission(permission);
+            }
+
+            wrapped.register();
         } catch (Exception exception) {
             throw new RegistrationException("Failed to register command '" + name + "'", exception);
         }
+    }
+
+    public void register(Object wrapper, String name) {
+        register(wrapper, name, null);
     }
 
     public void register(Object wrapper) {
@@ -87,7 +97,7 @@ public abstract class CommandHandler {
             throw new RegistrationException("Wrapper '" + clazz.getSimpleName() + "' must be annotated @Register.");
         }
 
-        register(wrapper, annotation.name(), annotation.aliases());
+        register(wrapper, annotation.name(), null, annotation.aliases());
     }
 
     public void register(Class<?> clazz) {

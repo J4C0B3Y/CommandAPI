@@ -2,6 +2,7 @@ package net.j4c0b3y.api.command.wrapper;
 
 import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.Setter;
 import net.j4c0b3y.api.command.CommandHandler;
 import net.j4c0b3y.api.command.actor.Actor;
 import net.j4c0b3y.api.command.annotation.command.Command;
@@ -32,7 +33,7 @@ import java.util.logging.Level;
  * @version CommandAPI
  * @since 27/08/2024
  */
-@Getter
+@Getter @Setter
 public abstract class CommandWrapper {
     private final String name;
     private final List<String> aliases;
@@ -40,7 +41,7 @@ public abstract class CommandWrapper {
     private final CommandHandler handler;
 
     private final String description;
-    private final String permission;
+    private String permission;
 
     @Getter(AccessLevel.NONE)
     private final Help help;
