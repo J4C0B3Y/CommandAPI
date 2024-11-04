@@ -79,16 +79,17 @@ public class BukkitCommandRegistry {
         }
     }
 
-    public void registerPermission(String name) {
-        if (name == null) return;
+    public void registerPermission(String permission, String description) {
+        if (permission == null) return;
 
         PluginManager pluginManager = handler.getPlugin().getServer().getPluginManager();
-        if (pluginManager.getPermission(name) != null) return;
+        if (pluginManager.getPermission(permission) != null) return;
 
-        pluginManager.addPermission(new Permission(name,
-            "A permission registered by " + handler.getPlugin().getName(),
-            PermissionDefault.OP
-        ));
+        pluginManager.addPermission(new Permission(permission, description, PermissionDefault.OP));
+    }
+
+    public void registerPermission(String permission) {
+        registerPermission(permission, "A permission registered by " + handler.getPlugin().getName());
     }
 
     public PluginCommand getPluginCommand(BukkitCommandWrapper wrapper) {
