@@ -167,6 +167,9 @@ public abstract class CommandWrapper {
             suggestions.addAll(handle.suggest(actor, handle.stripLabel(arguments)));
         }
 
+        String prefix = !arguments.isEmpty() ? arguments.get(arguments.size() - 1) : "";
+        suggestions.removeIf(suggestion -> !StringUtils.startsWithIgnoreCase(suggestion, prefix));
+
         if (suggestions.size() == 1 && suggestions.get(0).isEmpty()) {
             // https://bugs.mojang.com/browse/MC-165562
             suggestions.set(0, " ");

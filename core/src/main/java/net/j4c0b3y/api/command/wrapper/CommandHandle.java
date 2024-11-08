@@ -303,8 +303,6 @@ public class CommandHandle {
             ));
         }
 
-        suggestions.removeIf(suggestion -> !StringUtils.startsWithIgnoreCase(suggestion, prefix));
-
         return suggestions;
     }
 }
