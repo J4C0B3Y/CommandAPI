@@ -5,6 +5,7 @@ package net.j4c0b3y.api.command.utils;
  * @version CommandAPI
  * @since 1/09/2024
  */
+@FunctionalInterface
 public interface CheckedRunnable {
     void run() throws Exception;
 }
