@@ -232,7 +232,7 @@ public abstract class CommandWrapper {
 
             handler.getLogger().log(Level.SEVERE,
                 "Failed to execute command '/" +
-                label + " " + handle.getName() + "'.",
+                handle.getFullName() + "'.",
                 throwable
             );
         }
