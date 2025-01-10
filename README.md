@@ -2,7 +2,7 @@
 
 Powerful multi-platform annotation based command api.
 
-Trusted and used by [Refine Development](https://refindev.xyz/).
+Trusted and used by [Refine Development](https://refinedev.xyz/).
 
 ## Features
 
