@@ -9,7 +9,7 @@ Trusted and used by [Refine Development](https://refindev.xyz/).
 - Asynchronous execution and tab completion
 - Annotation based command registration
 - Inbuilt command usage and help handler
-- Flexible flags system (eg: --silent)
+- Flexible flags system (eg, --silent)
 - Small and lightweight (~100kb)
 - Works on all major platforms
 - Supports spigot 1.8+
