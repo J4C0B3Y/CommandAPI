@@ -69,7 +69,7 @@ dependencies {
 
 ## Usage
 
-Coming soon, for now message me on discord and help.
+Coming soon, for now message me on discord for help.
 
 ### Want more?
 
