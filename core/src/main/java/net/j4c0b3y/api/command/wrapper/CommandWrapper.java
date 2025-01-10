@@ -136,6 +136,15 @@ public abstract class CommandWrapper {
         boolean help = !arguments.isEmpty() && arguments.get(0).equalsIgnoreCase("help");
 
         if (handle == null || (help && isHelp() && !this.help.ignore())) {
+            CommandExecution execution = new CommandExecution(actor, handler, label, arguments);
+
+            // Wrapper conditions for help message.
+            for (Annotation condition : getConditions()) {
+                if (!handler.getConditionHandler().validate(condition, execution)) {
+                    return;
+                }
+            }
+
             if (isHelp() && handler.getUsageHandler().sendHelp(actor, this, label, arguments)) {
                 return;
             }

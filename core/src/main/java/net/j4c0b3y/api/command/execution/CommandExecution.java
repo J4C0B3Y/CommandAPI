@@ -41,7 +41,19 @@ public class CommandExecution {
         }
     }
 
+    public CommandExecution(Actor actor, CommandHandler handler, String label, List<String> arguments) {
+        this.actor = actor;
+        this.handle = null;
+        this.label = label;
+        this.arguments = arguments;
+        this.handler = handler;
+    }
+
     public void execute() {
+        if (handle == null) {
+            throw new IllegalStateException("Cannot run command execution without a handle.");
+        }
+
         // Wrapper conditions
         for (Annotation condition : handle.getWrapper().getConditions()) {
             if (!handler.getConditionHandler().validate(condition, this)) {
