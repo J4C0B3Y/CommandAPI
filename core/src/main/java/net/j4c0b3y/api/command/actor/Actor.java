@@ -16,4 +16,6 @@ public abstract class Actor implements PlayerActor, ConsoleActor, ProxyActor {
 
     public abstract boolean hasPermission(String permission);
     public abstract void sendMessage(String message);
+
+    public abstract String getName();
 }

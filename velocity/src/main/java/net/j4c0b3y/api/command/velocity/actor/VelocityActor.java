@@ -51,6 +51,11 @@ public class VelocityActor extends Actor {
         return isPlayer() ? ((Player) source).getUniqueId() : null;
     }
 
+    @Override
+    public String getName() {
+        return isPlayer() ? ((Player) source).getUsername() : "CONSOLE";
+    }
+
     public Player getPlayer() {
         if (!isPlayer()) {
             throw new IllegalStateException("Source is not a player!");

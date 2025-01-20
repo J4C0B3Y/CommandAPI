@@ -8,4 +8,5 @@ package net.j4c0b3y.api.command.actor;
 public interface ConsoleActor {
     boolean isConsole();
     void sendMessage(String message);
+    String getName();
 }

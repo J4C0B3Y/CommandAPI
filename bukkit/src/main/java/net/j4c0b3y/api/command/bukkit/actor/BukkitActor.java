@@ -48,6 +48,11 @@ public class BukkitActor extends Actor {
         return isPlayer() ? ((Player) sender).getUniqueId() : null;
     }
 
+    @Override
+    public String getName() {
+        return sender.getName();
+    }
+
     public Player getPlayer() {
         if (!isPlayer()) {
             throw new IllegalStateException("Sender is not a player!");

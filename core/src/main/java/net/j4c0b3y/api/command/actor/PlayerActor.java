@@ -12,4 +12,5 @@ public interface PlayerActor {
     UUID getUniqueId();
     boolean hasPermission(String permission);
     void sendMessage(String message);
+    String getName();
 }

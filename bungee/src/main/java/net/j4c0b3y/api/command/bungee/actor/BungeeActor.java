@@ -49,6 +49,11 @@ public class BungeeActor extends Actor {
         return isPlayer() ? ((ProxiedPlayer) sender).getUniqueId() : null;
     }
 
+    @Override
+    public String getName() {
+        return sender.getName();
+    }
+
     public ProxiedPlayer getPlayer() {
         if (!isPlayer()) {
             throw new IllegalStateException("Sender is not a player!");

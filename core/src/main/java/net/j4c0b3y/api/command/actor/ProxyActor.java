@@ -9,4 +9,5 @@ public interface ProxyActor {
     boolean isProxy();
     boolean hasPermission(String permission);
     void sendMessage(String message);
+    String getName();
 }
