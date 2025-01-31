@@ -97,4 +97,8 @@ public class CommandLocale {
         return "&cNo value found for '" + argument + "', " +
             "valid: " + String.join(", ", valid) + ".";
     }
+
+    public String getMapEntryNotFound(String argument, String keyName, String valueName) {
+        return "&cA" + valueName + " with " + keyName + " '" + argument + "' was not found!";
+    }
 }
