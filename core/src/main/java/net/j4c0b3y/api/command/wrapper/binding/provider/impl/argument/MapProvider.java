@@ -10,6 +10,7 @@ import net.j4c0b3y.api.command.wrapper.suggestion.CommandSuggestion;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Supplier;
 
 /**
  * @author J4C0B3Y
@@ -18,18 +19,18 @@ import java.util.Map;
  */
 public class MapProvider<T, M extends Map<String, T>> extends Provider<T> {
 
-    private final M map;
+    private final Supplier<M> supplier;
     private final String keyName;
 
-    public MapProvider(M map, String keyName, String valueName) {
+    public MapProvider(Supplier<M> supplier, String keyName, String valueName) {
         super(ProviderType.ARGUMENT, valueName);
-        this.map = map;
+        this.supplier = supplier;
         this.keyName = keyName;
     }
 
     @Override
     public T provide(CommandExecution execution, CommandArgument argument) {
-        T value = map.get(argument.getValue());
+        T value = supplier.get().get(argument.getValue());
 
         if (value == null) {
             throw new ExitMessage(execution.getHandler().getLocale()
@@ -42,6 +43,6 @@ public class MapProvider<T, M extends Map<String, T>> extends Provider<T> {
 
     @Override
     public List<String> suggest(CommandSuggestion suggestion, CommandArgument argument) {
-        return new ArrayList<>(map.keySet());
+        return new ArrayList<>(supplier.get().keySet());
     }
 }
