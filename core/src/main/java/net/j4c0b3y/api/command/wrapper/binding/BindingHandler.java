@@ -23,14 +23,25 @@ public class BindingHandler {
 
     public Provider<?> assign(CommandParameter parameter) {
         List<ParameterBinding<?>> bindings = this.bindings.get(parameter.getType());
-
-        if (bindings == null) {
-            return null;
-        }
+        if (bindings == null) return null;
 
         for (ParameterBinding<?> binding : ListUtils.reversed(bindings)) {
             if (binding.provides(parameter)) {
                 return binding.getProvider();
+            }
+        }
+
+        return null;
+    }
+
+    @SuppressWarnings("unchecked")
+    public <T> Provider<T> assign(Class<T> type) {
+        List<ParameterBinding<?>> bindings = this.bindings.get(type);
+        if (bindings == null) return null;
+
+        for (ParameterBinding<?> binding : ListUtils.reversed(bindings)) {
+            if (binding.getClassifiers().isEmpty()) {
+                return (Provider<T>) binding.getProvider();
             }
         }
 
