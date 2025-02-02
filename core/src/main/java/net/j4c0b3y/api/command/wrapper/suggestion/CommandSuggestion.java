@@ -2,6 +2,7 @@ package net.j4c0b3y.api.command.wrapper.suggestion;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import net.j4c0b3y.api.command.CommandHandler;
 import net.j4c0b3y.api.command.actor.Actor;
 
 import java.util.List;
@@ -16,4 +17,5 @@ import java.util.List;
 public class CommandSuggestion {
     private final Actor actor;
     private final List<String> arguments;
+    private final CommandHandler handler;
 }
