@@ -22,10 +22,7 @@ import net.j4c0b3y.api.command.utils.StringUtils;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.logging.Level;
 
 /**
@@ -46,7 +43,7 @@ public abstract class CommandWrapper {
     @Getter(AccessLevel.NONE)
     private final Help help;
 
-    private final Map<String, CommandHandle> handles = new HashMap<>();
+    private final Map<String, CommandHandle> handles = new LinkedHashMap<>();
     private final List<Annotation> conditions;
 
     public CommandWrapper(Object object, String name, List<String> aliases, CommandHandler handler) {
