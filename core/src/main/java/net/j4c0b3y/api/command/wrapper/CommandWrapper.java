@@ -137,7 +137,7 @@ public abstract class CommandWrapper {
 
             // Wrapper conditions for help message.
             for (Annotation condition : getConditions()) {
-                if (!handler.getConditionHandler().validate(condition, execution)) {
+                if (!handler.getConditionHandler().validate(condition, actor)) {
                     return;
                 }
             }

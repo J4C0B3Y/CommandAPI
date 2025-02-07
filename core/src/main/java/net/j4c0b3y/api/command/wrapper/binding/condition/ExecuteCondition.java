@@ -1,6 +1,6 @@
 package net.j4c0b3y.api.command.wrapper.binding.condition;
 
-import net.j4c0b3y.api.command.execution.CommandExecution;
+import net.j4c0b3y.api.command.actor.Actor;
 
 /**
  * @author J4C0B3Y
@@ -8,5 +8,5 @@ import net.j4c0b3y.api.command.execution.CommandExecution;
  * @since 25/10/2024
  */
 public interface ExecuteCondition<T> {
-    boolean validate(CommandExecution execution, T annotation);
+    boolean validate(Actor actor, T annotation);
 }

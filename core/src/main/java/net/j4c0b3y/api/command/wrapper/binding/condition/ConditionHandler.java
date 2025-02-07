@@ -25,7 +25,7 @@ public class ConditionHandler {
     }
 
     @SuppressWarnings("unchecked")
-    public <T extends Annotation> boolean validate(T annotation, CommandExecution execution) {
+    public <T extends Annotation> boolean validate(T annotation, Actor actor) {
         Class<?> type = annotation.annotationType();
 
         if (!type.isAnnotationPresent(Condition.class)) {
@@ -37,7 +37,7 @@ public class ConditionHandler {
         }
 
         ExecuteCondition<T> condition = (ExecuteCondition<T>) conditions.get(type);
-        return condition.validate(execution, annotation);
+        return condition.validate(actor, annotation);
     }
 
     public void clear() {

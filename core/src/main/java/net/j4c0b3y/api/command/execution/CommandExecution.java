@@ -56,14 +56,14 @@ public class CommandExecution {
 
         // Wrapper conditions
         for (Annotation condition : handle.getWrapper().getConditions()) {
-            if (!handler.getConditionHandler().validate(condition, this)) {
+            if (!handler.getConditionHandler().validate(condition, actor)) {
                 return;
             }
         }
 
         // Handle conditions
         for (Annotation condition : handle.getConditions()) {
-            if (!handler.getConditionHandler().validate(condition, this)) {
+            if (!handler.getConditionHandler().validate(condition, actor)) {
                 return;
             }
         }
@@ -217,7 +217,11 @@ public class CommandExecution {
                     continue;
                 }
 
-                throw new ExitMessage(handler.getLocale().getMissingArgument(parameter.getName()), true);
+                if (!handle.hasExpandedUsage()) {
+                    throw new ExitMessage(handler.getLocale().getMissingArgument(parameter.getName()), true);
+                } else {
+                    handle.getExpandedUsage().forEach(actor::sendMessage);
+                }
             }
 
             provided.setArgument(arguments.get(adjusted));
