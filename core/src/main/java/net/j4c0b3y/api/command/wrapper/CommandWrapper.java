@@ -1,6 +1,5 @@
 package net.j4c0b3y.api.command.wrapper;
 
-import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
 import net.j4c0b3y.api.command.CommandHandler;
@@ -39,8 +38,6 @@ public abstract class CommandWrapper {
 
     private final String description;
     private String permission;
-
-    @Getter(AccessLevel.NONE)
     private final Help help;
 
     private final Map<String, CommandHandle> handles = new LinkedHashMap<>();
@@ -83,7 +80,7 @@ public abstract class CommandWrapper {
 
     public abstract void register();
 
-    public boolean isHelp() {
+    public boolean hasHelp() {
         return help != null;
     }
 
@@ -130,11 +127,10 @@ public abstract class CommandWrapper {
     }
 
     private void dispatch(Actor actor, CommandHandle handle, String label, List<String> arguments) {
-        boolean help = !arguments.isEmpty() && arguments.get(0).equalsIgnoreCase("help");
+        boolean interceptHelp = hasHelp() && this.help.register() && !this.help.command().isEmpty();
+        boolean showHelp = interceptHelp && !arguments.isEmpty() && arguments.get(0).equalsIgnoreCase(this.help.command());
 
-        if (handle == null || (help && isHelp() && !this.help.ignore())) {
-            CommandExecution execution = new CommandExecution(actor, handler, label, arguments);
-
+        if (handle == null || showHelp) {
             // Wrapper conditions for help message.
             for (Annotation condition : getConditions()) {
                 if (!handler.getConditionHandler().validate(condition, actor)) {
@@ -142,11 +138,16 @@ public abstract class CommandWrapper {
                 }
             }
 
-            if (isHelp() && handler.getUsageHandler().sendHelp(actor, this, label, arguments)) {
-                return;
+            if (hasHelp()) {
+                List<String> message = handler.getUsageHandler().getHelpMessage(actor, this, label, arguments);
+
+                if (message != null) {
+                    message.forEach(actor::sendMessage);
+                    return;
+                }
             }
 
-            handler.getLocale().getInvalidSubcommand(label, isHelp()).forEach(actor::sendMessage);
+            handler.getLocale().getInvalidSubcommand(label, this.help).forEach(actor::sendMessage);
             return;
         }
 
@@ -205,8 +206,8 @@ public abstract class CommandWrapper {
             }
         }
 
-        if (isHelp() && !this.help.ignore()) {
-            suggestions.add("help");
+        if (hasHelp() && help.register()) {
+            suggestions.add(help.command());
         }
 
         return suggestions;
@@ -228,7 +229,7 @@ public abstract class CommandWrapper {
                 }
 
                 if (((ExitMessage) throwable).isShowUsage()) {
-                    handler.getUsageHandler().sendUsage(actor, handle, label);
+                    handler.getUsageHandler().getUsageMessage(actor, handle, label).forEach(actor::sendMessage);
                 }
 
                 return;

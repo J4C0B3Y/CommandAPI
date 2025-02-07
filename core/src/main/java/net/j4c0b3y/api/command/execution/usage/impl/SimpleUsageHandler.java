@@ -7,6 +7,7 @@ import net.j4c0b3y.api.command.wrapper.CommandHandle;
 import net.j4c0b3y.api.command.wrapper.CommandWrapper;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -16,17 +17,16 @@ import java.util.List;
  */
 @RequiredArgsConstructor
 public class SimpleUsageHandler implements UsageHandler {
-    private final boolean requireHelp;
 
     @Override
-    public void sendUsage(Actor actor, CommandHandle handle, String label) {
-        actor.sendMessage("&7Usage: " + getFullUsage(handle, label));
+    public List<String> getUsageMessage(Actor actor, CommandHandle handle, String label) {
+        return Collections.singletonList("&7Usage: " + getFullUsage(handle, label));
     }
 
     @Override
-    public boolean sendHelp(Actor actor, CommandWrapper wrapper, String label, List<String> arguments) {
-        if (requireHelp && (arguments.isEmpty() || !arguments.get(0).equals("help"))) {
-            return false;
+    public List<String> getHelpMessage(Actor actor, CommandWrapper wrapper, String label, List<String> arguments) {
+        if (arguments.isEmpty() || !arguments.get(0).equals(wrapper.getHelp().command())) {
+            return null;
         }
 
         List<String> lines = new ArrayList<>();
@@ -43,9 +43,7 @@ public class SimpleUsageHandler implements UsageHandler {
         }
 
         lines.add("");
-
-        lines.forEach(actor::sendMessage);
-        return true;
+        return lines;
     }
 
     private String getFullUsage(CommandHandle handle, String label) {

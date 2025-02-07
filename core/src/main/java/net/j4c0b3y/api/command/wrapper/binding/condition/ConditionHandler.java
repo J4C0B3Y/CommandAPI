@@ -1,8 +1,8 @@
 package net.j4c0b3y.api.command.wrapper.binding.condition;
 
+import net.j4c0b3y.api.command.actor.Actor;
 import net.j4c0b3y.api.command.annotation.command.condition.Condition;
 import net.j4c0b3y.api.command.exception.execution.MissingValidatorException;
-import net.j4c0b3y.api.command.execution.CommandExecution;
 
 import java.lang.annotation.Annotation;
 import java.util.HashMap;

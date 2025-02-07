@@ -54,7 +54,7 @@ public abstract class CommandHandler {
     private final ModifierHandler modifierHandler = new ModifierHandler();
     private final ConditionHandler conditionHandler = new ConditionHandler();
 
-    private UsageHandler usageHandler = new SimpleUsageHandler(true);
+    private UsageHandler usageHandler = new SimpleUsageHandler();
     private CommandLocale locale = new CommandLocale();
 
     private FlagAction unknownFlagAction = FlagAction.ARGUMENT;

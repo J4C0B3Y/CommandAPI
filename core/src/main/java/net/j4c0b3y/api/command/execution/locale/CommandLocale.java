@@ -1,5 +1,7 @@
 package net.j4c0b3y.api.command.execution.locale;
 
+import net.j4c0b3y.api.command.annotation.command.Help;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -25,13 +27,13 @@ public class CommandLocale {
         );
     }
 
-    public List<String> getInvalidSubcommand(String label, boolean helpEnabled) {
+    public List<String> getInvalidSubcommand(String label, Help help) {
         List<String> lines = new ArrayList<>();
 
         lines.add("&cThat subcommand could not be found!");
 
-        if (helpEnabled) {
-            lines.add("&7Run '/" + label + " help' for a list of commands.");
+        if (help != null) {
+            lines.add("&7Run '/" + label + " " + help.command() + "' for a list of commands.");
         }
 
         return lines;
