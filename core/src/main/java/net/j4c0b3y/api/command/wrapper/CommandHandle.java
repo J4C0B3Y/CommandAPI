@@ -13,6 +13,7 @@ import net.j4c0b3y.api.command.execution.argument.CommandArgument;
 import net.j4c0b3y.api.command.execution.argument.flag.CommandFlag;
 import net.j4c0b3y.api.command.execution.argument.flag.FlagAction;
 import net.j4c0b3y.api.command.utils.AnnotationUtils;
+import net.j4c0b3y.api.command.utils.ListUtils;
 import net.j4c0b3y.api.command.wrapper.suggestion.CommandSuggestion;
 
 import java.lang.annotation.Annotation;
@@ -45,6 +46,7 @@ public class CommandHandle {
 
     private final String permission;
     private final String usage;
+    private final List<String> expandedUsage;
 
     public CommandHandle(CommandWrapper wrapper, Method method) {
         this.wrapper = wrapper;
@@ -88,7 +90,11 @@ public class CommandHandle {
 
         this.conditions = AnnotationUtils.getSpecial(method.getAnnotations(), Condition.class);
         this.permission = AnnotationUtils.getValue(method, Requires.class, Requires::value, null);
-        this.usage = AnnotationUtils.getValue(method, Usage.class, Usage::value, generateUsage());
+
+        Usage usage = method.getAnnotation(Usage.class);
+
+        this.usage = usage != null ? usage.value() : generateUsage();
+        this.expandedUsage = usage != null ? ListUtils.asList(usage.expanded()) : null;
     }
 
     public String getFullName() {
@@ -102,6 +108,10 @@ public class CommandHandle {
 
     public boolean hasPermission() {
         return permission != null;
+    }
+
+    public boolean hasExpandedUsage() {
+        return expandedUsage != null;
     }
 
     public String generateUsage() {
