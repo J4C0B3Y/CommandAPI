@@ -93,8 +93,8 @@ public class CommandHandle {
 
         Usage usage = method.getAnnotation(Usage.class);
 
-        this.usage = usage != null ? usage.value() : generateUsage();
-        this.expandedUsage = usage != null ? ListUtils.asList(usage.expanded()) : null;
+        this.usage = usage != null && !usage.value().isEmpty() ? usage.value() : generateUsage();
+        this.expandedUsage = usage != null && usage.expanded().length > 0 ? ListUtils.asList(usage.expanded()) : null;
     }
 
     public String getFullName() {
