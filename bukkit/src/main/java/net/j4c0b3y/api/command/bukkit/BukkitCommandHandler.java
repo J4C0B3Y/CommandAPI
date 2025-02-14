@@ -26,7 +26,7 @@ import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
-import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.plugin.Plugin;
 import org.bukkit.potion.PotionType;
 
 import java.util.List;
@@ -40,12 +40,12 @@ import java.util.logging.Logger;
  */
 @Getter @Setter
 public class BukkitCommandHandler extends CommandHandler {
-    private final JavaPlugin plugin;
+    private final Plugin plugin;
     private final BukkitCommandRegistry registry;
 
     private BukkitCommandLocale bukkitLocale = new BukkitCommandLocale();
 
-    public BukkitCommandHandler(JavaPlugin plugin) {
+    public BukkitCommandHandler(Plugin plugin) {
         this.plugin = plugin;
         this.registry = new BukkitCommandRegistry(this);
 
