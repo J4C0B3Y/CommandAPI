@@ -34,6 +34,12 @@ public class BukkitCommandWrapper extends CommandWrapper implements CommandExecu
     }
 
     @Override
+    public void setPermission(String permission) {
+        this.command.setPermission(permission);
+        super.setPermission(permission);
+    }
+
+    @Override
     public void register() {
         bukkitHandler.getRegistry().register(this);
     }
