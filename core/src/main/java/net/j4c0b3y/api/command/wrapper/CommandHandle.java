@@ -147,9 +147,10 @@ public class CommandHandle {
 
     public void invoke(Actor actor, String label, List<Object> arguments) {
         wrapper.getHandler().runTask(() ->
-            wrapper.handleExceptions(actor, this, label, () ->
-                method.invoke(wrapper.getObject(), arguments.toArray())
-            ),
+            wrapper.handleExceptions(actor, this, label, () -> {
+                method.invoke(wrapper.getObject(), arguments.toArray());
+                return null;
+            }),
             async
         );
     }

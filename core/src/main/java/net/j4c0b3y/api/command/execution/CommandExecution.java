@@ -91,7 +91,7 @@ public class CommandExecution {
 
                     if (!skip && !actor.hasPermission(parameter.getPermission())) {
                         handler.getLocale().getNoPermission().forEach(actor::sendMessage);
-                        return;
+                        return null;
                     }
 
                     provided.provide(skip ? null : provider.provide(this,
@@ -105,6 +105,7 @@ public class CommandExecution {
                     }
 
                     complete();
+                    return null;
                 }),
                 provider.isAsync()
             );

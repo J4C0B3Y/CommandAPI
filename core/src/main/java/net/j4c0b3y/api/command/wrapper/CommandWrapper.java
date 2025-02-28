@@ -14,7 +14,6 @@ import net.j4c0b3y.api.command.exception.execution.ExitMessage;
 import net.j4c0b3y.api.command.exception.registration.InvalidWrapperException;
 import net.j4c0b3y.api.command.execution.CommandExecution;
 import net.j4c0b3y.api.command.utils.AnnotationUtils;
-import net.j4c0b3y.api.command.utils.CheckedRunnable;
 import net.j4c0b3y.api.command.utils.ListUtils;
 import net.j4c0b3y.api.command.utils.StringUtils;
 
@@ -22,6 +21,7 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.*;
+import java.util.concurrent.Callable;
 import java.util.logging.Level;
 
 /**
@@ -121,9 +121,10 @@ public abstract class CommandWrapper {
     public void dispatch(Actor actor, String label, List<String> arguments) {
         CommandHandle handle = getHandle(arguments);
 
-        handleExceptions(actor, handle, label, () ->
-            dispatch(actor, handle, label, arguments)
-        );
+        handleExceptions(actor, handle, label, () -> {
+            dispatch(actor, handle, label, arguments);
+            return null;
+        });
     }
 
     private void dispatch(Actor actor, CommandHandle handle, String label, List<String> arguments) {
@@ -213,9 +214,9 @@ public abstract class CommandWrapper {
         return suggestions;
     }
 
-    public void handleExceptions(Actor actor, CommandHandle handle, String label, CheckedRunnable task) {
+    public void handleExceptions(Actor actor, CommandHandle handle, String label, Callable<Void> task) {
         try {
-            task.run();
+            task.call();
         } catch (Exception exception) {
             Throwable throwable = exception;
 
