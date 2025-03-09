@@ -31,7 +31,6 @@ import org.bukkit.potion.PotionType;
 
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
-import java.util.function.Consumer;
 import java.util.logging.Logger;
 
 /**
@@ -45,14 +44,12 @@ public class BukkitCommandHandler extends CommandHandler {
     private final BukkitCommandRegistry registry;
 
     private BukkitCommandLocale bukkitLocale = new BukkitCommandLocale();
-    private Consumer<Runnable> taskExecutor;
 
     public BukkitCommandHandler(Plugin plugin) {
         this.plugin = plugin;
         this.registry = new BukkitCommandRegistry(this);
 
         setTranslator(text -> ChatColor.translateAlternateColorCodes('&', text));
-        setTaskExecutor(task -> Bukkit.getScheduler().runTask(plugin, task));
 
         ClassUtils.ifPresent("com.destroystokyo.paper.event.server.AsyncTabCompleteEvent", () -> {
             plugin.getServer().getPluginManager().registerEvents(new AsyncTabListener(this), plugin);
@@ -84,7 +81,7 @@ public class BukkitCommandHandler extends CommandHandler {
             return;
         }
 
-        taskExecutor.accept(task);
+        Bukkit.getScheduler().runTask(plugin, task);
     }
 
     @Override
