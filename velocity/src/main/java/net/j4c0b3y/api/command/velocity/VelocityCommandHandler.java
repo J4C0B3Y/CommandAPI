@@ -15,6 +15,7 @@ import net.j4c0b3y.api.command.velocity.provider.actor.CommandSourceProvider;
 import net.j4c0b3y.api.command.velocity.provider.actor.ConsoleCommandSourceProvider;
 import net.j4c0b3y.api.command.velocity.provider.actor.PlayerSenderProvider;
 import net.j4c0b3y.api.command.velocity.provider.actor.VelocityActorProvider;
+import net.j4c0b3y.api.command.velocity.provider.argument.PlayerProvider;
 import net.j4c0b3y.api.command.velocity.provider.argument.RegisteredServerProvider;
 import net.j4c0b3y.api.command.wrapper.CommandWrapper;
 import net.kyori.adventure.text.Component;
@@ -61,6 +62,8 @@ public class VelocityCommandHandler extends CommandHandler {
         bind(Player.class).annotated(Sender.class).to(new PlayerSenderProvider(actorProvider));
         bind(CommandSource.class).annotated(Sender.class).to(new CommandSourceProvider(actorProvider));
         bind(ConsoleCommandSource.class).annotated(Sender.class).to(new ConsoleCommandSourceProvider(actorProvider));
+
+        bind(Player.class).to(new PlayerProvider(this));
 
         bind(RegisteredServer.class).to(new RegisteredServerProvider(this));
     }

@@ -10,4 +10,9 @@ public class VelocityCommandLocale {
     public String getVelocityOnly() {
         return "&cThis command can only be run through velocity.";
     }
+
+    public String getPlayerOffline(String argument) {
+        return "&cA player with name '" + argument + "' is not on the network.";
+    }
+
 }
