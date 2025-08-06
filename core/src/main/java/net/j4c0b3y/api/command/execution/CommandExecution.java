@@ -222,6 +222,7 @@ public class CommandExecution {
                     throw new ExitMessage(handler.getLocale().getMissingArgument(parameter.getName()), true);
                 } else {
                     handle.getExpandedUsage().forEach(actor::sendMessage);
+                    return;
                 }
             }
 
