@@ -11,7 +11,7 @@ plugins {
 object Project {
     const val NAME = "CommandAPI"
     const val GROUP = "net.j4c0b3y"
-    const val VERSION = "1.2.5"
+    const val VERSION = "1.2.6"
 }
 
 allprojects {
