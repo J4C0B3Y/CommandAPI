@@ -13,9 +13,12 @@ import net.j4c0b3y.api.command.annotation.registration.Register;
 import net.j4c0b3y.api.command.exception.execution.ExitMessage;
 import net.j4c0b3y.api.command.exception.registration.InvalidWrapperException;
 import net.j4c0b3y.api.command.execution.CommandExecution;
+import net.j4c0b3y.api.command.execution.argument.CommandArgument;
 import net.j4c0b3y.api.command.utils.AnnotationUtils;
 import net.j4c0b3y.api.command.utils.ListUtils;
 import net.j4c0b3y.api.command.utils.StringUtils;
+import net.j4c0b3y.api.command.wrapper.binding.provider.Provider;
+import net.j4c0b3y.api.command.wrapper.suggestion.CommandSuggestion;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.InvocationTargetException;
@@ -212,6 +215,10 @@ public abstract class CommandWrapper {
         }
 
         return suggestions;
+    }
+
+    protected List<String> suggestValue(Provider<?> provider, CommandSuggestion suggestion, CommandArgument argument) {
+        return provider.suggest(suggestion, argument);
     }
 
     public void handleExceptions(Actor actor, CommandHandle handle, String label, Callable<Void> task) {

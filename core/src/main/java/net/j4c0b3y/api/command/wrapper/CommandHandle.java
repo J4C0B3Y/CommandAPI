@@ -228,7 +228,7 @@ public class CommandHandle {
                     CommandParameter parameter = getFlag(flag);
 
                     if (parameter != null && !parameter.isBoolean()) {
-                        suggestions.addAll(parameter.getProvider().suggest(
+                        suggestions.addAll(wrapper.suggestValue(parameter.getProvider(),
                             new CommandSuggestion(actor, arguments, wrapper.getHandler()),
                             new CommandArgument(prefix, parameter)
                         ));
@@ -307,7 +307,7 @@ public class CommandHandle {
         boolean manual = parameter.hasAnnotation(Manual.class);
 
         if (!manual && (requires == null || (!requires.value().isEmpty() && actor.hasPermission(requires.value())))) {
-            suggestions.addAll(parameter.getProvider().suggest(
+            suggestions.addAll(wrapper.suggestValue(parameter.getProvider(),
                 new CommandSuggestion(actor, arguments, wrapper.getHandler()),
                 new CommandArgument(prefix, parameter)
             ));

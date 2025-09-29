@@ -2,8 +2,12 @@ package net.j4c0b3y.api.command.bukkit;
 
 import lombok.Getter;
 import net.j4c0b3y.api.command.bukkit.actor.BukkitActor;
+import net.j4c0b3y.api.command.execution.argument.CommandArgument;
 import net.j4c0b3y.api.command.wrapper.CommandHandle;
 import net.j4c0b3y.api.command.wrapper.CommandWrapper;
+import net.j4c0b3y.api.command.wrapper.binding.provider.Provider;
+import net.j4c0b3y.api.command.wrapper.suggestion.CommandSuggestion;
+import org.bukkit.Bukkit;
 import org.bukkit.command.*;
 
 import java.util.Arrays;
@@ -53,6 +57,21 @@ public class BukkitCommandWrapper extends CommandWrapper implements CommandExecu
     @Override
     public List<String> onTabComplete(CommandSender sender, Command command, String label, String[] arguments) {
         return suggest(new BukkitActor(sender, getHandler()), Arrays.asList(arguments));
+    }
+
+    @Override
+    protected List<String> suggestValue(Provider<?> provider, CommandSuggestion suggestion, CommandArgument argument) {
+        if (provider.isAsync() || Bukkit.isPrimaryThread()) {
+            return super.suggestValue(provider, suggestion, argument);
+        }
+
+        try {
+            return bukkitHandler.callSync(() ->
+                super.suggestValue(provider, suggestion, argument)
+            ).get();
+        } catch (Exception exception) {
+            throw new RuntimeException("Failed to execute synchronous suggestion!", exception);
+        }
     }
 
     private void registerPermissions() {

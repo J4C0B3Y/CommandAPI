@@ -30,7 +30,9 @@ import org.bukkit.plugin.Plugin;
 import org.bukkit.potion.PotionType;
 
 import java.util.List;
+import java.util.concurrent.Callable;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.Future;
 import java.util.logging.Logger;
 
 /**
@@ -82,6 +84,10 @@ public class BukkitCommandHandler extends CommandHandler {
         }
 
         Bukkit.getScheduler().runTask(plugin, task);
+    }
+
+    protected <T> Future<T> callSync(Callable<T> task) {
+        return Bukkit.getScheduler().callSyncMethod(plugin, task);
     }
 
     @Override
