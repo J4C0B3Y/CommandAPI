@@ -297,11 +297,15 @@ public class CommandHandle {
         }
 
         int parameterIndex = arguments.size() - offset - 1;
-        CommandParameter last = parameters.get(parameters.size() - 1);
 
-        if (parameterIndex >= parameters.size() && last.isArray()) {
-            parameterIndex = parameters.size() - 1;
+        if (!parameters.isEmpty()) {
+            CommandParameter last = parameters.get(parameters.size() - 1);
+
+            if (parameterIndex >= parameters.size() && last.isArray()) {
+                parameterIndex = parameters.size() - 1;
+            }
         }
+
 
         if (parameterIndex >= parameters.size()) {
             return suggestions;
