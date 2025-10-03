@@ -3,6 +3,7 @@ package net.j4c0b3y.api.command.wrapper.binding;
 import net.j4c0b3y.api.command.utils.ListUtils;
 import net.j4c0b3y.api.command.wrapper.CommandParameter;
 import net.j4c0b3y.api.command.wrapper.binding.provider.Provider;
+import net.j4c0b3y.api.command.wrapper.binding.provider.impl.argument.ArrayProvider;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -22,6 +23,12 @@ public class BindingHandler {
     }
 
     public Provider<?> assign(CommandParameter parameter) {
+        Class<?> type = parameter.getType();
+
+        if (type.isArray()) {
+            return new ArrayProvider<>(assign(type.getComponentType()), type.getComponentType());
+        }
+
         List<ParameterBinding<?>> bindings = this.bindings.get(parameter.getType());
         if (bindings == null) return null;
 

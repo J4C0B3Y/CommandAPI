@@ -208,7 +208,7 @@ public class CommandExecution {
 
             int adjusted = i - offset;
 
-            if (parameter.isText()) {
+            if (parameter.isCombine()) {
                 arguments = combineRemaining(arguments, adjusted);
             }
 

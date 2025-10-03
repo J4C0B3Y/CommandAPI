@@ -14,6 +14,6 @@ import java.lang.annotation.Target;
 @Target(ElementType.PARAMETER)
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Range {
-    double min() default Double.MIN_VALUE;
+    double min() default -Double.MAX_VALUE;
     double max() default Double.MAX_VALUE;
 }

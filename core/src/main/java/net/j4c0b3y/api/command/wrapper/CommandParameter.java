@@ -41,7 +41,8 @@ public class CommandParameter {
     private final String permission;
 
     private final boolean last;
-    private final boolean text;
+    private final boolean array;
+    private final boolean combine;
 
     public CommandParameter(CommandHandle handle, Parameter parameter) {
         this.type = parameter.getType();
@@ -76,8 +77,9 @@ public class CommandParameter {
             flagNames.add(name);
         }
 
-        this.last = !AnnotationUtils.getSpecial(annotations, Last.class).isEmpty();
-        this.text = parameter.isAnnotationPresent(Text.class);
+        this.array = type.isArray();
+        this.last = !AnnotationUtils.getSpecial(annotations, Last.class).isEmpty() || type.isArray();
+        this.combine = parameter.isAnnotationPresent(Text.class) || this.array;
     }
 
     public boolean isBoolean() {
