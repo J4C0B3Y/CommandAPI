@@ -80,6 +80,10 @@ public class CommandParameter {
         this.array = type.isArray();
         this.last = !AnnotationUtils.getSpecial(annotations, Last.class).isEmpty() || type.isArray();
         this.combine = parameter.isAnnotationPresent(Text.class) || this.array;
+
+        if (isCombine() && isFlag()) {
+            throw new InvalidParameterException("Parameter '" + parameter.getName() + "' cannot be a flag.");
+        }
     }
 
     public boolean isBoolean() {
