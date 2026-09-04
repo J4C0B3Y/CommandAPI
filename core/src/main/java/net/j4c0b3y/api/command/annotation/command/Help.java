@@ -14,5 +14,6 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Help {
     String command() default "help";
+    boolean empty() default false;
     boolean register() default true;
 }

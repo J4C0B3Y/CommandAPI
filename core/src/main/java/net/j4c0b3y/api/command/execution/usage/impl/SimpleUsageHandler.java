@@ -25,7 +25,7 @@ public class SimpleUsageHandler implements UsageHandler {
 
     @Override
     public List<String> getHelpMessage(Actor actor, CommandWrapper wrapper, String label, List<String> arguments) {
-        if (arguments.isEmpty() || !arguments.get(0).equals(wrapper.getHelp().command())) {
+        if (arguments.isEmpty() ? !wrapper.getHelp().empty() : !arguments.get(0).equals(wrapper.getHelp().command())) {
             return null;
         }
 
