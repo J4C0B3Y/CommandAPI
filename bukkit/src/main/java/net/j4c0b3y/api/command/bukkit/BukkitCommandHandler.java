@@ -86,10 +86,6 @@ public class BukkitCommandHandler extends CommandHandler {
         Bukkit.getScheduler().runTask(plugin, task);
     }
 
-    protected <T> Future<T> callSync(Callable<T> task) {
-        return Bukkit.getScheduler().callSyncMethod(plugin, task);
-    }
-
     @Override
     public void bindDefaults() {
         super.bindDefaults();

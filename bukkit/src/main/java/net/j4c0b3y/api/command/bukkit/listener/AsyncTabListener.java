@@ -4,6 +4,7 @@ import com.destroystokyo.paper.event.server.AsyncTabCompleteEvent;
 import lombok.RequiredArgsConstructor;
 import net.j4c0b3y.api.command.bukkit.BukkitCommandHandler;
 import net.j4c0b3y.api.command.bukkit.actor.BukkitActor;
+import net.j4c0b3y.api.command.bukkit.exception.IncorrectSuggestContextException;
 import net.j4c0b3y.api.command.utils.ListUtils;
 import net.j4c0b3y.api.command.wrapper.CommandWrapper;
 import org.bukkit.command.Command;
@@ -39,16 +40,19 @@ public class AsyncTabListener implements Listener {
         CommandWrapper wrapper = handler.getRegistry().getWrappers().get(command);
         if (wrapper == null) return;
 
-        List<String> suggestions = wrapper.suggest(new BukkitActor(event.getSender(), handler), arguments);
+        try {
+            List<String> suggestions = wrapper.suggest(new BukkitActor(event.getSender(), handler), arguments);
 
-        if (suggestions.isEmpty()) {
-            return;
+            if (suggestions.isEmpty()) {
+                return;
+            }
+
+            for (String suggestion : suggestions) {
+                event.getCompletions().add(suggestion);
+            }
+
+            event.setHandled(true);
+        } catch (IncorrectSuggestContextException ignored) {
         }
-
-        for (String suggestion : suggestions) {
-            event.getCompletions().add(suggestion);
-        }
-
-        event.setHandled(true);
     }
 }
